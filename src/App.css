@@ -1,77 +1,159 @@
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
+@font-face {
+  font-family: "Final Fantasy Script Collection - Final Fantasy VII";
+  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.eot") format("eot"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.woff") format("woff"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.ttf") format("truetype"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.svg#FinalFantasyVII") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafb);
+@font-face {
+  font-family: "Pixel Cyr Normal";
+  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.eot") format("eot"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.woff") format("woff"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.ttf") format("truetype"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.svg#PixelCyr-Normal") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: "Play";
+  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.eot") format("eot"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.woff") format("woff"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.ttf") format("truetype"),
+    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.svg#Play") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: transparent;
+}
+
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  /* Phosphor CRT */
+  --crt-bg: #0a0f0c;
+  --crt-green: #7efca8;
+  --crt-green-muted: #5cd68a;
+  --crt-green-dim: #3dab6e;
+  --crt-scan: rgba(0, 0, 0, 0.28);
+  --crt-glow: rgba(90, 255, 150, 0.35);
+  --crt-glow-soft: rgba(60, 220, 120, 0.18);
+  --crt-vignette: rgba(20, 80, 45, 0.45);
+
+  font-family: "Pixel Cyr Normal", "Play", Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  color: var(--crt-green-muted);
+  background-color: var(--crt-bg);
+  background-image:
+    radial-gradient(
+      ellipse 130% 90% at 50% 42%,
+      var(--crt-vignette) 0%,
+      transparent 58%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      var(--crt-scan) 2px,
+      var(--crt-scan) 3px
+    );
+}
+
+.container p {
+  color: var(--crt-green-dim);
 }
 
 .container {
   margin: 0;
-  padding-top: 10vh;
+  width: 100%;
+  padding: 10vh 1rem 2rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(100, 220, 140, 0.4);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 2px 2px rgba(0, 0, 0, 0.45),
+    0 0 22px var(--crt-glow-soft),
+    0 0 2px rgba(100, 255, 160, 0.25);
+  min-height: 12rem;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  z-index: 0;
 }
 
 .row {
   display: flex;
-  justify-content: center;
+  width: 100%;
+  align-items: stretch;
+  gap: 1rem;
+  justify-content: stretch;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--crt-green);
   text-decoration: inherit;
+  text-shadow: 0 0 6px var(--crt-glow);
 }
 
 a:hover {
-  color: #535bf2;
+  color: #a8ffcc;
 }
 
-h1 {
+h1,
+h2 {
   text-align: center;
+  color: var(--crt-green);
+  text-shadow:
+    0 0 4px var(--crt-glow-soft),
+    0 0 12px var(--crt-glow),
+    0 0 24px rgba(40, 200, 100, 0.2);
 }
 
 input,
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(100, 220, 140, 0.45);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  color: var(--crt-green-muted);
+  background-color: rgba(8, 20, 14, 0.75);
+  transition: border-color 0.25s, box-shadow 0.25s;
+  box-shadow:
+    0 0 8px var(--crt-glow-soft),
+    inset 0 0 8px rgba(50, 150, 90, 0.08);
+  text-shadow: 0 0 4px var(--crt-glow-soft);
 }
 
 button {
@@ -79,11 +161,15 @@ button {
 }
 
 button:hover {
-  border-color: #396cd8;
+  border-color: var(--crt-green);
+  box-shadow:
+    0 0 14px var(--crt-glow-soft),
+    inset 0 0 8px rgba(80, 200, 120, 0.12);
 }
+
 button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
+  border-color: var(--crt-green-dim);
+  background-color: rgba(6, 14, 10, 0.9);
 }
 
 input,
@@ -95,22 +181,45 @@ button {
   margin-right: 5px;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+    --crt-bg: #142018;
+    --crt-green: #3ee88a;
+    --crt-green-muted: #2ec971;
+    --crt-green-dim: #259658;
+    --crt-scan: rgba(0, 30, 15, 0.12);
+    --crt-glow: rgba(40, 200, 120, 0.45);
+    --crt-glow-soft: rgba(30, 180, 100, 0.22);
+    --crt-vignette: rgba(30, 120, 70, 0.28);
+
+    color: var(--crt-green-muted);
+    background-color: var(--crt-bg);
+    background-image:
+      radial-gradient(
+        ellipse 130% 90% at 50% 40%,
+        var(--crt-vignette) 0%,
+        transparent 55%
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 2px,
+        var(--crt-scan) 2px,
+        var(--crt-scan) 3px
+      );
   }
 
   a:hover {
-    color: #24c8db;
+    color: #6dffaa;
   }
 
   input,
   button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
+    color: var(--crt-green-muted);
+    background-color: rgba(12, 28, 18, 0.55);
   }
+
   button:active {
-    background-color: #0f0f0f69;
+    background-color: rgba(10, 22, 14, 0.75);
   }
 }
