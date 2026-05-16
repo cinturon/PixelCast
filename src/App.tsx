@@ -1,49 +1,30 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import WeatherCard from "./components/WeatherCard";
+import ForecastPanel from "./components/ForecastPanel";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
       <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <div className="column">
+          <ForecastPanel
+            forecasts={[
+              { date: "Monday", highF: 70, lowF: 50, condition: "Sunny", rainChance: 50 },
+              { date: "Tuesday", highF: 60, lowF: 40, condition: "Cloudy", rainChance: 30 },
+              { date: "Wednesday", highF: 50, lowF: 30, condition: "Rainy", rainChance: 70 },
+            ]}
+          />
+        </div>
+        <div className="column">
+          <WeatherCard
+            city="Seattle"
+            temperatureF={70}
+            condition="Sunny"
+            rainChance={50}
+          />
+        </div>
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
     </main>
   );
 }
