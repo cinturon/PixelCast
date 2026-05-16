@@ -1,8 +1,6 @@
 mod weather;
-mod utils;
 
-use weather::{WeatherDataResponse, CurrentWeather, CurrentWeatherError};
-use utils::weather_code_to_condition;
+use weather::{WeatherDataResponse, CurrentWeather, CurrentWeatherError, WeatherCondition};
 
 #[tauri::command]
 async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWeatherError> {
@@ -43,12 +41,7 @@ async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWe
 
     match serde_json::from_str::<WeatherDataResponse>(&body) {
         Ok(data) => {
-            let mut current = data.current;
-            let condition = weather_code_to_condition(current.weather_code);
-            println!("Condition: {condition}");
-            current.weather_condition = Some(condition.to_string());
-            println!("Current weather: {:?}", current);
-            Ok(current)
+            Ok(data.current)
         },
         Err(error) => {
             println!("Body: {body}");
@@ -57,11 +50,17 @@ async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWe
         }
     }
 }
+
+#[tauri::command]
+async fn  get_weather_condition(code: i64) -> WeatherCondition {
+    WeatherCondition::from(code)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_current_weather])
+        .invoke_handler(tauri::generate_handler![get_current_weather, get_weather_condition])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
