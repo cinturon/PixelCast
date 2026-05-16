@@ -1,11 +1,11 @@
 export type WeatherCardProps = {
   city: string;
   temperature: number;
-  weather_code: number;
+  weather_condition: string;
   precipitation: number;
 };
 
-function WeatherCard({ city, temperature, weather_code, precipitation }: WeatherCardProps) {
+function WeatherCard({ city, temperature, weather_condition, precipitation }: WeatherCardProps) {
   return (
     <div className="weather-card">
       <h2 className="ct-section-title">{city}</h2>
@@ -16,7 +16,7 @@ function WeatherCard({ city, temperature, weather_code, precipitation }: Weather
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Condition</span>
-          <span className="weather-stat__value">{weather_code}</span>
+          <span className="weather-stat__value">{weather_condition}</span>
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Rain</span>

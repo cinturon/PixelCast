@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub struct CurrentWeather {
     pub temperature_2m: f64,
     pub weather_code: i64,
+    pub weather_condition: Option<String>,
     pub precipitation: f64,
 }
 

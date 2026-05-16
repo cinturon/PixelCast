@@ -6,7 +6,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 export type WeatherData = {
   temperature_2m: number;
-  weather_code: number;
+  weather_condition: string;
   precipitation: number;
 }
 
@@ -14,7 +14,7 @@ export type Forecast = {
   date: string;
   highF: number;
   lowF: number;
-  condition: string;
+  weather_condition: string;
   rainChance: number;
 }
 
@@ -52,9 +52,9 @@ function App() {
   
     setForecasts([
     
-      { date: "Monday", highF: 70, lowF: 50, condition: "Sunny", rainChance: 50 },
-      { date: "Tuesday", highF: 60, lowF: 40, condition: "Cloudy", rainChance: 30 },
-      { date: "Wednesday", highF: 50, lowF: 30, condition: "Rainy", rainChance: 70 },
+      { date: "Monday", highF: 70, lowF: 50, weather_condition: "Sunny", rainChance: 50 },
+      { date: "Tuesday", highF: 60, lowF: 40, weather_condition: "Cloudy", rainChance: 30 },
+      { date: "Wednesday", highF: 50, lowF: 30, weather_condition: "Rainy", rainChance: 70 },
     ]);
   }, []);
 
@@ -88,7 +88,7 @@ function App() {
             <WeatherCard
               city={city}
               temperature={weather.temperature_2m}
-              weather_code={weather.weather_code}
+              weather_condition={weather.weather_condition}
               precipitation={weather.precipitation}
             />
           ) : (

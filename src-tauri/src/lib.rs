@@ -1,11 +1,8 @@
 mod weather;
-use weather::{WeatherDataResponse, CurrentWeather, CurrentWeatherError};
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+mod utils;
 
+use weather::{WeatherDataResponse, CurrentWeather, CurrentWeatherError};
+use utils::weather_code_to_condition;
 
 #[tauri::command]
 async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWeatherError> {
@@ -38,29 +35,33 @@ async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWe
 
     let body = response.text().await.map_err(|error| CurrentWeatherError::new("Request Error".to_string(), error.to_string()))?;
 
-    println!("Open-Meteo raw response: {body}");
-    
+    // println!("Open-Meteo raw response: {body}");
+
     if body.is_empty() || body == "null" {
         return Err(CurrentWeatherError::new("Request Error".to_string(), "Response is empty".to_string()));
     }
 
     match serde_json::from_str::<WeatherDataResponse>(&body) {
         Ok(data) => {
-            println!("Current weather: {:?}", data.current);
-            Ok(data.current)
+            let mut current = data.current;
+            let condition = weather_code_to_condition(current.weather_code);
+            println!("Condition: {condition}");
+            current.weather_condition = Some(condition.to_string());
+            println!("Current weather: {:?}", current);
+            Ok(current)
         },
-        Err(error) =>{ 
-            println!("Parse error: {:?}", &body);
+        Err(error) => {
+            println!("Body: {body}");
+            println!("Parse error: {:?}", error);
             Err(CurrentWeatherError::new("Parse Error".to_string(), error.to_string()))
         }
     }
 }
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_current_weather])
+        .invoke_handler(tauri::generate_handler![get_current_weather])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
