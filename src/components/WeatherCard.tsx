@@ -7,11 +7,22 @@ export type WeatherCardProps = {
 
 function WeatherCard({ city, temperatureF, condition, rainChance }: WeatherCardProps) {
   return (
-    <div>
-      <h1>{city}</h1>
-      <p>Temperature: {temperatureF}°F</p>
-      <p>Condition: {condition}</p>
-      <p>Rain Chance: {rainChance}%</p>
+    <div className="weather-card">
+      <h2 className="ct-section-title">{city}</h2>
+      <div className="weather-stats">
+        <div className="weather-stat">
+          <span className="weather-stat__label">Temperature</span>
+          <span className="weather-stat__value">{temperatureF}°F</span>
+        </div>
+        <div className="weather-stat">
+          <span className="weather-stat__label">Condition</span>
+          <span className="weather-stat__value">{condition}</span>
+        </div>
+        <div className="weather-stat">
+          <span className="weather-stat__label">Rain</span>
+          <span className="weather-stat__value">{rainChance}%</span>
+        </div>
+      </div>
     </div>
   );
 }

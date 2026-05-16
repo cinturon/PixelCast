@@ -1,32 +1,4 @@
-@font-face {
-  font-family: "Final Fantasy Script Collection - Final Fantasy VII";
-  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.eot") format("eot"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.woff") format("woff"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.ttf") format("truetype"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Final_Fantasy_VII.svg#FinalFantasyVII") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Pixel Cyr Normal";
-  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.eot") format("eot"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.woff") format("woff"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.ttf") format("truetype"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/pixcyr2.svg#PixelCyr-Normal") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Play";
-  src: url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.eot") format("eot"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.woff") format("woff"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.ttf") format("truetype"),
-    url("https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/fonts/Play-Regular.svg#Play") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+/* Chrono Trigger–inspired menu panels (SNES RPG window style) */
 
 html,
 body,
@@ -38,122 +10,290 @@ body,
 }
 
 :root {
-  /* Phosphor CRT */
-  --crt-bg: #0a0f0c;
-  --crt-green: #7efca8;
-  --crt-green-muted: #5cd68a;
-  --crt-green-dim: #3dab6e;
-  --crt-scan: rgba(0, 0, 0, 0.28);
-  --crt-glow: rgba(90, 255, 150, 0.35);
-  --crt-glow-soft: rgba(60, 220, 120, 0.18);
-  --crt-vignette: rgba(20, 80, 45, 0.45);
+  /* CT-ish palette: deep indigo backdrop, royal blue panels, gold lettering */
+  --ct-void: #080818;
+  --ct-void-mid: #101028;
+  --ct-panel-top: #5068d8;
+  --ct-panel-mid: #3040a8;
+  --ct-panel-deep: #182878;
+  --ct-panel-shadow: #080838;
+  --ct-border-hi: #f8f8ff;
+  --ct-border-lo: #404880;
+  --ct-inner-glow: rgba(120, 160, 255, 0.22);
+  --ct-gold: #f8e888;
+  --ct-gold-shine: #fff8c8;
+  --ct-gold-dim: #c8a850;
+  --ct-text: #e8f0ff;
+  --ct-text-muted: #a8b8e8;
+  --ct-cursor: #ffd828;
+  --ct-cursor-glow: rgba(255, 216, 48, 0.45);
+  --ct-row-hover: rgba(255, 216, 48, 0.18);
+  --ct-row-line: rgba(255, 255, 255, 0.14);
 
-  font-family: "Pixel Cyr Normal", "Play", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 22px;
+  line-height: 1.25;
   font-weight: 400;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  color: var(--crt-green-muted);
-  background-color: var(--crt-bg);
+  color: var(--ct-text);
+  background-color: var(--ct-void);
   background-image:
-    radial-gradient(
-      ellipse 130% 90% at 50% 42%,
-      var(--crt-vignette) 0%,
-      transparent 58%
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 2px,
-      var(--crt-scan) 2px,
-      var(--crt-scan) 3px
-    );
+    radial-gradient(ellipse 120% 80% at 50% 20%, #182058 0%, transparent 55%),
+    radial-gradient(ellipse 90% 70% at 50% 100%, #080828 0%, var(--ct-void) 45%),
+    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, #040410 100%);
+  min-height: 100%;
 }
 
-.container p {
-  color: var(--crt-green-dim);
+.ct-app-title,
+.ct-section-title {
+  font-family: "Press Start 2P", monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
 }
 
 .container {
   margin: 0;
   width: 100%;
-  padding: 10vh 1rem 2rem;
+  min-height: 100vh;
+  padding: 2rem 1rem 2.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   text-align: center;
+}
+
+.ct-header {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.5rem 1rem;
+}
+
+.ct-app-title {
+  margin: 0;
+  font-size: clamp(0.85rem, 2.8vw, 1.05rem);
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  color: var(--ct-gold-shine);
+  text-shadow:
+    2px 2px 0 #403008,
+    -1px -1px 0 #403008,
+    1px -1px 0 #403008,
+    -1px 1px 0 #403008,
+    0 0 18px var(--ct-cursor-glow);
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  max-width: 52rem;
+  align-items: stretch;
+  gap: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .column {
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 16rem;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(100, 220, 140, 0.4);
-  border-radius: 8px;
-  box-shadow:
-    inset 0 0 2px 2px rgba(0, 0, 0, 0.45),
-    0 0 22px var(--crt-glow-soft),
-    0 0 2px rgba(100, 255, 160, 0.25);
-  min-height: 12rem;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   z-index: 0;
+
+  /* SNES menu “window” frame: light outer rim, dark inner lip, blue body */
+  padding: 4px;
+  border-radius: 2px;
+  background: linear-gradient(145deg, var(--ct-border-hi) 0%, var(--ct-border-lo) 100%);
+  box-shadow:
+    0 4px 0 var(--ct-panel-shadow),
+    0 6px 24px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-.row {
+.column::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 0;
+  box-shadow:
+    inset 0 0 0 2px var(--ct-panel-shadow),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.column > * {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 11rem;
+  text-align: left;
+
+  margin: 0;
+  padding: 0.9rem 1rem 1.1rem;
+  border-radius: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--ct-panel-top) 0%,
+    var(--ct-panel-mid) 38%,
+    var(--ct-panel-deep) 72%,
+    #101858 100%
+  );
+  box-shadow: inset 0 2px 12px var(--ct-inner-glow);
+}
+
+.forecast-panel,
+.weather-card {
   display: flex;
-  width: 100%;
-  align-items: stretch;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ct-section-title {
+  margin: 0 0 0.65rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: var(--ct-gold);
+  border-bottom: 2px solid var(--ct-gold-dim);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  text-shadow: 1px 1px 0 #302010;
+}
+
+.forecast-row {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 1fr) minmax(4.5rem, 0.9fr) 1fr minmax(2.5rem, 0.5fr);
+  align-items: center;
+  column-gap: 0.5rem;
+  padding: 0.45rem 0.35rem 0.45rem 0.85rem;
+  margin: 0 -0.35rem;
+  border-bottom: 1px solid var(--ct-row-line);
+  font-size: 1.05rem;
+  color: var(--ct-text);
+  transition: background-color 0.12s ease;
+}
+
+.forecast-row:last-of-type {
+  border-bottom: none;
+}
+
+.forecast-row:hover {
+  background: var(--ct-row-hover);
+  box-shadow: inset 3px 0 0 var(--ct-cursor);
+}
+
+.forecast-row__day {
+  font-weight: 700;
+  color: var(--ct-gold-shine);
+  text-shadow: 1px 1px 0 #302010;
+}
+
+.forecast-row__temps {
+  color: var(--ct-text);
+}
+
+.forecast-row__condition {
+  color: var(--ct-text-muted);
+}
+
+.forecast-row__rain {
+  text-align: right;
+  color: var(--ct-cursor);
+  text-shadow: 0 0 8px var(--ct-cursor-glow);
+}
+
+.weather-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.2rem;
+}
+
+.weather-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   gap: 1rem;
-  justify-content: stretch;
+  padding: 0.35rem 0.5rem;
+  border-radius: 1px;
+  background: rgba(0, 8, 40, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.weather-stat__label {
+  color: var(--ct-text-muted);
+  font-size: 1rem;
+}
+
+.weather-stat__value {
+  color: var(--ct-text);
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px rgba(180, 200, 255, 0.35);
+}
+
+.weather-placeholder {
+  margin: 0;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  color: var(--ct-text-muted);
+  font-size: 1.15rem;
+  animation: ct-blink 1.1s step-end infinite;
+}
+
+@keyframes ct-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.45;
+  }
+}
+
+.container p {
+  color: var(--ct-text-muted);
 }
 
 a {
   font-weight: 500;
-  color: var(--crt-green);
+  color: var(--ct-cursor);
   text-decoration: inherit;
-  text-shadow: 0 0 6px var(--crt-glow);
+  text-shadow: 0 0 8px var(--ct-cursor-glow);
 }
 
 a:hover {
-  color: #a8ffcc;
+  color: var(--ct-gold-shine);
 }
 
 h1,
 h2 {
-  text-align: center;
-  color: var(--crt-green);
-  text-shadow:
-    0 0 4px var(--crt-glow-soft),
-    0 0 12px var(--crt-glow),
-    0 0 24px rgba(40, 200, 100, 0.2);
+  text-align: left;
 }
 
 input,
 button {
-  border-radius: 8px;
-  border: 1px solid rgba(100, 220, 140, 0.45);
-  padding: 0.6em 1.2em;
+  border-radius: 2px;
+  border: 2px solid var(--ct-border-lo);
+  padding: 0.5em 1em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  color: var(--crt-green-muted);
-  background-color: rgba(8, 20, 14, 0.75);
-  transition: border-color 0.25s, box-shadow 0.25s;
+  color: var(--ct-text);
+  background: linear-gradient(180deg, var(--ct-panel-mid), var(--ct-panel-deep));
+  transition: border-color 0.15s, box-shadow 0.15s;
   box-shadow:
-    0 0 8px var(--crt-glow-soft),
-    inset 0 0 8px rgba(50, 150, 90, 0.08);
-  text-shadow: 0 0 4px var(--crt-glow-soft);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 0 var(--ct-panel-shadow);
 }
 
 button {
@@ -161,15 +301,15 @@ button {
 }
 
 button:hover {
-  border-color: var(--crt-green);
+  border-color: var(--ct-gold-dim);
   box-shadow:
-    0 0 14px var(--crt-glow-soft),
-    inset 0 0 8px rgba(80, 200, 120, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 12px var(--ct-cursor-glow);
 }
 
 button:active {
-  border-color: var(--crt-green-dim);
-  background-color: rgba(6, 14, 10, 0.9);
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 input,
@@ -181,45 +321,28 @@ button {
   margin-right: 5px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --crt-bg: #142018;
-    --crt-green: #3ee88a;
-    --crt-green-muted: #2ec971;
-    --crt-green-dim: #259658;
-    --crt-scan: rgba(0, 30, 15, 0.12);
-    --crt-glow: rgba(40, 200, 120, 0.45);
-    --crt-glow-soft: rgba(30, 180, 100, 0.22);
-    --crt-vignette: rgba(30, 120, 70, 0.28);
-
-    color: var(--crt-green-muted);
-    background-color: var(--crt-bg);
-    background-image:
-      radial-gradient(
-        ellipse 130% 90% at 50% 40%,
-        var(--crt-vignette) 0%,
-        transparent 55%
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 2px,
-        var(--crt-scan) 2px,
-        var(--crt-scan) 3px
-      );
+@media (max-width: 36rem) {
+  .forecast-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 0.25rem;
   }
 
-  a:hover {
-    color: #6dffaa;
+  .forecast-row__day {
+    grid-column: 1 / -1;
   }
 
-  input,
-  button {
-    color: var(--crt-green-muted);
-    background-color: rgba(12, 28, 18, 0.55);
+  .forecast-row__rain {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather-placeholder {
+    animation: none;
   }
 
-  button:active {
-    background-color: rgba(10, 22, 14, 0.75);
+  .forecast-row {
+    transition: none;
   }
 }

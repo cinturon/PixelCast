@@ -13,8 +13,8 @@ export type ForecastPanelProps = {
 
 function ForecastPanel({ forecasts }: ForecastPanelProps){
     return (
-        <div>
-            <h1>Forecast</h1>
+        <div className="forecast-panel">
+            <h2 className="ct-section-title">Forecast</h2>
             {forecasts.map((forecast) => (
                 <ForecastRow key={forecast.date} {...forecast} />
             ))}
