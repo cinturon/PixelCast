@@ -1,20 +1,59 @@
 mod weather;
-use weather::{WeatherData, WeatherError};
+use weather::{WeatherDataResponse, CurrentWeather, CurrentWeatherError};
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
+
+
 #[tauri::command]
-fn get_current_weather(_city: String) -> Result<WeatherData, WeatherError> {
+async fn  get_current_weather(_city: String) -> Result<CurrentWeather, CurrentWeatherError> {
     if _city.is_empty() {
-        return Err(WeatherError::InvalidCity("City is required".to_string()));
+        return Err(CurrentWeatherError::new("City Error".to_string(), "City is required".to_string()));
     }
-    Ok(WeatherData {
-        temperature: 70.0,
-        condition: "Sunny".to_string(),
-        rain_chance: 0.1,
-    })
+    
+    let url = "https://api.open-meteo.com/v1/forecast";
+    let params = [
+        ("latitude", "47.6062"),
+        ("longitude", "-122.3321"),
+        ("current", "temperature_2m,weather_code,precipitation"),
+        ("temperature_unit", "fahrenheit"),
+    ];
+
+    let query = params
+        .iter()
+        .map(|(key, value)| format!("{key}={value}"))
+        .collect::<Vec<_>>()
+        .join("&");
+
+    let url = format!("{url}?{query}");
+    let response = reqwest::get(url)
+        .await
+        .map_err(|error| CurrentWeatherError::new("Request Error".to_string(), error.to_string()))?;
+
+        if !response.status().is_success() {
+        return Err(CurrentWeatherError::new("Request Error".to_string(), response.status().to_string()));
+    }
+
+    let body = response.text().await.map_err(|error| CurrentWeatherError::new("Request Error".to_string(), error.to_string()))?;
+
+    println!("Open-Meteo raw response: {body}");
+    
+    if body.is_empty() || body == "null" {
+        return Err(CurrentWeatherError::new("Request Error".to_string(), "Response is empty".to_string()));
+    }
+
+    match serde_json::from_str::<WeatherDataResponse>(&body) {
+        Ok(data) => {
+            println!("Current weather: {:?}", data.current);
+            Ok(data.current)
+        },
+        Err(error) =>{ 
+            println!("Parse error: {:?}", &body);
+            Err(CurrentWeatherError::new("Parse Error".to_string(), error.to_string()))
+        }
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

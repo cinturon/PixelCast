@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 export type WeatherData = {
-  temperature: number;
-  condition: string;
-  rainChance: number;
+  temperature_2m: number;
+  weather_code: number;
+  precipitation: number;
 }
 
 export type Forecast = {
@@ -19,14 +19,17 @@ export type Forecast = {
 }
 
 export type WeatherError = {
-  invalidCity: string;
+  errorType: string;
+  message: string;
 }
+
+
 
 
 function App() {
 
   const [loadingWeather, setLoadingWeather] = useState<boolean>(false);
-  const [errorWeather, setErrorWeather] = useState<string>();
+  const [errorWeather, setErrorWeather] = useState<WeatherError>();
   const [weather, setWeather] = useState<WeatherData>();
   const [forecasts, setForecasts] = useState<Forecast[]>([]);
   const [city] = useState<string>("Seattle");
@@ -38,12 +41,7 @@ function App() {
       const weather = await invoke("get_current_weather", { city });
       setWeather(weather as WeatherData);
     } catch (error) {
-      let errorMessage = error as WeatherError;
-      if (errorMessage.invalidCity) {
-        setErrorWeather(errorMessage.invalidCity);
-      } else {
-        setErrorWeather("Error loading current weather");
-      }
+      setErrorWeather(error as WeatherError);
     } finally {
       setLoadingWeather(false);
     }
@@ -81,7 +79,7 @@ function App() {
             <p className="weather-placeholder">Loading Current Weather</p>
           ) : errorWeather ? (
             <div className="weather-placeholder">
-              <p>Error Loading Current Weather: {errorWeather}</p>
+              <p>Error Loading Current Weather: {errorWeather.errorType} - {errorWeather.message}</p>
               <button onClick={() => {
                 getCurrentWeather(city);
               }}>Retry</button>
@@ -89,9 +87,9 @@ function App() {
           ) : weather ? (
             <WeatherCard
               city={city}
-              temperatureF={weather.temperature}
-              condition={weather.condition}
-              rainChance={weather.rainChance}
+              temperature={weather.temperature_2m}
+              weather_code={weather.weather_code}
+              precipitation={weather.precipitation}
             />
           ) : (
             <p className="weather-placeholder">Loading Current Weather</p>
