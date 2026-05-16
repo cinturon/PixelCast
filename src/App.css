@@ -130,7 +130,7 @@ body,
     inset 0 0 0 3px rgba(255, 255, 255, 0.12);
 }
 
-.column > * {
+.column>* {
   position: relative;
   z-index: 1;
   flex: 1;
@@ -140,13 +140,11 @@ body,
   margin: 0;
   padding: 0.9rem 1rem 1.1rem;
   border-radius: 1px;
-  background: linear-gradient(
-    180deg,
-    var(--ct-panel-top) 0%,
-    var(--ct-panel-mid) 38%,
-    var(--ct-panel-deep) 72%,
-    #101858 100%
-  );
+  background: linear-gradient(180deg,
+      var(--ct-panel-top) 0%,
+      var(--ct-panel-mid) 38%,
+      var(--ct-panel-deep) 72%,
+      #101858 100%);
   box-shadow: inset 0 2px 12px var(--ct-inner-glow);
 }
 
@@ -246,18 +244,6 @@ body,
   text-align: center;
   color: var(--ct-text-muted);
   font-size: 1.15rem;
-  animation: ct-blink 1.1s step-end infinite;
-}
-
-@keyframes ct-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0.45;
-  }
 }
 
 .container p {
@@ -338,10 +324,6 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .weather-placeholder {
-    animation: none;
-  }
-
   .forecast-row {
     transition: none;
   }

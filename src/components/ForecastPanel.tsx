@@ -1,17 +1,8 @@
 import ForecastRow from "./ForecastRow";
-
-export type ForecastPanelProps = {
-    forecasts: {
-        date: string;
-        highF: number;
-        lowF: number;
-        condition: string;
-        rainChance: number;
-    }[];
-}
+import { Forecast } from "../App";
 
 
-function ForecastPanel({ forecasts }: ForecastPanelProps){
+function ForecastPanel({ forecasts }: { forecasts: Forecast[] }){
     return (
         <div className="forecast-panel">
             <h2 className="ct-section-title">Forecast</h2>

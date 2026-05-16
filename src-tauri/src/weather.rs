@@ -7,3 +7,9 @@ pub struct WeatherData {
     pub condition: String,
     pub rain_chance: f64,
 }
+
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum WeatherError {
+    InvalidCity(String),
+}

@@ -10,19 +10,54 @@ export type WeatherData = {
   rainChance: number;
 }
 
+export type Forecast = {
+  date: string;
+  highF: number;
+  lowF: number;
+  condition: string;
+  rainChance: number;
+}
+
+export type WeatherError = {
+  invalidCity: string;
+}
+
 
 function App() {
 
+  const [loadingWeather, setLoadingWeather] = useState<boolean>(false);
+  const [errorWeather, setErrorWeather] = useState<string>();
   const [weather, setWeather] = useState<WeatherData>();
+  const [forecasts, setForecasts] = useState<Forecast[]>([]);
   const [city] = useState<string>("Seattle");
 
   const getCurrentWeather = async (city: string) => {
-    const weather = await invoke("get_current_weather", { city });
-    setWeather(weather as WeatherData);
+    setLoadingWeather(true);
+
+    try {
+      const weather = await invoke("get_current_weather", { city });
+      setWeather(weather as WeatherData);
+    } catch (error) {
+      let errorMessage = error as WeatherError;
+      if (errorMessage.invalidCity) {
+        setErrorWeather(errorMessage.invalidCity);
+      } else {
+        setErrorWeather("Error loading current weather");
+      }
+    } finally {
+      setLoadingWeather(false);
+    }
   };
 
   useEffect(() => {
-    getCurrentWeather("Seattle");
+    getCurrentWeather(city);
+  
+    setForecasts([
+    
+      { date: "Monday", highF: 70, lowF: 50, condition: "Sunny", rainChance: 50 },
+      { date: "Tuesday", highF: 60, lowF: 40, condition: "Cloudy", rainChance: 30 },
+      { date: "Wednesday", highF: 50, lowF: 30, condition: "Rainy", rainChance: 70 },
+    ]);
   }, []);
 
   return (
@@ -32,16 +67,26 @@ function App() {
       </header>
       <div className="row">
         <div className="column">
-          <ForecastPanel
-            forecasts={[
-              { date: "Monday", highF: 70, lowF: 50, condition: "Sunny", rainChance: 50 },
-              { date: "Tuesday", highF: 60, lowF: 40, condition: "Cloudy", rainChance: 30 },
-              { date: "Wednesday", highF: 50, lowF: 30, condition: "Rainy", rainChance: 70 },
-            ]}
-          />
+          {forecasts.length > 0 ? (
+            <ForecastPanel
+              forecasts={forecasts}
+            />
+          ) : (
+            <p className="forecast-placeholder">Loading Forecast</p>
+          )}
         </div>
+
         <div className="column">
-          {weather ? (
+          {loadingWeather ? (
+            <p className="weather-placeholder">Loading Current Weather</p>
+          ) : errorWeather ? (
+            <div className="weather-placeholder">
+              <p>Error Loading Current Weather: {errorWeather}</p>
+              <button onClick={() => {
+                getCurrentWeather(city);
+              }}>Retry</button>
+            </div>
+          ) : weather ? (
             <WeatherCard
               city={city}
               temperatureF={weather.temperature}
@@ -49,7 +94,7 @@ function App() {
               rainChance={weather.rainChance}
             />
           ) : (
-            <p className="weather-placeholder">Loading current weather…</p>
+            <p className="weather-placeholder">Loading Current Weather</p>
           )}
         </div>
       </div>
