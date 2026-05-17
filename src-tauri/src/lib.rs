@@ -9,6 +9,7 @@ mod domain {
 
 pub mod utils {
     pub mod settings;
+    pub mod cache;
 }
 
 use tauri::{
