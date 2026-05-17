@@ -37,10 +37,28 @@ async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
+            let settings_file_path = utils::settings::settings_file_path(app.handle())?;
+
+            if !settings_file_path.exists() {
+                let settings = utils::settings::Settings::default();
+                let settings_json = serde_json::to_string(&settings)?;
+
+                let settings_dir = settings_file_path.parent();
+
+                if let Some(settings_dir) = settings_dir {
+                    std::fs::create_dir_all(settings_dir)?;
+                }
+
+                if settings_dir.is_some() {
+                    std::fs::write(settings_file_path, settings_json)?;
+                }
+            }
+
             let settings_menu = SubmenuBuilder::new(app, "Settings")
                 .text("unit_fahrenheit", "Fahrenheit")
                 .text("unit_celsius", "Celsius")
                 .build()?;
+
             let menu = MenuBuilder::new(app).item(&settings_menu).build()?;
             app.set_menu(menu)?;
             app.on_menu_event(|app, event| match event.id().0.as_str() {
