@@ -57,6 +57,7 @@ body,
 }
 
 .container {
+  position: relative;
   margin: 0;
   width: 100%;
   min-height: 100vh;
@@ -67,6 +68,39 @@ body,
   align-items: center;
   justify-content: flex-start;
   text-align: center;
+}
+
+.rain-effect {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    repeating-linear-gradient(105deg,
+      rgba(232, 240, 255, 0.42) 0 1px,
+      transparent 1px 15px),
+    repeating-linear-gradient(105deg,
+      rgba(168, 184, 232, 0.22) 0 1px,
+      transparent 1px 24px);
+  background-size: 4rem 8rem, 6rem 10rem;
+  animation: rain-fall 0.8s linear infinite;
+}
+
+.ct-header,
+.row {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes rain-fall {
+  from {
+    background-position: 0 0, 0 0;
+  }
+
+  to {
+    background-position: -2rem 8rem, -3rem 10rem;
+  }
 }
 
 .ct-header {
@@ -422,6 +456,10 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .rain-effect {
+    animation: none;
+  }
+
   .forecast-row {
     transition: none;
   }

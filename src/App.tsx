@@ -3,7 +3,18 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import {WeatherCondition, getWeatherCondition } from "./utils";
+import { WeatherCondition, getWeatherCondition } from "./utils";
+
+const ENABLE_RAIN_EFFECT = true;
+const RAINY_CONDITIONS = new Set([
+  "Drizzle",
+  "Freezing drizzle",
+  "Rain",
+  "Freezing rain",
+  "Rain showers",
+  "Thunderstorm",
+  "Thunderstorm with hail",
+]);
 
 export type WeatherDataResponse = {
   current: CurrentWeather;
@@ -61,12 +72,17 @@ function App() {
     return getWeatherCondition(code);
   }
 
+  const shouldShowRainEffect = ENABLE_RAIN_EFFECT
+    && data?.current.weather_condition
+    && RAINY_CONDITIONS.has(data.current.weather_condition.condition);
+
   useEffect(() => {
     loadData();
   }, []);
 
   return (
     <main className="container">
+      {shouldShowRainEffect ? <div className="rain-effect" aria-hidden="true" /> : null}
       <header className="ct-header">
         <h1 className="ct-app-title">PixelCast</h1>
       </header>
