@@ -156,9 +156,8 @@ body,
   border-bottom: 1px solid rgba(248, 232, 136, 0.65);
   text-shadow:
     2px 2px 0 var(--ct-panel-shadow),
-    0 0 10px rgba(255, 248, 200, 0.55),
-    0 0 22px var(--ct-cursor-glow),
-    0 0 36px rgba(255, 216, 48, 0.28);
+    0 0 6px rgba(255, 248, 200, 0.32),
+    0 0 14px rgba(255, 216, 48, 0.22);
 }
 
 .row {
@@ -448,6 +447,12 @@ body,
   gap: 0.35rem;
   margin-top: 0.8rem;
   color: var(--ct-text);
+}
+
+.settings-panel__coordinate-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 
 .settings-panel select {

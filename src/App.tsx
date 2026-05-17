@@ -7,6 +7,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { WeatherCondition, getWeatherCondition } from "./utils";
 import { RAINY_CONDITIONS } from "./conditions";
+import { Settings } from "./settings";
 
 
 
@@ -44,16 +45,19 @@ function App() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<WeatherError>();
 
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+
   const [unit, setUnit] = useState<TemperatureUnit>("fahrenheit");
   const [city, setCity] = useState<string>("Seattle");
-
-  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [latitude, setLatitude] = useState<number>(47.6062);
+  const [longitude, setLongitude] = useState<number>(-122.3321);
   const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
 
-  const loadData = async () => {
+
+  const loadData = async ({ city, latitude, longitude }: { city: string, latitude: number, longitude: number }) => {
     setLoading(true);
     try {
-      const data = await invoke<WeatherDataResponse>("get_data", { city });
+      const data = await invoke<WeatherDataResponse>("get_data", { city, latitude, longitude });
 
       data.current.weather_condition = attachWeatherCondition(data.current.weather_code);
       data.forecasts.forEach(forecast => {
@@ -68,6 +72,33 @@ function App() {
     }
   };
 
+  const saveSettings = async () => {
+    await invoke("save_settings", {
+      settings: {
+        city,
+        temperatureUnit: unit,
+        latitude,
+        longitude,
+        enableRainEffect,
+      }
+    });
+    loadSettings();
+    loadData({ city, latitude, longitude });
+    setSettingsOpen(false);
+  }
+
+  const loadSettings = async () => {
+    const settings = await invoke<Settings>("load_settings");
+
+    setCity(settings.city);
+    setUnit(settings.temperatureUnit as TemperatureUnit);
+    setLatitude(settings.latitude);
+    setLongitude(settings.longitude);
+    setEnableRainEffect(settings.enableRainEffect);
+
+    return settings;
+  }
+
   const attachWeatherCondition = (code: number): WeatherCondition => {
     return getWeatherCondition(code);
   }
@@ -77,7 +108,13 @@ function App() {
     && RAINY_CONDITIONS.has(data.current.weather_condition.condition);
 
   useEffect(() => {
-    loadData();
+    const initializeApp = async () => {
+      const settings = await loadSettings();
+      
+      await loadData(settings);
+    };
+
+    initializeApp();
   }, []);
 
   useEffect(() => {
@@ -100,18 +137,22 @@ function App() {
         <h2 className="ct-city-title">{city}</h2>
       </header>
       {settingsOpen ? (
-        <SettingsPanel 
-        city={city}
-        unit={unit}
-        onCityChange={setCity}
-        onUnitChange={setUnit}
-        enableRainEffect={enableRainEffect}
-        onEnableRainEffectChange={setEnableRainEffect}
-        onSave={() => {
-          loadData();
-          setSettingsOpen(false);
-        }}  
-        onClose={() => setSettingsOpen(false)} />
+        <SettingsPanel
+          city={city}
+          unit={unit}
+          latitude={latitude}
+          longitude={longitude}
+          onCityChange={setCity}
+          onUnitChange={setUnit}
+          enableRainEffect={enableRainEffect}
+          onEnableRainEffectChange={setEnableRainEffect}
+          onSave={
+            () => saveSettings()
+          }
+          onClose={() => {
+            loadSettings();
+            setSettingsOpen(false);
+          }} />
       ) : null}
       <div className="row">
         <div className="column">
@@ -121,7 +162,7 @@ function App() {
             <div className="forecast-placeholder">
               <p>Error Loading Forecast: {error.errorType} - {error.message}</p>
               <button onClick={() => {
-                loadData();
+                loadData({ city, latitude, longitude });
               }}>Retry</button>
             </div>
           ) : data?.forecasts ? (
@@ -141,7 +182,7 @@ function App() {
             <div className="weather-placeholder">
               <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
               <button onClick={() => {
-                loadData();
+                loadData({ city, latitude, longitude });
               }}>Retry</button>
             </div>
           ) : data?.current ? (

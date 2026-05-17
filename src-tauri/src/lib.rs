@@ -19,6 +19,7 @@ use tauri::{
 use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
 use domain::current_weather::CurrentWeather;
 use domain::forecast::DailyForecast;
+use utils::settings::Settings;
 
 #[tauri::command]
 async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
@@ -31,6 +32,25 @@ async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
 
     let data: WeatherDataResponse = WeatherDataResponse { current, forecasts };
     Ok(data)
+}
+
+#[tauri::command]
+async fn save_settings(
+    app: tauri::AppHandle,
+    settings: Settings
+) -> Result<(), String> {
+    utils::settings::save_settings(&app, &settings)
+    .map_err(|error| error.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+async fn load_settings(
+    app: tauri::AppHandle,
+) -> Result<Settings, String> {
+    let settings = utils::settings::load_settings(&app)
+    .map_err(|error| error.to_string())?;
+    Ok(settings)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -63,7 +83,7 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_data,])
+        .invoke_handler(tauri::generate_handler![get_data, save_settings, load_settings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

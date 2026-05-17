@@ -60,3 +60,22 @@ pub fn load_or_create_settings(
     let settings: Settings = serde_json::from_str(&settings_file)?;
     Ok(settings)
 }
+
+pub fn save_settings(
+    app: &tauri::AppHandle,
+    settings: &Settings,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let settings_file_path = settings_file_path(app)?;
+    let settings_json = serde_json::to_string(settings)?;
+    std::fs::write(&settings_file_path, settings_json)?;
+    Ok(())
+}
+
+pub fn load_settings(
+    app: &tauri::AppHandle,
+) -> Result<Settings, Box<dyn std::error::Error>> {
+    let settings_file_path = settings_file_path(app)?;
+    let settings_file = std::fs::read_to_string(&settings_file_path)?;
+    let settings: Settings = serde_json::from_str(&settings_file)?;
+    Ok(settings)
+}
