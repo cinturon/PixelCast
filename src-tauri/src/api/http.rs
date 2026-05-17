@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-use crate::current_weather::{CurrentWeather, CurrentWeatherResponse};
-use crate::forecast::{DailyForecast, FiveDayForecastResponse};
+use crate::domain::current_weather::{CurrentWeather, CurrentWeatherResponse};
+use crate::domain::forecast::{DailyForecast, FiveDayForecastResponse};
 
 #[derive(serde::Serialize)]
 #[serde(rename_all = "camelCase")]

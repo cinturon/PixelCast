@@ -1,15 +1,24 @@
-mod current_weather;
-mod forecast;
-mod http;
+mod api {
+    pub mod http;
+}
+
+mod domain {
+    pub mod current_weather;
+    pub mod forecast;
+}
+
+pub mod utils {
+    pub mod settings;
+}
 
 use tauri::{
     menu::{MenuBuilder, SubmenuBuilder},
-    Emitter
+    Emitter,
 };
 
-use current_weather::CurrentWeather;
-use forecast::DailyForecast;
-use http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
+use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
+use domain::current_weather::CurrentWeather;
+use domain::forecast::DailyForecast;
 
 #[tauri::command]
 async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
