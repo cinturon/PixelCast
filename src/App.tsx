@@ -1,21 +1,14 @@
 import "./App.css";
 import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
+import SettingsPanel from "./components/SettingsPanel";
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { WeatherCondition, getWeatherCondition } from "./utils";
+import { RAINY_CONDITIONS } from "./conditions";
 
-const ENABLE_RAIN_EFFECT = true;
-const RAINY_CONDITIONS = new Set([
-  "Drizzle",
-  "Freezing drizzle",
-  "Rain",
-  "Freezing rain",
-  "Rain showers",
-  "Thunderstorm",
-  "Thunderstorm with hail",
-]);
+
 
 export type WeatherDataResponse = {
   current: CurrentWeather;
@@ -52,8 +45,10 @@ function App() {
   const [error, setError] = useState<WeatherError>();
 
   const [unit, setUnit] = useState<TemperatureUnit>("fahrenheit");
+  const [city, setCity] = useState<string>("Seattle");
 
-  const [city] = useState<string>("Seattle");
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
 
   const loadData = async () => {
     setLoading(true);
@@ -77,7 +72,7 @@ function App() {
     return getWeatherCondition(code);
   }
 
-  const shouldShowRainEffect = ENABLE_RAIN_EFFECT
+  const shouldShowRainEffect = enableRainEffect
     && data?.current.weather_condition
     && RAINY_CONDITIONS.has(data.current.weather_condition.condition);
 
@@ -86,10 +81,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const unlistenPromise = listen<TemperatureUnit>(
-      "temperature-unit-changed",
-      (event) => {
-        setUnit(event.payload);
+    const unlistenPromise = listen<string>(
+      "settings_clicked",
+      () => {
+        setSettingsOpen(true);
       }
     );
     return () => {
@@ -102,7 +97,22 @@ function App() {
       {shouldShowRainEffect ? <div className="rain-effect" aria-hidden="true" /> : null}
       <header className="ct-header">
         <h1 className="ct-app-title">PixelCast</h1>
+        <h2 className="ct-city-title">{city}</h2>
       </header>
+      {settingsOpen ? (
+        <SettingsPanel 
+        city={city}
+        unit={unit}
+        onCityChange={setCity}
+        onUnitChange={setUnit}
+        enableRainEffect={enableRainEffect}
+        onEnableRainEffectChange={setEnableRainEffect}
+        onSave={() => {
+          loadData();
+          setSettingsOpen(false);
+        }}  
+        onClose={() => setSettingsOpen(false)} />
+      ) : null}
       <div className="row">
         <div className="column">
           {loading ? (

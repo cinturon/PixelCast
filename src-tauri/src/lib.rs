@@ -12,8 +12,8 @@ pub mod utils {
 }
 
 use tauri::{
-    menu::{MenuBuilder, SubmenuBuilder},
-    Emitter,
+    menu::{MenuBuilder, SubmenuBuilder, MenuItemBuilder},
+    Emitter, Manager,
 };
 
 use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
@@ -37,38 +37,27 @@ async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
-            let settings_file_path = utils::settings::settings_file_path(app.handle())?;
+            let settings = utils::settings::load_or_create_settings(app.handle())?;
+            app.manage(settings);
 
-            if !settings_file_path.exists() {
-                let settings = utils::settings::Settings::default();
-                let settings_json = serde_json::to_string(&settings)?;
 
-                let settings_dir = settings_file_path.parent();
+            let settings_menu_item = MenuItemBuilder::with_id("settings", "Open Settings")
+                .build(app)?;
 
-                if let Some(settings_dir) = settings_dir {
-                    std::fs::create_dir_all(settings_dir)?;
-                }
-
-                if settings_dir.is_some() {
-                    std::fs::write(settings_file_path, settings_json)?;
-                }
-            }
-
+            
             let settings_menu = SubmenuBuilder::new(app, "Settings")
-                .text("unit_fahrenheit", "Fahrenheit")
-                .text("unit_celsius", "Celsius")
+                .item(&settings_menu_item)
                 .build()?;
+            
 
             let menu = MenuBuilder::new(app).item(&settings_menu).build()?;
+            
             app.set_menu(menu)?;
-            app.on_menu_event(|app, event| match event.id().0.as_str() {
-                "unit_fahrenheit" => {
-                    let _ = app.emit("temperature-unit-changed", "fahrenheit");
+            
+            app.on_menu_event(move |app, event| {
+                if event.id().0.as_str() == "settings" {
+                    let _ = app.emit("settings_clicked", "settings_clicked");
                 }
-                "unit_celsius" => {
-                    let _ = app.emit("temperature-unit-changed", "celsius");
-                }
-                _ => {}
             });
 
             Ok(())
