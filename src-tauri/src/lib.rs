@@ -2,6 +2,11 @@ mod current_weather;
 mod forecast;
 mod http;
 
+use tauri::{
+    menu::{MenuBuilder, SubmenuBuilder},
+    Emitter
+};
+
 use current_weather::CurrentWeather;
 use forecast::DailyForecast;
 use http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
@@ -22,6 +27,25 @@ async fn get_data(_city: String) -> Result<WeatherDataResponse, WeatherError> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .setup(|app| {
+            let settings_menu = SubmenuBuilder::new(app, "Settings")
+                .text("unit_fahrenheit", "Fahrenheit")
+                .text("unit_celsius", "Celsius")
+                .build()?;
+            let menu = MenuBuilder::new(app).item(&settings_menu).build()?;
+            app.set_menu(menu)?;
+            app.on_menu_event(|app, event| match event.id().0.as_str() {
+                "unit_fahrenheit" => {
+                    let _ = app.emit("temperature-unit-changed", "fahrenheit");
+                }
+                "unit_celsius" => {
+                    let _ = app.emit("temperature-unit-changed", "celsius");
+                }
+                _ => {}
+            });
+
+            Ok(())
+        })
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![get_data,])
         .run(tauri::generate_context!())

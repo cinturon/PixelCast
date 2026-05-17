@@ -1,3 +1,5 @@
+import { TemperatureUnit } from "./App";
+
 export const weatherIconByKey: Record<string, string> = {
     clear: "/icons/sun.png",
     cloudy: "/icons/cloudy.png",
@@ -82,3 +84,10 @@ export const getWeatherCondition = (code: number): WeatherCondition => {
             return { condition: "Unknown", icon: "sun" };
     }
 };
+
+export const formatTemperature = (valueF: number, unit: TemperatureUnit) => {
+    if (unit === "celsius") {
+      return `${Math.round((valueF - 32) * 5 / 9)}°C`;
+    }
+    return `${Math.round(valueF)}°F`;
+}

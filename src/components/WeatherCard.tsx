@@ -1,15 +1,18 @@
-import { CurrentWeather } from "../App";
-import { weatherFlavorByCondition, weatherIconByKey } from "../utils";
+import { CurrentWeather,TemperatureUnit } from "../App";
+import { weatherFlavorByCondition, weatherIconByKey, formatTemperature } from "../utils";
 
 export type WeatherCardProps = {
   currentWeather: CurrentWeather;
+  unit: TemperatureUnit;
 };
 
 const getWeatherFlavor = (condition: string) => {
   return weatherFlavorByCondition[condition] ?? weatherFlavorByCondition.Unknown;
 }
 
-function WeatherCard({ currentWeather }: WeatherCardProps) {
+
+
+function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
   return (
     <div className="weather-card">
       <h2 className="ct-section-title">Today's Weather</h2>
@@ -22,7 +25,7 @@ function WeatherCard({ currentWeather }: WeatherCardProps) {
         <p className="weather-flavor">{getWeatherFlavor(currentWeather.weather_condition.condition)}</p>
         <div className="weather-stat">
           <span className="weather-stat__label">Temperature</span>
-          <span className="weather-stat__value">{currentWeather.temperature_2m}°F</span>
+          <span className="weather-stat__value">{formatTemperature(currentWeather.temperature_2m, unit)}</span>
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Condition</span>

@@ -1,6 +1,5 @@
-import { weatherIconByKey } from "../utils";
-import { Forecast } from "../App";
-
+import { weatherIconByKey, formatTemperature } from "../utils";
+import { Forecast, TemperatureUnit } from "../App";
 
 const formatForecastDate = (date: string) => {
     const parsedDate = new Date(`${date}T00:00:00`);
@@ -12,7 +11,7 @@ const formatForecastDate = (date: string) => {
     });
   };
 
-function ForecastRow({ date, highF, lowF, weather_condition, rainChance }: Forecast) {
+function ForecastRow({ date, highF, lowF, weather_condition, rainChance, unit }: Forecast & { unit: TemperatureUnit }) {
     return (
         <div className="forecast-row">
             <span className="forecast-row__day">{formatForecastDate(date)}</span>
@@ -24,9 +23,9 @@ function ForecastRow({ date, highF, lowF, weather_condition, rainChance }: Forec
             <span className="forecast-row__temps">
                 <span className="forecast-row__temp-label">Temp</span>
                 <span className="forecast-row__temp-values">
-                    {Math.round(highF)}°
+                    {formatTemperature(highF, unit)}
                     <span className="forecast-row__temp-divider">/</span>
-                    {Math.round(lowF)}°
+                    {formatTemperature(lowF, unit)}
                 </span>
             </span>
             <span className="forecast-row__condition">{weather_condition.condition}</span>

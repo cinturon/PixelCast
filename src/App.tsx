@@ -3,6 +3,7 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { WeatherCondition, getWeatherCondition } from "./utils";
 
 const ENABLE_RAIN_EFFECT = true;
@@ -42,11 +43,15 @@ export type WeatherError = {
   message: string;
 }
 
+export type TemperatureUnit = "fahrenheit" | "celsius";
+
 function App() {
 
   const [data, setData] = useState<WeatherDataResponse>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<WeatherError>();
+
+  const [unit, setUnit] = useState<TemperatureUnit>("fahrenheit");
 
   const [city] = useState<string>("Seattle");
 
@@ -80,6 +85,18 @@ function App() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    const unlistenPromise = listen<TemperatureUnit>(
+      "temperature-unit-changed",
+      (event) => {
+        setUnit(event.payload);
+      }
+    );
+    return () => {
+      unlistenPromise.then((unlisten) => unlisten());
+    };
+  }, []);
+
   return (
     <main className="container">
       {shouldShowRainEffect ? <div className="rain-effect" aria-hidden="true" /> : null}
@@ -100,6 +117,7 @@ function App() {
           ) : data?.forecasts ? (
             <ForecastPanel
               forecasts={data.forecasts}
+              unit={unit}
             />
           ) : (
             <p className="forecast-placeholder">Loading Forecast</p>
@@ -119,6 +137,7 @@ function App() {
           ) : data?.current ? (
             <WeatherCard
               currentWeather={data.current}
+              unit={unit}
             />
           ) : (
             <p className="weather-placeholder">Loading Current Weather</p>
