@@ -1,34 +1,38 @@
-import { FullCurrentWeather } from "../App";
+import { CurrentWeather } from "../App";
+import { weatherFlavorByCondition, weatherIconByKey } from "../utils";
 
 export type WeatherCardProps = {
-  city: string;
-  fullCurrentWeather: FullCurrentWeather;
+  currentWeather: CurrentWeather;
 };
 
-function WeatherCard({ city, fullCurrentWeather }: WeatherCardProps) {
+const getWeatherFlavor = (condition: string) => {
+  return weatherFlavorByCondition[condition] ?? weatherFlavorByCondition.Unknown;
+}
+
+function WeatherCard({ currentWeather }: WeatherCardProps) {
   return (
     <div className="weather-card">
-      <h2 className="ct-section-title">{city}</h2>
+      <h2 className="ct-section-title">Today's Weather</h2>
       <div className="weather-stats">
         <img
           className="weather-stat__icon weather-stat__icon--large"
-          src={fullCurrentWeather.weather_icon}
-          alt={`${fullCurrentWeather.weather_condition} icon`}
+          src={weatherIconByKey[currentWeather.weather_condition.icon] ?? weatherIconByKey.unknown}
+          alt={`${currentWeather.weather_condition.condition}`}
         />
-        <p className="weather-flavor">{fullCurrentWeather.weather_flavor}</p>
+        <p className="weather-flavor">{getWeatherFlavor(currentWeather.weather_condition.condition)}</p>
         <div className="weather-stat">
           <span className="weather-stat__label">Temperature</span>
-          <span className="weather-stat__value">{fullCurrentWeather.temperature_2m}°F</span>
+          <span className="weather-stat__value">{currentWeather.temperature_2m}°F</span>
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Condition</span>
           <span className="weather-stat__value weather-stat__value--condition">
-            {fullCurrentWeather.weather_condition}
+            {currentWeather.weather_condition.condition}
           </span>
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Rain</span>
-          <span className="weather-stat__value">{fullCurrentWeather.precipitation}%</span>
+          <span className="weather-stat__value">{currentWeather.precipitation}%</span>
         </div>
       </div>
     </div >

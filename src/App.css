@@ -173,15 +173,23 @@ body,
 
 .forecast-row {
   display: grid;
-  grid-template-columns: minmax(5.5rem, 1fr) minmax(4.5rem, 0.9fr) 1fr minmax(2.5rem, 0.5fr);
+  grid-template-columns: minmax(4.4rem, 1fr) 1.7rem minmax(3.6rem, 0.8fr) minmax(2.1rem, 0.4fr);
+  grid-template-areas:
+    "day icon temps rain"
+    "condition condition condition condition";
   align-items: center;
-  column-gap: 0.5rem;
-  padding: 0.45rem 0.35rem 0.45rem 0.85rem;
-  margin: 0 -0.35rem;
+  column-gap: 0.3rem;
+  row-gap: 0.15rem;
+  padding: 0.45rem 0.35rem 0.45rem 0.55rem;
+  margin: 0 -0.2rem;
   border-bottom: 1px solid var(--ct-row-line);
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: var(--ct-text);
   transition: background-color 0.12s ease;
+}
+
+.forecast-row>* {
+  min-width: 0;
 }
 
 .forecast-row:last-of-type {
@@ -194,22 +202,71 @@ body,
 }
 
 .forecast-row__day {
+  grid-area: day;
   font-weight: 700;
   color: var(--ct-gold-shine);
+  white-space: nowrap;
   text-shadow: 1px 1px 0 #302010;
 }
 
-.forecast-row__temps {
-  color: var(--ct-text);
+.forecast-row__icon {
+  grid-area: icon;
+  width: 1.55rem;
+  height: 1.55rem;
+  justify-self: center;
+  image-rendering: pixelated;
+  object-fit: contain;
 }
 
-.forecast-row__condition {
+.forecast-row__temps {
+  grid-area: temps;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  gap: 0.05rem;
+  color: var(--ct-text);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.forecast-row__temp-label,
+.forecast-row__rain-label {
+  color: var(--ct-text-muted);
+  font-size: 0.75rem;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+.forecast-row__temp-values {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.16rem;
+}
+
+.forecast-row__temp-divider {
   color: var(--ct-text-muted);
 }
 
+.forecast-row__condition {
+  grid-area: condition;
+  color: var(--ct-text-muted);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
 .forecast-row__rain {
-  text-align: right;
+  grid-area: rain;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  gap: 0.05rem;
+  text-align: center;
   color: var(--ct-cursor);
+  white-space: nowrap;
   text-shadow: 0 0 8px var(--ct-cursor-glow);
 }
 
@@ -351,17 +408,16 @@ button {
 
 @media (max-width: 36rem) {
   .forecast-row {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 0.25rem;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas:
+      "day icon rain"
+      "temps temps temps"
+      "condition condition condition";
   }
 
-  .forecast-row__day {
-    grid-column: 1 / -1;
-  }
-
+  .forecast-row__temps,
   .forecast-row__rain {
-    text-align: left;
+    text-align: center;
   }
 }
 

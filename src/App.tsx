@@ -3,32 +3,26 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import {WeatherCondition, getWeatherCondition } from "./utils";
 
-export type FullCurrentWeather = {
-  temperature_2m: number;
-  weather_condition: string;
-  weather_flavor: string;
-  weather_code: number;
-  weather_icon: string;
-  precipitation: number;
+export type WeatherDataResponse = {
+  current: CurrentWeather;
+  forecasts: Forecast[];
 }
 
-type CurrentWeatherResponse = {
+export type CurrentWeather = {
   temperature_2m: number;
   weather_code: number;
   precipitation: number;
-}
-
-type WeatherConditionResponse = {
-  condition: string;
-  iconKey: string;
+  weather_condition: WeatherCondition;
 }
 
 export type Forecast = {
   date: string;
   highF: number;
   lowF: number;
-  weather_condition: string;
+  weather_code: number;
+  weather_condition: WeatherCondition;
   rainChance: number;
 }
 
@@ -39,89 +33,36 @@ export type WeatherError = {
 
 function App() {
 
-  const [loadingWeather, setLoadingWeather] = useState<boolean>(false);
-  const [errorWeather, setErrorWeather] = useState<WeatherError>();
-  const [weather, setWeather] = useState<FullCurrentWeather>();
-  const [forecasts, setForecasts] = useState<Forecast[]>([]);
+  const [data, setData] = useState<WeatherDataResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<WeatherError>();
+
   const [city] = useState<string>("Seattle");
 
-  const weatherIconByKey: Record<string, string> = {
-    clear: "/icons/sun.png",
-    cloudy: "/icons/cloudy.png",
-    light_snow: "/icons/light_snow.png",
-    heavy_snow: "/icons/heavy_snow.png",
-    heavy_rain: "/icons/heavy_rain.png",
-    light_rain: "/icons/light_rain.png",
-    thunderstorm: "/icons/thunder_storm.png",
-    unknown: "/icons/sun.png",
-  };
-
-  const weatherFlavorByCondition: Record<string, string> = {
-    "Clear sky": "The sky glows like a freshly opened treasure chest.",
-    "Mainly clear": "A bright day. Perfect weather for crossing the overworld.",
-    "Partly cloudy": "The sun hides behind a veil. Something stirs in the distance.",
-    "Overcast": "A muted sky hangs over the town square.",
-    "Fog": "The path ahead fades into silver mist.",
-    "Drizzle": "The roads are slick. Equip sturdy boots.",
-    "Freezing drizzle": "A cold rain falls across the kingdom.",
-    "Rain": "Rain taps the rooftops like a thousand tiny drummers.",
-    "Freezing rain": "Travelers may wish to seek shelter at the nearest inn.",
-    "Snow fall": "A cold enchantment settles over the land.",
-    "Snow grains": "Snow falls softly, quieting the overworld.",
-    "Rain showers": "A cleansing rain sweeps across the kingdom.",
-    "Snow showers": "Footprints vanish almost as soon as they are made.",
-    "Thunderstorm": "Storm clouds gather. The air hums with danger.",
-    "Thunderstorm with hail": "The heavens charge their ultimate spell.",
-    "Unknown": "The sky keeps its secrets for now.",
-  };
-
-  const getWeatherCondition = async (weather_code: number) => {
+  const loadData = async () => {
+    setLoading(true);
     try {
-      const condition = await invoke<WeatherConditionResponse>("get_weather_condition", { code: weather_code });
-      return condition;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      const data = await invoke<WeatherDataResponse>("get_data", { city });
 
-  const getCurrentWeather = async (city: string) => {
-    setLoadingWeather(true);
+      data.current.weather_condition = attachWeatherCondition(data.current.weather_code);
+      data.forecasts.forEach(forecast => {
+        forecast.weather_condition = attachWeatherCondition(forecast.weather_code);
+      });
 
-    try {
-      return await invoke<CurrentWeatherResponse>("get_current_weather", { city });
+      setData(data);
     } catch (error) {
-      setErrorWeather(error as WeatherError);
+      setError(error as WeatherError);
     } finally {
-      setLoadingWeather(false);
+      setLoading(false);
     }
   };
 
-  const loadWeather = async () => {
-    const currentWeather = await getCurrentWeather(city);
-
-    if (!currentWeather) {
-      return;
-    }
-
-    const weatherCondition = await getWeatherCondition(currentWeather.weather_code);
-    const iconKey = weatherCondition?.iconKey ?? "unknown";
-    const condition = weatherCondition?.condition ?? "Unknown";
-
-    setWeather({
-      ...currentWeather,
-      weather_condition: condition,
-      weather_flavor: weatherFlavorByCondition[condition] ?? weatherFlavorByCondition.Unknown,
-      weather_icon: weatherIconByKey[iconKey] ?? weatherIconByKey.unknown,
-    });
-  };
+  const attachWeatherCondition = (code: number): WeatherCondition => {
+    return getWeatherCondition(code);
+  }
 
   useEffect(() => {
-    loadWeather();
-    setForecasts([
-      { date: "Monday", highF: 70, lowF: 50, weather_condition: "Sunny", rainChance: 50 },
-      { date: "Tuesday", highF: 60, lowF: 40, weather_condition: "Cloudy", rainChance: 30 },
-      { date: "Wednesday", highF: 50, lowF: 30, weather_condition: "Rainy", rainChance: 70 },
-    ]);
+    loadData();
   }, []);
 
   return (
@@ -131,29 +72,37 @@ function App() {
       </header>
       <div className="row">
         <div className="column">
-          {forecasts.length > 0 ? (
+          {loading ? (
+            <p className="forecast-placeholder">Loading Forecast</p>
+          ) : error ? (
+            <div className="forecast-placeholder">
+              <p>Error Loading Forecast: {error.errorType} - {error.message}</p>
+              <button onClick={() => {
+                loadData();
+              }}>Retry</button>
+            </div>
+          ) : data?.forecasts ? (
             <ForecastPanel
-              forecasts={forecasts}
+              forecasts={data.forecasts}
             />
           ) : (
             <p className="forecast-placeholder">Loading Forecast</p>
           )}
         </div>
 
-        <div className="column">
-          {loadingWeather ? (
+        <div className="column">{
+          loading ? (
             <p className="weather-placeholder">Loading Current Weather</p>
-          ) : errorWeather ? (
+          ) : error ? (
             <div className="weather-placeholder">
-              <p>Error Loading Current Weather: {errorWeather.errorType} - {errorWeather.message}</p>
+              <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
               <button onClick={() => {
-                loadWeather();
+                loadData();
               }}>Retry</button>
             </div>
-          ) : weather ? (
+          ) : data?.current ? (
             <WeatherCard
-              city={city}
-              fullCurrentWeather={weather}
+              currentWeather={data.current}
             />
           ) : (
             <p className="weather-placeholder">Loading Current Weather</p>
