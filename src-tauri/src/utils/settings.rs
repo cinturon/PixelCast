@@ -71,9 +71,7 @@ pub fn save_settings(
     Ok(())
 }
 
-pub fn load_settings(
-    app: &tauri::AppHandle,
-) -> Result<Settings, Box<dyn std::error::Error>> {
+pub fn load_settings(app: &tauri::AppHandle) -> Result<Settings, Box<dyn std::error::Error>> {
     let settings_file_path = settings_file_path(app)?;
     let settings_file = std::fs::read_to_string(&settings_file_path)?;
     let settings: Settings = serde_json::from_str(&settings_file)?;

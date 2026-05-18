@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct FiveDayForecastResponse {
     pub daily: FiveDayForecastDaily,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct FiveDayForecastDaily {
     pub time: Vec<String>,
     pub temperature_2m_max: Vec<f64>,
@@ -14,7 +14,7 @@ pub struct FiveDayForecastDaily {
     pub precipitation_probability_max: Vec<f64>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct DailyForecast {
     pub date: String,
     #[serde(rename = "highF")]

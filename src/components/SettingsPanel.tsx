@@ -1,4 +1,4 @@
-import { TemperatureUnit } from "../App";
+import { TemperatureUnit } from "../utils/weatherStructs";
 
 type SettingsPanelProps = {
   city: string;

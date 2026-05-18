@@ -1,37 +1,38 @@
-import { weatherIconByKey, formatTemperature } from "../utils";
-import { Forecast, TemperatureUnit } from "../App";
+import { getWeatherIcon, getWeatherCondition } from "../api/data";
+import { Forecast, TemperatureUnit } from "../utils/weatherStructs";
+import { formatTemperature } from "../utils/utils";
 
 const formatForecastDate = (date: string) => {
     const parsedDate = new Date(`${date}T00:00:00`);
 
     return parsedDate.toLocaleDateString(undefined, {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
+        weekday: "short",
+        month: "short",
+        day: "numeric",
     });
-  };
+};
 
-function ForecastRow({ date, highF, lowF, weather_condition, rainChance, unit }: Forecast & { unit: TemperatureUnit }) {
+function ForecastRow({ forecast, unit }: { forecast: Forecast, unit: TemperatureUnit }) {
     return (
         <div className="forecast-row">
-            <span className="forecast-row__day">{formatForecastDate(date)}</span>
+            <span className="forecast-row__day">{formatForecastDate(forecast.date)}</span>
             <img
                 className="forecast-row__icon"
-                src={weatherIconByKey[weather_condition.icon]}
-                alt={`${weather_condition.condition}`}
+                src={getWeatherIcon(forecast.weather_code)}
+                alt={`${getWeatherCondition(forecast.weather_code).condition}`}
             />
             <span className="forecast-row__temps">
                 <span className="forecast-row__temp-label">Temp</span>
                 <span className="forecast-row__temp-values">
-                    {formatTemperature(highF, unit)}
+                    {formatTemperature(forecast.highF, unit)}
                     <span className="forecast-row__temp-divider">/</span>
-                    {formatTemperature(lowF, unit)}
+                    {formatTemperature(forecast.lowF, unit)}
                 </span>
             </span>
-            <span className="forecast-row__condition">{weather_condition.condition}</span>
+            <span className="forecast-row__condition">{getWeatherCondition(forecast.weather_code).condition}</span>
             <span className="forecast-row__rain">
                 <span className="forecast-row__rain-label">Rain</span>
-                {rainChance}%
+                {forecast.rainChance}%
             </span>
         </div>
     );

@@ -3,68 +3,50 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import SettingsPanel from "./components/SettingsPanel";
 import { useState, useEffect } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { WeatherCondition, getWeatherCondition } from "./utils";
 import { RAINY_CONDITIONS } from "./conditions";
-import { Settings } from "./settings";
+import { loadSettings, saveSettings, Settings } from "./utils/settings";
+import { getWeatherCondition } from "./api/data";
+import { WeatherDataResponse, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
+import { loadDataFromCache, saveWeatherCache } from "./utils/cache";
+import { callAPI } from "./api/http";
 
-
-
-export type WeatherDataResponse = {
-  current: CurrentWeather;
-  forecasts: Forecast[];
-}
-
-export type CurrentWeather = {
-  temperature_2m: number;
-  weather_code: number;
-  precipitation: number;
-  weather_condition: WeatherCondition;
-}
-
-export type Forecast = {
-  date: string;
-  highF: number;
-  lowF: number;
-  weather_code: number;
-  weather_condition: WeatherCondition;
-  rainChance: number;
-}
-
-export type WeatherError = {
-  errorType: string;
-  message: string;
-}
-
-export type TemperatureUnit = "fahrenheit" | "celsius";
 
 function App() {
 
-  const [data, setData] = useState<WeatherDataResponse>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<WeatherError>();
 
+  const [data, setData] = useState<WeatherDataResponse>();
+  const [cacheTime, setCacheTime] = useState<Date>();
+
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
-  const [unit, setUnit] = useState<TemperatureUnit>("fahrenheit");
+  const [unit, setUnit] = useState<TemperatureUnit>("Fahrenheit");
   const [city, setCity] = useState<string>("Seattle");
   const [latitude, setLatitude] = useState<number>(47.6062);
   const [longitude, setLongitude] = useState<number>(-122.3321);
   const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
 
-
-  const loadData = async ({ city, latitude, longitude }: { city: string, latitude: number, longitude: number }) => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const data = await invoke<WeatherDataResponse>("get_data", { city, latitude, longitude });
+      if (cacheTime && new Date(cacheTime) > new Date(Date.now() - 1000 * 60 * 60 * 24)) {
+        const cache = await loadDataFromCache();
 
-      data.current.weather_condition = attachWeatherCondition(data.current.weather_code);
-      data.forecasts.forEach(forecast => {
-        forecast.weather_condition = attachWeatherCondition(forecast.weather_code);
-      });
+        setData(cache.data as WeatherDataResponse);
+        setCacheTime(cache.cachedAt);
 
-      setData(data);
+      } else {
+        const data = await callAPI();
+        setData(data);
+        try {
+          await saveWeatherCache(data);
+        } catch (error) {
+          console.warn("Failed to save weather cache", error);
+        }
+
+      };
     } catch (error) {
       setError(error as WeatherError);
     } finally {
@@ -72,46 +54,24 @@ function App() {
     }
   };
 
-  const saveSettings = async () => {
-    await invoke("save_settings", {
-      settings: {
-        city,
-        temperatureUnit: unit,
-        latitude,
-        longitude,
-        enableRainEffect,
-      }
-    });
-    loadSettings();
-    loadData({ city, latitude, longitude });
-    setSettingsOpen(false);
-  }
+  const shouldShowRainEffect = enableRainEffect
+    && data?.current.weather_code
+    && RAINY_CONDITIONS.has(getWeatherCondition(data?.current.weather_code).condition);
 
-  const loadSettings = async () => {
-    const settings = await invoke<Settings>("load_settings");
-
+   const getSettings = async () => {
+    const settings = await loadSettings();
     setCity(settings.city);
     setUnit(settings.temperatureUnit as TemperatureUnit);
     setLatitude(settings.latitude);
     setLongitude(settings.longitude);
     setEnableRainEffect(settings.enableRainEffect);
-
-    return settings;
-  }
-
-  const attachWeatherCondition = (code: number): WeatherCondition => {
-    return getWeatherCondition(code);
-  }
-
-  const shouldShowRainEffect = enableRainEffect
-    && data?.current.weather_condition
-    && RAINY_CONDITIONS.has(data.current.weather_condition.condition);
+   }
 
   useEffect(() => {
     const initializeApp = async () => {
-      const settings = await loadSettings();
-      
-      await loadData(settings);
+      await getSettings();
+    
+      await loadData();
     };
 
     initializeApp();
@@ -147,7 +107,13 @@ function App() {
           enableRainEffect={enableRainEffect}
           onEnableRainEffectChange={setEnableRainEffect}
           onSave={
-            () => saveSettings()
+            () => saveSettings({
+              city,
+              temperatureUnit: unit as TemperatureUnit,
+              latitude,
+              longitude,
+              enableRainEffect,
+            } as Settings)
           }
           onClose={() => {
             loadSettings();
@@ -162,7 +128,8 @@ function App() {
             <div className="forecast-placeholder">
               <p>Error Loading Forecast: {error.errorType} - {error.message}</p>
               <button onClick={() => {
-                loadData({ city, latitude, longitude });
+                getSettings();
+                loadData();
               }}>Retry</button>
             </div>
           ) : data?.forecasts ? (
@@ -182,7 +149,7 @@ function App() {
             <div className="weather-placeholder">
               <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
               <button onClick={() => {
-                loadData({ city, latitude, longitude });
+                loadData();
               }}>Retry</button>
             </div>
           ) : data?.current ? (

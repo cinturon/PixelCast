@@ -1,23 +1,56 @@
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use tauri::Manager;
 
 use crate::api::http::WeatherDataResponse;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WeatherCache {
-    pub city: String,
-    pub latitude: f64,
-    pub longitude: f64,
-    pub cached_at: DateTime<Utc>,
     pub data: WeatherDataResponse,
+    pub cached_at: DateTime<Utc>,
 }
 
 impl WeatherCache {
-    pub fn new(city: String, latitude: f64, longitude: f64, data: WeatherDataResponse) -> Self {
+    pub fn new(weather_data_response: &WeatherDataResponse) -> Self {
         Self {
-            city,
-            latitude,
-            longitude,
+            data: weather_data_response.clone(),
             cached_at: Utc::now(),
-            data,
         }
     }
+}
+
+pub fn cache_file_path(app: &tauri::AppHandle) -> Result<std::path::PathBuf, tauri::Error> {
+    Ok(app.path().app_config_dir()?.join("weather_cache.json"))
+}
+
+pub fn save_weather_cache(
+    app: &tauri::AppHandle,
+    weather_data_response: &WeatherDataResponse,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let cache: WeatherCache = WeatherCache::new(weather_data_response);
+
+    let cache_file_path = cache_file_path(app)?;
+
+    if !cache_file_path.exists() {
+        std::fs::create_dir_all(cache_file_path.parent().unwrap())?;
+
+        let cache_dir = cache_file_path.parent();
+        if let Some(cache_dir) = cache_dir {
+            std::fs::create_dir_all(cache_dir)?;
+        }
+    }
+    let cache_json = serde_json::to_string(&cache)?;
+    std::fs::write(&cache_file_path, cache_json)?;
+
+    Ok(())
+}
+
+pub fn load_weather_cache(
+    app: &tauri::AppHandle,
+) -> Result<WeatherCache, Box<dyn std::error::Error>> {
+    let cache_file_path = cache_file_path(app)?;
+    let cache_file = std::fs::read_to_string(&cache_file_path)?;
+    let cache: WeatherCache = serde_json::from_str(&cache_file)?;
+    Ok(cache)
 }

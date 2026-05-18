@@ -1,16 +1,11 @@
-import { CurrentWeather,TemperatureUnit } from "../App";
-import { weatherFlavorByCondition, weatherIconByKey, formatTemperature } from "../utils";
+import { TemperatureUnit, CurrentWeather } from "../utils/weatherStructs";
+import { getWeatherIcon, getWeatherFlavor, getWeatherCondition } from "../api/data";
+import { formatTemperature } from "../utils/utils";
 
 export type WeatherCardProps = {
   currentWeather: CurrentWeather;
   unit: TemperatureUnit;
 };
-
-const getWeatherFlavor = (condition: string) => {
-  return weatherFlavorByCondition[condition] ?? weatherFlavorByCondition.Unknown;
-}
-
-
 
 function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
   return (
@@ -19,10 +14,10 @@ function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
       <div className="weather-stats">
         <img
           className="weather-stat__icon weather-stat__icon--large"
-          src={weatherIconByKey[currentWeather.weather_condition.icon] ?? weatherIconByKey.unknown}
-          alt={`${currentWeather.weather_condition.condition}`}
+          src={getWeatherIcon(currentWeather.weather_code)}
+          alt={`${getWeatherCondition(currentWeather.weather_code).condition}`}
         />
-        <p className="weather-flavor">{getWeatherFlavor(currentWeather.weather_condition.condition)}</p>
+        <p className="weather-flavor">{getWeatherFlavor(currentWeather.weather_code)}</p>
         <div className="weather-stat">
           <span className="weather-stat__label">Temperature</span>
           <span className="weather-stat__value">{formatTemperature(currentWeather.temperature_2m, unit)}</span>
@@ -30,7 +25,7 @@ function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
         <div className="weather-stat">
           <span className="weather-stat__label">Condition</span>
           <span className="weather-stat__value weather-stat__value--condition">
-            {currentWeather.weather_condition.condition}
+            {getWeatherCondition(currentWeather.weather_code).condition}
           </span>
         </div>
         <div className="weather-stat">

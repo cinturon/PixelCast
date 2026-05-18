@@ -19,7 +19,7 @@ impl WeatherError {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WeatherDataResponse {
     pub current: CurrentWeather,
@@ -60,7 +60,9 @@ pub async fn get_current_weather_data() -> Result<CurrentWeather, WeatherError> 
 
     let body = api_request(&params).await?;
     let data: CurrentWeatherResponse = serde_json::from_str::<CurrentWeatherResponse>(&body)
-        .map_err(|error| WeatherError::new("Parse Current Weather JSON Error", error.to_string()))?;
+        .map_err(|error| {
+            WeatherError::new("Parse Current Weather JSON Error", error.to_string())
+        })?;
     Ok(data.current)
 }
 
@@ -85,7 +87,8 @@ pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, WeatherError> {
 async fn map_forecast_data(
     data: FiveDayForecastResponse,
 ) -> Result<Vec<DailyForecast>, WeatherError> {
-    let forecasts = data.daily
+    let forecasts = data
+        .daily
         .time
         .iter()
         .enumerate()
