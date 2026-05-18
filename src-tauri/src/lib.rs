@@ -20,14 +20,14 @@ use tauri::{
     Emitter, Manager,
 };
 
-use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse, WeatherError};
+use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse};
 use domain::current_weather::CurrentWeather;
 use domain::forecast::DailyForecast;
 use utils::cache::WeatherCache;
 use utils::settings::Settings;
 
 #[tauri::command]
-async fn get_data() -> Result<WeatherDataResponse, WeatherError> {
+async fn get_data() -> Result<WeatherDataResponse, PixelCastError> {
     let current: CurrentWeather = get_current_weather_data().await?;
     let forecasts: Vec<DailyForecast> = get_forecast_data().await?;
 

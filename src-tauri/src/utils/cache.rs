@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use tauri::Manager;
 
 use crate::api::http::WeatherDataResponse;
+use crate::domain::pixel_cast_error::PixelCastError;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -33,12 +34,10 @@ pub fn save_weather_cache(
     let cache_file_path = cache_file_path(app)?;
 
     if !cache_file_path.exists() {
-        std::fs::create_dir_all(cache_file_path.parent().unwrap())?;
-
-        let cache_dir = cache_file_path.parent();
-        if let Some(cache_dir) = cache_dir {
-            std::fs::create_dir_all(cache_dir)?;
-        }
+        let cache_dir = cache_file_path
+            .parent()
+            .ok_or_else(|| PixelCastError::filesystem("Failed to get cache file path"))?;
+        std::fs::create_dir_all(cache_dir)?;
     }
     let cache_json = serde_json::to_string(&cache)?;
     std::fs::write(&cache_file_path, cache_json)?;

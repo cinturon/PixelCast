@@ -1,23 +1,8 @@
 use serde::{Deserialize, Serialize};
 
+use crate::PixelCastError;
 use crate::domain::current_weather::{CurrentWeather, CurrentWeatherResponse};
 use crate::domain::forecast::{DailyForecast, FiveDayForecastResponse};
-
-#[derive(serde::Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct WeatherError {
-    pub error_type: String,
-    pub message: String,
-}
-
-impl WeatherError {
-    pub fn new(error_type: impl Into<String>, message: impl Into<String>) -> Self {
-        Self {
-            error_type: error_type.into(),
-            message: message.into(),
-        }
-    }
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -26,7 +11,7 @@ pub struct WeatherDataResponse {
     pub forecasts: Vec<DailyForecast>,
 }
 
-async fn api_request(params: &[(&str, &str)]) -> Result<String, WeatherError> {
+async fn api_request(params: &[(&str, &str)]) -> Result<String, PixelCastError> {
     let base_url = "https://api.open-meteo.com/v1/forecast";
     let query = params
         .iter()
@@ -36,21 +21,20 @@ async fn api_request(params: &[(&str, &str)]) -> Result<String, WeatherError> {
     let url = format!("{base_url}?{query}");
     let response = reqwest::get(url)
         .await
-        .map_err(|error| WeatherError::new("Request Error", error.to_string()))?;
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
     if !response.status().is_success() {
-        return Err(WeatherError::new(
-            "Request Failed Error",
+        return Err(PixelCastError::api(
             response.status().to_string(),
         ));
     }
     let body = response
         .text()
         .await
-        .map_err(|error| WeatherError::new("Request Body Error", error.to_string()))?;
+        .map_err(|error| PixelCastError::APIError(error.to_string()))?;
     Ok(body)
 }
 
-pub async fn get_current_weather_data() -> Result<CurrentWeather, WeatherError> {
+pub async fn get_current_weather_data() -> Result<CurrentWeather, PixelCastError> {
     let params = [
         ("latitude", "47.6062"),
         ("longitude", "-122.3321"),
@@ -61,12 +45,12 @@ pub async fn get_current_weather_data() -> Result<CurrentWeather, WeatherError> 
     let body = api_request(&params).await?;
     let data: CurrentWeatherResponse = serde_json::from_str::<CurrentWeatherResponse>(&body)
         .map_err(|error| {
-            WeatherError::new("Parse Current Weather JSON Error", error.to_string())
+            PixelCastError::api(error.to_string())
         })?;
     Ok(data.current)
 }
 
-pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, WeatherError> {
+pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, PixelCastError> {
     let params = [
         ("latitude", "47.6062"),
         ("longitude", "-122.3321"),
@@ -80,13 +64,13 @@ pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, WeatherError> {
     ];
     let body = api_request(&params).await?;
     let data = serde_json::from_str::<FiveDayForecastResponse>(&body)
-        .map_err(|error| WeatherError::new("Parsing Forecast JSON Error", error.to_string()))?;
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
     map_forecast_data(data).await
 }
 
 async fn map_forecast_data(
     data: FiveDayForecastResponse,
-) -> Result<Vec<DailyForecast>, WeatherError> {
+) -> Result<Vec<DailyForecast>, PixelCastError> {
     let forecasts = data
         .daily
         .time
