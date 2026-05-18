@@ -21,7 +21,10 @@ pub struct DailyForecast {
     pub high_f: f64,
     #[serde(rename = "lowF")]
     pub low_f: f64,
+    #[serde(rename = "weatherCode")]
     pub weather_code: i64,
     #[serde(rename = "rainChance")]
     pub rain_chance: f64,
+    #[serde(rename = "weatherCondition")]
+    pub weather_condition: String,
 }

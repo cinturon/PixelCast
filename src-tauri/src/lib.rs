@@ -6,9 +6,11 @@ mod domain {
     pub mod current_weather;
     pub mod forecast;
     pub mod pixel_cast_error;
+    pub mod weather_conditon;
 }
 
 pub use domain::pixel_cast_error::PixelCastError;
+pub use domain::weather_conditon::WeatherCondition;
 
 pub mod utils {
     pub mod cache;
@@ -21,14 +23,14 @@ use tauri::{
 };
 
 use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse};
-use domain::current_weather::CurrentWeather;
+use domain::current_weather::CurrentWeatherData;
 use domain::forecast::DailyForecast;
 use utils::cache::WeatherCache;
 use utils::settings::Settings;
 
 #[tauri::command]
 async fn get_data() -> Result<WeatherDataResponse, PixelCastError> {
-    let current: CurrentWeather = get_current_weather_data().await?;
+    let current: CurrentWeatherData = get_current_weather_data().await?;
     let forecasts: Vec<DailyForecast> = get_forecast_data().await?;
 
     let data: WeatherDataResponse = WeatherDataResponse { current, forecasts };
@@ -52,7 +54,7 @@ async fn save_weather_cache(
     app: tauri::AppHandle,
     weather_data_response: WeatherDataResponse,
 ) -> Result<(), String> {
-    utils::cache::save_weather_cache(&app, &weather_data_response as &WeatherDataResponse)
+    utils::cache::save_weather_cache(&app, &weather_data_response)
         .map_err(|error| error.to_string())?;
     Ok(())
 }

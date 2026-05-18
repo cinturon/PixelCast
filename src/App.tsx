@@ -6,8 +6,7 @@ import { useState, useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
 import { loadSettings, saveSettings } from "./utils/settings";
-import { getWeatherCondition } from "./api/data";
-import { WeatherDataResponse, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
+import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
 import { loadDataFromCache, saveWeatherCache } from "./utils/cache";
 import { callAPI } from "./api/http";
 
@@ -17,7 +16,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<WeatherError>();
 
-  const [data, setData] = useState<WeatherDataResponse>();
+  const [data, setData] = useState<WeatherData>();
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
@@ -46,8 +45,8 @@ function App() {
   };
 
   const shouldShowRainEffect = enableRainEffect
-    && data?.current.weather_code
-    && RAINY_CONDITIONS.has(getWeatherCondition(data?.current.weather_code).condition);
+    && data?.current?.weatherCondition
+    && RAINY_CONDITIONS.has(data?.current.weatherCondition);
 
   const getSettings = async () => {
     const settings = await loadSettings();

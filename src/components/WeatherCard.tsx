@@ -1,9 +1,9 @@
-import { TemperatureUnit, CurrentWeather } from "../utils/weatherStructs";
-import { getWeatherIcon, getWeatherFlavor, getWeatherCondition } from "../api/data";
+import { TemperatureUnit, CurrentWeatherData } from "../utils/weatherStructs";
+import { getWeatherIcon  } from "../api/data";
 import { formatTemperature } from "../utils/utils";
 
 export type WeatherCardProps = {
-  currentWeather: CurrentWeather;
+  currentWeather: CurrentWeatherData;
   unit: TemperatureUnit;
 };
 
@@ -14,18 +14,18 @@ function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
       <div className="weather-stats">
         <img
           className="weather-stat__icon weather-stat__icon--large"
-          src={getWeatherIcon(currentWeather.weather_code)}
-          alt={`${getWeatherCondition(currentWeather.weather_code).condition}`}
+          src={getWeatherIcon(currentWeather.weatherCondition)}
+          alt={currentWeather.weatherCondition}
         />
-        <p className="weather-flavor">{getWeatherFlavor(currentWeather.weather_code)}</p>
+        <p className="weather-flavor">{currentWeather.weatherFlavor}</p>
         <div className="weather-stat">
           <span className="weather-stat__label">Temperature</span>
-          <span className="weather-stat__value">{formatTemperature(currentWeather.temperature_2m, unit)}</span>
+          <span className="weather-stat__value">{formatTemperature(currentWeather.temperature2m, unit)}</span>
         </div>
         <div className="weather-stat">
           <span className="weather-stat__label">Condition</span>
           <span className="weather-stat__value weather-stat__value--condition">
-            {getWeatherCondition(currentWeather.weather_code).condition}
+            {currentWeather.weatherCondition}
           </span>
         </div>
         <div className="weather-stat">

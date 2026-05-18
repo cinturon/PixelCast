@@ -1,15 +1,16 @@
-import { WeatherDataResponse } from "./weatherStructs";
+import { WeatherData } from "./weatherStructs";
 import { invoke } from "@tauri-apps/api/core";
 
 export type WeatherCache = {
-    data: WeatherDataResponse;
+    data: WeatherData;
     cachedAt: Date;
 }
 
-export const saveWeatherCache = async (data: WeatherDataResponse) => {
+export const saveWeatherCache = async (data: WeatherData) => {
     await invoke("save_weather_cache", {
         weatherDataResponse: data,
-      });}
+      });
+    }
 
 
 export const loadDataFromCache = async () => {

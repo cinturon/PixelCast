@@ -1,4 +1,4 @@
-import { getWeatherIcon, getWeatherCondition } from "../api/data";
+import { getWeatherIcon } from "../api/data";
 import { Forecast, TemperatureUnit } from "../utils/weatherStructs";
 import { formatTemperature } from "../utils/utils";
 
@@ -18,8 +18,8 @@ function ForecastRow({ forecast, unit }: { forecast: Forecast, unit: Temperature
             <span className="forecast-row__day">{formatForecastDate(forecast.date)}</span>
             <img
                 className="forecast-row__icon"
-                src={getWeatherIcon(forecast.weather_code)}
-                alt={`${getWeatherCondition(forecast.weather_code).condition}`}
+                src={getWeatherIcon(forecast.weatherCondition)}
+                alt={forecast.weatherCondition}
             />
             <span className="forecast-row__temps">
                 <span className="forecast-row__temp-label">Temp</span>
@@ -29,7 +29,7 @@ function ForecastRow({ forecast, unit }: { forecast: Forecast, unit: Temperature
                     {formatTemperature(forecast.lowF, unit)}
                 </span>
             </span>
-            <span className="forecast-row__condition">{getWeatherCondition(forecast.weather_code).condition}</span>
+            <span className="forecast-row__condition">{forecast.weatherCondition}</span>
             <span className="forecast-row__rain">
                 <span className="forecast-row__rain-label">Rain</span>
                 {forecast.rainChance}%

@@ -1,28 +1,28 @@
-export type WeatherDataResponse = {
-  current: CurrentWeather;
+export type WeatherData = {
+  current: CurrentWeatherData;
   forecasts: Forecast[];
 }
 
-export type CurrentWeather = {
-  temperature_2m: number;
-  weather_code: number;
+export type CurrentWeatherData = {
+  temperature2m: number;
+  weatherCode: number;
   precipitation: number;
+  weatherCondition: string;
+  weatherFlavor: string;
 }
 
 export type Forecast = {
   date: string;
   highF: number;
   lowF: number;
-  weather_code: number;
+  weatherCode: number;
   rainChance: number;
+  weatherCondition: string;
 }
 
 export type TemperatureUnit = "Fahrenheit" | "Celsius";
 
-export type WeatherCondition = {
-  condition: string;
-  icon: string;
-};
+
 
 export type WeatherError = {
   errorType: string;

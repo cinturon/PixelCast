@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-use crate::PixelCastError;
-use crate::domain::current_weather::{CurrentWeather, CurrentWeatherResponse};
+use crate::domain::current_weather::{CurrentWeather, CurrentWeatherData, CurrentWeatherResponse};
 use crate::domain::forecast::{DailyForecast, FiveDayForecastResponse};
+use crate::{PixelCastError, WeatherCondition};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WeatherDataResponse {
-    pub current: CurrentWeather,
+    pub current: CurrentWeatherData,
     pub forecasts: Vec<DailyForecast>,
 }
 
@@ -23,18 +23,16 @@ async fn api_request(params: &[(&str, &str)]) -> Result<String, PixelCastError> 
         .await
         .map_err(|error| PixelCastError::api(error.to_string()))?;
     if !response.status().is_success() {
-        return Err(PixelCastError::api(
-            response.status().to_string(),
-        ));
+        return Err(PixelCastError::api(response.status().to_string()));
     }
     let body = response
         .text()
         .await
-        .map_err(|error| PixelCastError::APIError(error.to_string()))?;
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
     Ok(body)
 }
 
-pub async fn get_current_weather_data() -> Result<CurrentWeather, PixelCastError> {
+pub async fn get_current_weather_data() -> Result<CurrentWeatherData, PixelCastError> {
     let params = [
         ("latitude", "47.6062"),
         ("longitude", "-122.3321"),
@@ -44,10 +42,11 @@ pub async fn get_current_weather_data() -> Result<CurrentWeather, PixelCastError
 
     let body = api_request(&params).await?;
     let data: CurrentWeatherResponse = serde_json::from_str::<CurrentWeatherResponse>(&body)
-        .map_err(|error| {
-            PixelCastError::api(error.to_string())
-        })?;
-    Ok(data.current)
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
+
+    let current_weather: CurrentWeather = data.current;
+    let data: CurrentWeatherData = CurrentWeatherData::from(current_weather);
+    Ok(data)
 }
 
 pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, PixelCastError> {
@@ -82,6 +81,9 @@ async fn map_forecast_data(
             low_f: data.daily.temperature_2m_min[index],
             weather_code: data.daily.weather_code[index],
             rain_chance: data.daily.precipitation_probability_max[index],
+            weather_condition: WeatherCondition::from_code(data.daily.weather_code[index])
+                .label()
+                .to_string(),
         })
         .collect();
     Ok(forecasts)
