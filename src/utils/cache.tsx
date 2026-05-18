@@ -17,3 +17,7 @@ export const loadDataFromCache = async () => {
     const cache = await invoke<WeatherCache>("load_weather_cache");
     return cache;
 }
+
+export const isCacheExpired = (cachedAt: Date, now = new Date()) => {
+    return new Date(cachedAt) < new Date(now.getTime() - 1000 * 60 * 60 * 1);
+}

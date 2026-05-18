@@ -7,7 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
 import { loadSettings, saveSettings } from "./utils/settings";
 import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
-import { loadDataFromCache, saveWeatherCache } from "./utils/cache";
+import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
 import { callAPI } from "./api/http";
 
 
@@ -71,9 +71,11 @@ function App() {
     const cache = await loadDataFromCache();
     setData(cache.data);
 
-    if (cache.cachedAt && new Date(cache.cachedAt) < new Date(Date.now() - 1000 * 60 * 60 * 1)) {
+
+    if (isCacheExpired(cache.cachedAt)) {
       await handleApiCall();
     }
+
   };
 
   const handleSaveSettings = async () => {
