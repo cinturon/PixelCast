@@ -5,7 +5,10 @@ mod api {
 mod domain {
     pub mod current_weather;
     pub mod forecast;
+    pub mod pixel_cast_error;
 }
+
+pub use domain::pixel_cast_error::PixelCastError;
 
 pub mod utils {
     pub mod cache;
