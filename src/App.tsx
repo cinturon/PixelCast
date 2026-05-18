@@ -72,7 +72,7 @@ function App() {
     const cache = await loadDataFromCache();
     setData(cache.data);
 
-    if (cache.cachedAt && new Date(cache.cachedAt) < new Date(Date.now() - 1000 * 60 * 60 * 24)) {
+    if (cache.cachedAt && new Date(cache.cachedAt) < new Date(Date.now() - 1000 * 60 * 60 * 1)) {
       await handleApiCall();
     }
   };
