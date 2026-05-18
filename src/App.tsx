@@ -18,7 +18,6 @@ function App() {
   const [error, setError] = useState<WeatherError>();
 
   const [data, setData] = useState<WeatherDataResponse>();
-  const [cacheTime, setCacheTime] = useState<Date>(new Date());
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
@@ -30,22 +29,17 @@ function App() {
 
   const loadData = async () => {
     setLoading(true);
+
     try {
-      if (cacheTime && new Date(cacheTime) > new Date(Date.now() - 1000 * 60 * 60 * 24)) {
-
-        try {
-          const cache = await loadDataFromCache();
-          setData(cache.data);
-          setCacheTime(cache.cachedAt);
-
-        } catch (error) {
-          await handleApiCall();
-        }
-      } else {
-        await handleApiCall();
-      };
+      await handleLoadFromCache();
     } catch (error) {
-      setError(error as WeatherError);
+      try {
+        await handleApiCall();
+      } catch (error) {
+        setError(error as WeatherError);
+      } finally {
+        setLoading(false);
+      }
     } finally {
       setLoading(false);
     }
@@ -71,6 +65,15 @@ function App() {
       await saveWeatherCache(data);
     } catch (error) {
       console.warn("Failed to save weather cache", error);
+    }
+  };
+
+  const handleLoadFromCache = async () => {
+    const cache = await loadDataFromCache();
+    setData(cache.data);
+
+    if (cache.cachedAt && new Date(cache.cachedAt) < new Date(Date.now() - 1000 * 60 * 60 * 24)) {
+      await handleApiCall();
     }
   };
 
