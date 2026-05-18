@@ -9,7 +9,7 @@ type SettingsPanelProps = {
   onEnableRainEffectChange: (enableRainEffect: boolean) => void;
   onCityChange: (city: string) => void;
   onUnitChange: (unit: TemperatureUnit) => void;
-  onSave: () => void;
+  onSave: () => void | Promise<void>;
   onClose: () => void;
 };
 
@@ -49,8 +49,8 @@ export default function SettingsPanel({
       <label className="settings-panel__field">
         Units
         <select value={unit} onChange={(e) => onUnitChange(e.target.value as TemperatureUnit)}>
-          <option value="fahrenheit">Fahrenheit</option>
-          <option value="celsius">Celsius</option>
+          <option value="Fahrenheit">Fahrenheit</option>
+          <option value="Celsius">Celsius</option>
         </select>
       </label>
 

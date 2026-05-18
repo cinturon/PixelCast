@@ -5,7 +5,7 @@ import SettingsPanel from "./components/SettingsPanel";
 import { useState, useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
-import { loadSettings, saveSettings, Settings } from "./utils/settings";
+import { loadSettings, saveSettings } from "./utils/settings";
 import { getWeatherCondition } from "./api/data";
 import { WeatherDataResponse, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
 import { loadDataFromCache, saveWeatherCache } from "./utils/cache";
@@ -18,7 +18,7 @@ function App() {
   const [error, setError] = useState<WeatherError>();
 
   const [data, setData] = useState<WeatherDataResponse>();
-  const [cacheTime, setCacheTime] = useState<Date>();
+  const [cacheTime, setCacheTime] = useState<Date>(new Date());
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
@@ -32,20 +32,17 @@ function App() {
     setLoading(true);
     try {
       if (cacheTime && new Date(cacheTime) > new Date(Date.now() - 1000 * 60 * 60 * 24)) {
-        const cache = await loadDataFromCache();
 
-        setData(cache.data as WeatherDataResponse);
-        setCacheTime(cache.cachedAt);
-
-      } else {
-        const data = await callAPI();
-        setData(data);
         try {
-          await saveWeatherCache(data);
-        } catch (error) {
-          console.warn("Failed to save weather cache", error);
-        }
+          const cache = await loadDataFromCache();
+          setData(cache.data);
+          setCacheTime(cache.cachedAt);
 
+        } catch (error) {
+          await handleApiCall();
+        }
+      } else {
+        await handleApiCall();
       };
     } catch (error) {
       setError(error as WeatherError);
@@ -58,19 +55,47 @@ function App() {
     && data?.current.weather_code
     && RAINY_CONDITIONS.has(getWeatherCondition(data?.current.weather_code).condition);
 
-   const getSettings = async () => {
+  const getSettings = async () => {
     const settings = await loadSettings();
     setCity(settings.city);
-    setUnit(settings.temperatureUnit as TemperatureUnit);
+    setUnit(settings.temperatureUnit);
     setLatitude(settings.latitude);
     setLongitude(settings.longitude);
     setEnableRainEffect(settings.enableRainEffect);
-   }
+  };
+
+  const handleApiCall = async () => {
+    const data = await callAPI();
+    setData(data);
+    try {
+      await saveWeatherCache(data);
+    } catch (error) {
+      console.warn("Failed to save weather cache", error);
+    }
+  };
+
+  const handleSaveSettings = async () => {
+    await saveSettings({
+      city,
+      temperatureUnit: unit,
+      latitude,
+      longitude,
+      enableRainEffect,
+    });
+
+    setSettingsOpen(false);
+    await loadData();
+  };
+
+  const handleCloseSettings = async () => {
+    await getSettings();
+    setSettingsOpen(false);
+  };
 
   useEffect(() => {
     const initializeApp = async () => {
+
       await getSettings();
-    
       await loadData();
     };
 
@@ -106,19 +131,9 @@ function App() {
           onUnitChange={setUnit}
           enableRainEffect={enableRainEffect}
           onEnableRainEffectChange={setEnableRainEffect}
-          onSave={
-            () => saveSettings({
-              city,
-              temperatureUnit: unit as TemperatureUnit,
-              latitude,
-              longitude,
-              enableRainEffect,
-            } as Settings)
-          }
-          onClose={() => {
-            loadSettings();
-            setSettingsOpen(false);
-          }} />
+          onSave={handleSaveSettings}
+          onClose={handleCloseSettings}
+        />
       ) : null}
       <div className="row">
         <div className="column">
