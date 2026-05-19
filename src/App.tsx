@@ -11,6 +11,7 @@ import { loadSettings, saveSettings } from "./utils/settings";
 import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
 import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
 import { callAPI } from "./api/http";
+import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 
 
 function App() {
@@ -44,6 +45,17 @@ function App() {
       } finally {
         setLoading(false);
       }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refreshData = async () => {
+    setLoading(true);
+    try {
+      await handleApiCall();
+    } catch (error) {
+      setError(error as WeatherError);
     } finally {
       setLoading(false);
     }
@@ -139,6 +151,36 @@ function App() {
       unlistenPromise.then((unlisten) => unlisten());
     };
   }, []);
+
+  useKeyboardShortcuts((event: KeyboardEvent) => {
+
+    // Ignore typing targets
+    if (isTypingTarget(event)) {
+      return;
+    }
+
+    // Refresh data
+    if (isModPlusKey(event, "r")) {
+      event.preventDefault();
+      void refreshData();
+      return;
+    }
+
+    // Open settings panel
+    if (isModPlusKey(event, ",")) {
+      event.preventDefault();
+      setSettingsOpen(true);
+      return;
+    }
+
+    // Close settings panel
+    if (event.key === "Escape" && settingsOpen) {
+      event.preventDefault();
+      void handleCloseSettings();
+      return;
+    }
+
+  }, [settingsOpen]);
 
   return (
     <main className="container">
