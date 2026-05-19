@@ -540,6 +540,43 @@ button {
   }
 }
 
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: var(--ct-void);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 20%, #182058 0%, transparent 55%),
+    radial-gradient(ellipse 90% 70% at 50% 100%, #080828 0%, var(--ct-void) 45%),
+    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, #040410 100%);
+}
+
+.splash-screen__logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(92vw, 36rem);
+  max-height: min(82vh, 32rem);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.splash-screen {
+  transition:
+    transform 600ms ease-in-out,
+    opacity 600ms ease-in-out;
+}
+
+.splash-screen--exit {
+  transform: translateY(100vh);
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rain-effect {
     animation: none;

@@ -2,6 +2,7 @@ import "./App.css";
 import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import SettingsPanel from "./components/SettingsPanel";
+import { SplashScreen } from "./components/SplashScreen";
 import { useState, useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
@@ -12,6 +13,9 @@ import { callAPI } from "./api/http";
 
 
 function App() {
+
+  const [showSplashScreen, setShowSplashScreen] = useState<boolean>(true);
+  const [isSplashExiting, setIsSplashExiting] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<WeatherError>();
@@ -96,11 +100,23 @@ function App() {
     setSettingsOpen(false);
   };
 
+  const handleSplashScreenExit = () => {
+    setTimeout(() => {
+      setIsSplashExiting(true);
+      setTimeout(() => {
+        setShowSplashScreen(false);
+      }, 600);
+    }, 5000);
+  };
+
   useEffect(() => {
     const initializeApp = async () => {
-
-      await getSettings();
-      await loadData();
+      try {
+        await getSettings();
+        await loadData();
+      } finally {
+        handleSplashScreenExit();
+      }
     };
 
     initializeApp();
@@ -120,6 +136,9 @@ function App() {
 
   return (
     <main className="container">
+      {showSplashScreen ? (
+        <SplashScreen isExiting={isSplashExiting} />
+      ) : null}
       {shouldShowRainEffect ? <div className="rain-effect" aria-hidden="true" /> : null}
       <header className="ct-header">
         <h1 className="ct-app-title">PixelCast</h1>
