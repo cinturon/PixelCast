@@ -12,6 +12,7 @@ import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStruc
 import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
 import { callAPI } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
+import { StatusBar } from "./components/StatusBar";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
   const [latitude, setLatitude] = useState<number>(47.6062);
   const [longitude, setLongitude] = useState<number>(-122.3321);
   const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
+  const [lastRefreshTime, setLastRefreshTime] = useState<Date>();
 
   const loadData = async () => {
     setLoading(true);
@@ -77,6 +79,7 @@ function App() {
   const handleApiCall = async () => {
     const data = await callAPI();
     setData(data);
+    setLastRefreshTime(new Date());
     try {
       await saveWeatherCache(data);
     } catch (error) {
@@ -88,11 +91,11 @@ function App() {
     const cache = await loadDataFromCache();
     setData(cache.data);
 
-
     if (isCacheExpired(cache.cachedAt)) {
       await handleApiCall();
+    } else {
+      setLastRefreshTime(new Date(cache.cachedAt));
     }
-
   };
 
   const handleSaveSettings = async () => {
@@ -220,6 +223,7 @@ function App() {
         </div>
 
       </div>
+      <StatusBar loading={loading} refreshTime={lastRefreshTime} />
     </main>
   );
 }

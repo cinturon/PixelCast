@@ -142,6 +142,35 @@ body,
     0 0 18px var(--ct-cursor-glow);
 }
 
+.status-bar {
+  width: 100%;
+  max-width: 52rem;
+  margin-top: 1rem;
+  padding: 0.4rem 0.85rem;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background: linear-gradient(180deg,
+      var(--ct-panel-deep) 0%,
+      var(--ct-panel-shadow) 100%);
+  border: 2px solid var(--ct-border-lo);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 0 var(--ct-panel-shadow);
+}
+
+.status-bar__message {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: var(--ct-text-muted);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.status-bar--loading .status-bar__message {
+  color: var(--ct-gold);
+}
+
 .ct-city-title {
   margin: 0.45rem auto 0;
   width: fit-content;
