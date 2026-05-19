@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+/// App-level categories for the numeric weather codes returned by Open-Meteo.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WeatherCondition {
     ClearSky,
@@ -21,6 +22,7 @@ pub enum WeatherCondition {
 }
 
 impl WeatherCondition {
+    /// Map Open-Meteo weather codes into the smaller set of app categories.
     pub fn from_code(code: i64) -> Self {
         match code {
             0 => Self::ClearSky,
@@ -42,6 +44,7 @@ impl WeatherCondition {
         }
     }
 
+    /// Display label shown in the weather UI.
     pub fn label(self) -> &'static str {
         match self {
             Self::ClearSky => "Clear sky",
@@ -63,6 +66,7 @@ impl WeatherCondition {
         }
     }
 
+    /// PixelCast flavor text paired with the condition label.
     pub fn flavor(self) -> &'static str {
         match self {
             Self::ClearSky => "The sky glows like a freshly opened treasure chest.",
@@ -85,7 +89,6 @@ impl WeatherCondition {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -100,7 +103,6 @@ mod tests {
         assert_eq!(WeatherCondition::from_code(61), WeatherCondition::Rain);
         assert_eq!(WeatherCondition::from_code(63), WeatherCondition::Rain);
         assert_eq!(WeatherCondition::from_code(65), WeatherCondition::Rain);
-
     }
 
     #[test]
@@ -108,6 +110,4 @@ mod tests {
         assert_eq!(WeatherCondition::from_code(45), WeatherCondition::Fog);
         assert_eq!(WeatherCondition::from_code(48), WeatherCondition::Fog);
     }
-    
-    
 }
