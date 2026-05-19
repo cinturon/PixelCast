@@ -19,6 +19,7 @@ pub mod utils {
 
 use tauri::{
     menu::{MenuBuilder, MenuItemBuilder, SubmenuBuilder},
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Emitter, Manager,
 };
 
@@ -69,6 +70,31 @@ async fn load_weather_cache(app: tauri::AppHandle) -> Result<WeatherCache, Strin
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
+            let tray_icon = tauri::include_image!("icons/tray_icon.png");
+
+            let tray = TrayIconBuilder::new()
+                .icon(tray_icon)
+                .tooltip("PixelCast")
+                .show_menu_on_left_click(false)
+                .on_tray_icon_event(|tray, event| {
+                    if let TrayIconEvent::Click {
+                        button: MouseButton::Left,
+                        button_state: MouseButtonState::Up,
+                        ..
+                    } = event
+                    {
+                        let app = tray.app_handle();
+                        if let Some(window) = app.get_webview_window("main") {
+                            let _ = window.show();
+                            let _ = window.unminimize();
+                            let _ = window.set_focus();
+                        }
+                    }
+                })
+                .build(app)?;
+
+            app.manage(tray);
+
             let settings = utils::settings::load_or_create_settings(app.handle())?;
             app.manage(settings);
 
