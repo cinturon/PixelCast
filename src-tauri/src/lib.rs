@@ -72,10 +72,29 @@ pub fn run() {
         .setup(|app| {
             let tray_icon = tauri::include_image!("icons/tray_icon.png");
 
+            let refresh_item =
+                MenuItemBuilder::with_id("tray_refresh", "Refresh").build(app)?;
+            let quit_item =
+                MenuItemBuilder::with_id("tray_quit", "Quit").build(app)?;
+            let tray_menu = MenuBuilder::new(app)
+                .item(&refresh_item)
+                .item(&quit_item)
+                .build()?;
+
+
             let tray = TrayIconBuilder::new()
                 .icon(tray_icon)
                 .tooltip("PixelCast")
+                .menu(&tray_menu)
                 .show_menu_on_left_click(false)
+                .on_menu_event(|app, event| {
+                    if event.id().0.as_str() == "tray_refresh" {
+                        let _ = app.emit("refresh_weather",());
+                    }
+                    if event.id().0.as_str() == "tray_quit" {
+                        app.exit(0);
+                    }
+                })
                 .on_tray_icon_event(|tray, event| {
                     if let TrayIconEvent::Click {
                         button: MouseButton::Left,

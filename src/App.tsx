@@ -155,6 +155,16 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const unlistenRefresh = listen("refresh_weather", () => {
+      void refreshData();
+    });
+    return () => {
+      unlistenRefresh.then((unlisten) => unlisten());
+    };
+  }, []);
+  
+
   useKeyboardShortcuts((event: KeyboardEvent) => {
 
     // Ignore typing targets
