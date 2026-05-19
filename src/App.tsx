@@ -3,6 +3,7 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import SettingsPanel from "./components/SettingsPanel";
 import { SplashScreen } from "./components/SplashScreen";
+import { RetroPanel } from "./components/RetroPanel";
 import { useState, useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
@@ -100,13 +101,18 @@ function App() {
     setSettingsOpen(false);
   };
 
+  const handleRetry = async () => {
+    await getSettings();
+    await loadData();
+  };
+
   const handleSplashScreenExit = () => {
     setTimeout(() => {
       setIsSplashExiting(true);
       setTimeout(() => {
         setShowSplashScreen(false);
       }, 600);
-    }, 5000);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -160,45 +166,17 @@ function App() {
       ) : null}
       <div className="row">
         <div className="column">
-          {loading ? (
-            <p className="forecast-placeholder">Loading Forecast</p>
-          ) : error ? (
-            <div className="forecast-placeholder">
-              <p>Error Loading Forecast: {error.errorType} - {error.message}</p>
-              <button onClick={() => {
-                getSettings();
-                loadData();
-              }}>Retry</button>
-            </div>
-          ) : data?.forecasts ? (
-            <ForecastPanel
-              forecasts={data.forecasts}
-              unit={unit}
-            />
-          ) : (
-            <p className="forecast-placeholder">Loading Forecast</p>
-          )}
+          <RetroPanel>
+            <ForecastPanel forecasts={data?.forecasts ?? []} unit={unit} loading={loading} error={error} onRetry={handleRetry} />
+          </RetroPanel>
         </div>
 
-        <div className="column">{
-          loading ? (
-            <p className="weather-placeholder">Loading Current Weather</p>
-          ) : error ? (
-            <div className="weather-placeholder">
-              <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
-              <button onClick={() => {
-                loadData();
-              }}>Retry</button>
-            </div>
-          ) : data?.current ? (
-            <WeatherCard
-              currentWeather={data.current}
-              unit={unit}
-            />
-          ) : (
-            <p className="weather-placeholder">Loading Current Weather</p>
-          )}
+        <div className="column">
+          <RetroPanel>
+            <WeatherCard currentWeather={data?.current} unit={unit} loading={loading} error={error} onRetry={handleRetry} />
+          </RetroPanel>
         </div>
+
       </div>
     </main>
   );
