@@ -1,6 +1,7 @@
 import { TemperatureUnit, CurrentWeatherData } from "../utils/weatherStructs";
-import { getWeatherIcon  } from "../api/data";
+import { getWeatherIcon } from "../api/data";
 import { formatTemperature } from "../utils/utils";
+import { PixelIcon } from "./PixelIcon";
 
 export type WeatherCardProps = {
   currentWeather: CurrentWeatherData;
@@ -12,10 +13,10 @@ function WeatherCard({ currentWeather, unit }: WeatherCardProps) {
     <div className="weather-card">
       <h2 className="ct-section-title">Today's Weather</h2>
       <div className="weather-stats">
-        <img
+        <PixelIcon
           className="weather-stat__icon weather-stat__icon--large"
-          src={getWeatherIcon(currentWeather.weatherCondition)}
-          alt={currentWeather.weatherCondition}
+          icon={getWeatherIcon(currentWeather.weatherCondition)}
+          condition={currentWeather.weatherCondition}
         />
         <p className="weather-flavor">{currentWeather.weatherFlavor}</p>
         <div className="weather-stat">

@@ -4,22 +4,22 @@ const iconsDir = "/icons/";
 
 export const weatherIconByKey: Record<string, string> = {
 
-    "Clear sky": iconsDir + "sun.svg",
-    "Mainly clear": iconsDir + "sun.svg",
-    "Partly cloudy": iconsDir + "cloudy.svg",
-    "Overcast": iconsDir + "cloudy.svg",
-    "Fog": iconsDir + "cloudy.svg",
-    "Drizzle": iconsDir + "cloudy.svg",
-    "Freezing drizzle": iconsDir + "cloudy.svg",
-    "Rain": iconsDir + "cloudy.svg",
-    "Freezing rain": iconsDir + "cloudy.svg",
-    "Snow fall": iconsDir + "cloudy.svg",
-    "Snow grains": iconsDir + "cloudy.svg",
-    "Rain showers": iconsDir + "cloudy.svg",
-    "Snow showers": iconsDir + "cloudy.svg",
-    "Thunderstorm": iconsDir + "cloudy.svg",
-    "Thunderstorm with hail": iconsDir + "cloudy.svg",
-    "Unknown": iconsDir + "sun.svg",
+    "Clear sky": iconsDir + "sun.png",
+    "Mainly clear": iconsDir + "sun.png",
+    "Partly cloudy": iconsDir + "cloudy.png",
+    "Overcast": iconsDir + "cloudy.png",
+    "Fog": iconsDir + "cloudy.png",
+    "Drizzle": iconsDir + "light_rain.png",
+    "Freezing drizzle": iconsDir + "light_rain.png",
+    "Rain": iconsDir + "light_rain.png",
+    "Freezing rain": iconsDir + "heavy_rain.png",
+    "Snow fall": iconsDir + "light_snow.png",
+    "Snow grains": iconsDir + "light_snow.png",
+    "Rain showers": iconsDir + "heavy_rain.png",
+    "Snow showers": iconsDir + "heavy_snow.png",
+    "Thunderstorm": iconsDir + "thunder_storm.png",
+    "Thunderstorm with hail": iconsDir + "thunder_storm.png",
+    "Unknown": iconsDir + "sun.png",
 };
 
 export const formatTemperature = (valueF: number, unit: TemperatureUnit) => {

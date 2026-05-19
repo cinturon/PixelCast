@@ -1,6 +1,7 @@
 import { getWeatherIcon } from "../api/data";
 import { Forecast, TemperatureUnit } from "../utils/weatherStructs";
 import { formatTemperature } from "../utils/utils";
+import { PixelIcon } from "./PixelIcon";
 
 const formatForecastDate = (date: string) => {
     const parsedDate = new Date(`${date}T00:00:00`);
@@ -16,10 +17,10 @@ function ForecastRow({ forecast, unit }: { forecast: Forecast, unit: Temperature
     return (
         <div className="forecast-row">
             <span className="forecast-row__day">{formatForecastDate(forecast.date)}</span>
-            <img
+            <PixelIcon
                 className="forecast-row__icon"
-                src={getWeatherIcon(forecast.weatherCondition)}
-                alt={forecast.weatherCondition}
+                icon={getWeatherIcon(forecast.weatherCondition)}
+                condition={forecast.weatherCondition}
             />
             <span className="forecast-row__temps">
                 <span className="forecast-row__temp-label">Temp</span>
