@@ -2,7 +2,17 @@ use serde::{Deserialize, Serialize};
 
 use crate::domain::current_weather::{CurrentWeather, CurrentWeatherData, CurrentWeatherResponse};
 use crate::domain::forecast::{DailyForecast, FiveDayForecastResponse};
-use crate::{PixelCastError, WeatherCondition};
+use crate::domain::geolocation::GeoLocationResponse;
+use crate::domain::pixel_cast_error::PixelCastError;
+use crate::utils::settings::TemperatureUnit;
+use crate::WeatherCondition;
+
+fn temperature_unit_param(unit: TemperatureUnit) -> &'static str {
+    match unit {
+        TemperatureUnit::Fahrenheit => "fahrenheit",
+        TemperatureUnit::Celsius => "celsius",
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -32,13 +42,13 @@ async fn api_request(params: &[(&str, &str)]) -> Result<String, PixelCastError> 
     Ok(body)
 }
 
-pub async fn get_current_weather_data() -> Result<CurrentWeatherData, PixelCastError> {
-    let params = [
-        ("latitude", "47.6062"),
-        ("longitude", "-122.3321"),
-        ("current", "temperature_2m,weather_code,precipitation"),
-        ("temperature_unit", "fahrenheit"),
-    ];
+pub async fn get_current_weather_data(
+    params: &[(&str, &str)],
+    temperature_unit: TemperatureUnit,
+) -> Result<CurrentWeatherData, PixelCastError> {
+    let mut params = params.to_vec();
+    params.push(("current", "temperature_2m,weather_code,precipitation"));
+    params.push(("temperature_unit", temperature_unit_param(temperature_unit)));
 
     let body = api_request(&params).await?;
     let data: CurrentWeatherResponse = serde_json::from_str::<CurrentWeatherResponse>(&body)
@@ -49,18 +59,19 @@ pub async fn get_current_weather_data() -> Result<CurrentWeatherData, PixelCastE
     Ok(data)
 }
 
-pub async fn get_forecast_data() -> Result<Vec<DailyForecast>, PixelCastError> {
-    let params = [
-        ("latitude", "47.6062"),
-        ("longitude", "-122.3321"),
-        (
-            "daily",
-            "temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max",
-        ),
-        ("temperature_unit", "fahrenheit"),
-        ("forecast_days", "5"),
-        ("timezone", "auto"),
-    ];
+pub async fn get_forecast_data(
+    params: &[(&str, &str)],
+    temperature_unit: TemperatureUnit,
+) -> Result<Vec<DailyForecast>, PixelCastError> {
+    let mut params = params.to_vec();
+    params.push((
+        "daily",
+        "temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max",
+    ));
+    params.push(("temperature_unit", temperature_unit_param(temperature_unit)));
+    params.push(("forecast_days", "5"));
+    params.push(("timezone", "auto"));
+
     let body = api_request(&params).await?;
     let data = serde_json::from_str::<FiveDayForecastResponse>(&body)
         .map_err(|error| PixelCastError::api(error.to_string()))?;
@@ -87,4 +98,22 @@ async fn map_forecast_data(
         })
         .collect();
     Ok(forecasts)
+}
+
+pub async fn get_geolocation(city: &str) -> Result<GeoLocationResponse, PixelCastError> {
+    let response = reqwest::get(format!(
+        "https://geocoding-api.open-meteo.com/v1/search?name={}&count=1",
+        city
+    ))
+    .await
+    .map_err(|error| PixelCastError::api(error.to_string()))?;
+
+    let body = response
+        .text()
+        .await
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
+
+    let data: GeoLocationResponse = serde_json::from_str::<GeoLocationResponse>(&body)
+        .map_err(|error: serde_json::Error| PixelCastError::api(error.to_string()))?;
+    Ok(data)
 }

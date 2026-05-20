@@ -5,6 +5,7 @@ mod api {
 mod domain {
     pub mod current_weather;
     pub mod forecast;
+    pub mod geolocation;
     pub mod pixel_cast_error;
     pub mod weather_conditon;
 }
@@ -23,19 +24,38 @@ use tauri::{
     Emitter, Manager,
 };
 
-use api::http::{get_current_weather_data, get_forecast_data, WeatherDataResponse};
-use domain::current_weather::CurrentWeatherData;
-use domain::forecast::DailyForecast;
+use api::http::{
+    get_current_weather_data, get_forecast_data, get_geolocation, WeatherDataResponse,
+};
+
+use domain::geolocation::GeoLocationResponse;
 use utils::cache::WeatherCache;
 use utils::settings::Settings;
 
 #[tauri::command]
-async fn get_data() -> Result<WeatherDataResponse, PixelCastError> {
-    let current: CurrentWeatherData = get_current_weather_data().await?;
-    let forecasts: Vec<DailyForecast> = get_forecast_data().await?;
+async fn get_data(app: tauri::AppHandle) -> Result<WeatherDataResponse, PixelCastError> {
+    let settings = utils::settings::load_or_create_settings(&app)
+        .map_err(|error| PixelCastError::api(error.to_string()))?;
+
+    let latitude = settings.latitude.to_string();
+    let longitude = settings.longitude.to_string();
+    
+    let params = [
+        ("latitude", latitude.as_str()),
+        ("longitude", longitude.as_str()),
+    ];
+    let current =
+        get_current_weather_data(&params, settings.temperature_unit).await?;
+    let forecasts = get_forecast_data(&params, settings.temperature_unit).await?;
 
     let data: WeatherDataResponse = WeatherDataResponse { current, forecasts };
     Ok(data)
+}
+
+#[tauri::command]
+async fn get_long_and_lat(city: &str) -> Result<GeoLocationResponse, PixelCastError> {
+    let response = get_geolocation(city).await?;
+    Ok(response)
 }
 
 #[tauri::command]
@@ -133,16 +153,14 @@ pub fn run() {
 
             app.set_menu(menu)?;
 
-            app.on_menu_event(move |app, event| {
-                match event.id().0.as_str() {
-                    "settings" => {
-                        let _ = app.emit("settings_clicked", "settings_clicked");
-                    }
-                    "about" => {
-                        let _ = app.emit("about_clicked", ());
-                    }
-                    _ => {}
+            app.on_menu_event(move |app, event| match event.id().0.as_str() {
+                "settings" => {
+                    let _ = app.emit("settings_clicked", "settings_clicked");
                 }
+                "about" => {
+                    let _ = app.emit("about_clicked", ());
+                }
+                _ => {}
             });
 
             Ok(())
@@ -150,6 +168,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             get_data,
+            get_long_and_lat,
             save_settings,
             load_settings,
             save_weather_cache,

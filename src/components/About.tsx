@@ -46,6 +46,11 @@ export const About = ({ onClose }: AboutProps) => {
               github.com/cinturon/PixelCast
             </a>
           </p>
+          <p className="about-modal__link">
+            <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">
+              Weather data by Open-Meteo.com
+            </a>
+          </p>  
           <p className="about-modal__copyright">© 2026 PixelCast</p>
         </div>
       </RetroPanel>

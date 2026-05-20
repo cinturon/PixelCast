@@ -11,7 +11,7 @@ import { RAINY_CONDITIONS } from "./conditions";
 import { loadSettings, saveSettings } from "./utils/settings";
 import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
 import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
-import { callAPI } from "./api/http";
+import { callAPI, getGeolocationResponseLatandLong } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 import { StatusBar } from "./components/StatusBar";
 function App() {
@@ -40,13 +40,11 @@ function App() {
 
     try {
       await handleLoadFromCache();
-    } catch (error) {
+    } catch {
       try {
         await handleApiCall();
       } catch (error) {
         setError(error as WeatherError);
-      } finally {
-        setLoading(false);
       }
     } finally {
       setLoading(false);
@@ -80,6 +78,8 @@ function App() {
 
   const handleApiCall = async () => {
     const data = await callAPI();
+
+    console.log("API call data", data);
     setData(data);
     setLastRefreshTime(new Date());
     try {
@@ -94,13 +94,23 @@ function App() {
     setData(cache.data);
 
     if (isCacheExpired(cache.cachedAt)) {
-      await handleApiCall();
+      try {
+        await handleApiCall();
+      } catch (error) {
+        setError(error as WeatherError);
+      }
     } else {
       setLastRefreshTime(new Date(cache.cachedAt));
     }
   };
 
   const handleSaveSettings = async () => {
+
+    try {
+    const { latitude, longitude } = await getGeolocationResponseLatandLong(city);
+    setLatitude(latitude);
+    setLongitude(longitude);
+
     await saveSettings({
       city,
       temperatureUnit: unit,
@@ -110,8 +120,15 @@ function App() {
       launchAtStartup,
     });
 
+
     setSettingsOpen(false);
-    await loadData();
+    await refreshData();
+    } catch (error) {
+      setError({
+        errorType: "API",
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 
   const handleCloseSettings = async () => {
