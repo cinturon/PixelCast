@@ -40,6 +40,8 @@ async fn get_data() -> Result<WeatherDataResponse, PixelCastError> {
 
 #[tauri::command]
 async fn save_settings(app: tauri::AppHandle, settings: Settings) -> Result<(), String> {
+    utils::settings::apply_launch_at_startup(&app, settings.launch_at_startup)
+        .map_err(|error| error.to_string())?;
     utils::settings::save_settings(&app, &settings).map_err(|error| error.to_string())?;
     Ok(())
 }
@@ -69,18 +71,16 @@ async fn load_weather_cache(app: tauri::AppHandle) -> Result<WeatherCache, Strin
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::Builder::new().build())
         .setup(|app| {
             let tray_icon = tauri::include_image!("icons/tray_icon.png");
 
-            let refresh_item =
-                MenuItemBuilder::with_id("tray_refresh", "Refresh").build(app)?;
-            let quit_item =
-                MenuItemBuilder::with_id("tray_quit", "Quit").build(app)?;
+            let refresh_item = MenuItemBuilder::with_id("tray_refresh", "Refresh").build(app)?;
+            let quit_item = MenuItemBuilder::with_id("tray_quit", "Quit").build(app)?;
             let tray_menu = MenuBuilder::new(app)
                 .item(&refresh_item)
                 .item(&quit_item)
                 .build()?;
-
 
             let tray = TrayIconBuilder::new()
                 .icon(tray_icon)
@@ -89,7 +89,7 @@ pub fn run() {
                 .show_menu_on_left_click(false)
                 .on_menu_event(|app, event| {
                     if event.id().0.as_str() == "tray_refresh" {
-                        let _ = app.emit("refresh_weather",());
+                        let _ = app.emit("refresh_weather", ());
                     }
                     if event.id().0.as_str() == "tray_quit" {
                         app.exit(0);
@@ -115,6 +115,8 @@ pub fn run() {
             app.manage(tray);
 
             let settings = utils::settings::load_or_create_settings(app.handle())?;
+            utils::settings::apply_launch_at_startup(app.handle(), settings.launch_at_startup)
+                .map_err(|error| error.to_string())?;
             app.manage(settings);
 
             let settings_menu_item =

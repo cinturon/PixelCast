@@ -15,6 +15,9 @@ pub struct Settings {
     pub longitude: f64,
     /// Controls whether rainy conditions render the animated rain effect.
     pub enable_rain_effect: bool,
+    /// When true, register PixelCast to launch when the user logs in.
+    #[serde(default)]
+    pub launch_at_startup: bool,
 }
 
 /// Supported temperature units for weather display.
@@ -33,8 +36,25 @@ impl Settings {
             latitude: 47.6062,
             longitude: -122.3321,
             enable_rain_effect: true,
+            launch_at_startup: false,
         }
     }
+}
+
+/// Enable or disable OS login-item registration to match the saved preference.
+pub fn apply_launch_at_startup(
+    app: &tauri::AppHandle,
+    enabled: bool,
+) -> Result<(), Box<dyn std::error::Error>> {
+    use tauri_plugin_autostart::ManagerExt;
+
+    let autolaunch = app.autolaunch();
+    if enabled {
+        autolaunch.enable()?;
+    } else {
+        autolaunch.disable()?;
+    }
+    Ok(())
 }
 
 impl Default for Settings {

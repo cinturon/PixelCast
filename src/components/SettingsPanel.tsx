@@ -4,9 +4,11 @@ type SettingsPanelProps = {
   city: string;
   unit: TemperatureUnit;
   enableRainEffect: boolean;
+  launchAtStartup: boolean;
   latitude: number;
   longitude: number;
   onEnableRainEffectChange: (enableRainEffect: boolean) => void;
+  onLaunchAtStartupChange: (launchAtStartup: boolean) => void;
   onCityChange: (city: string) => void;
   onUnitChange: (unit: TemperatureUnit) => void;
   onSave: () => void | Promise<void>;
@@ -19,9 +21,11 @@ export default function SettingsPanel({
   latitude,
   longitude,
   enableRainEffect,
+  launchAtStartup,
   onCityChange,
   onUnitChange,
   onEnableRainEffectChange,
+  onLaunchAtStartupChange,
   onSave,
   onClose
 }: SettingsPanelProps) {
@@ -57,6 +61,15 @@ export default function SettingsPanel({
       <label className="settings-panel__field">
         Enable Rain Effect
         <input type="checkbox" checked={enableRainEffect} onChange={(e) => onEnableRainEffectChange(e.target.checked)} />
+      </label>
+
+      <label className="settings-panel__field">
+        Launch at login
+        <input
+          type="checkbox"
+          checked={launchAtStartup}
+          onChange={(e) => onLaunchAtStartupChange(e.target.checked)}
+        />
       </label>
 
       <button type="button" onClick={onSave}>Save</button>

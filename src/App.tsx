@@ -14,8 +14,6 @@ import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cac
 import { callAPI } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 import { StatusBar } from "./components/StatusBar";
-
-
 function App() {
 
   const [showSplashScreen, setShowSplashScreen] = useState<boolean>(true);
@@ -34,6 +32,7 @@ function App() {
   const [latitude, setLatitude] = useState<number>(47.6062);
   const [longitude, setLongitude] = useState<number>(-122.3321);
   const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
+  const [launchAtStartup, setLaunchAtStartup] = useState<boolean>(false);
   const [lastRefreshTime, setLastRefreshTime] = useState<Date>();
 
   const loadData = async () => {
@@ -76,6 +75,7 @@ function App() {
     setLatitude(settings.latitude);
     setLongitude(settings.longitude);
     setEnableRainEffect(settings.enableRainEffect);
+    setLaunchAtStartup(settings.launchAtStartup);
   };
 
   const handleApiCall = async () => {
@@ -107,6 +107,7 @@ function App() {
       latitude,
       longitude,
       enableRainEffect,
+      launchAtStartup,
     });
 
     setSettingsOpen(false);
@@ -174,7 +175,7 @@ function App() {
       unlistenRefresh.then((unlisten) => unlisten());
     };
   }, []);
-  
+
 
   useKeyboardShortcuts((event: KeyboardEvent) => {
 
@@ -242,7 +243,9 @@ function App() {
           onCityChange={setCity}
           onUnitChange={setUnit}
           enableRainEffect={enableRainEffect}
+          launchAtStartup={launchAtStartup}
           onEnableRainEffectChange={setEnableRainEffect}
+          onLaunchAtStartupChange={setLaunchAtStartup}
           onSave={handleSaveSettings}
           onClose={handleCloseSettings}
         />

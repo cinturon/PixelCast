@@ -6,6 +6,7 @@ export type Settings = {
   latitude: number;
   longitude: number;
   enableRainEffect: boolean;
+  launchAtStartup: boolean;
 }
 
 export const saveSettings = async (settings: Settings) => {
