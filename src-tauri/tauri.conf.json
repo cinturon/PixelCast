@@ -30,6 +30,12 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "publisher": "Jeremy Belt",
+    "homepage": "https://jeremybelt.com",
+    "copyright": "© 2026 PixelCast",
+    "license": "MIT",
+    "shortDescription": "Retro desktop weather for your menu bar and tray.",
+    "longDescription": "PixelCast displays current conditions and forecasts with a retro pixel-art UI. Built with Tauri and Rust."
   }
 }
