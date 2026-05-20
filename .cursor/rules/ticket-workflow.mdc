@@ -1,0 +1,62 @@
+---
+description: Commit, merge, push, and open the next Linear ticket when closing work
+alwaysApply: true
+---
+
+# Ticket close and handoff workflow
+
+When the user asks to **close** a ticket (e.g. "close 80", "done", "merge and delete"), run this sequence **in order**. Do not skip committing or mark Linear Done before the work is on `main`.
+
+## 1. Verify and commit
+
+- Confirm acceptance criteria are met (build/tests as appropriate).
+- Commit **all** work for the closing ticket on its feature branch.
+- Use a clear commit message focused on **why** (1–2 sentences).
+- Never commit secrets (`.env`, credentials).
+
+```bash
+git add <relevant files>
+git commit -m "$(cat <<'EOF'
+Short summary of the change.
+
+EOF
+)"
+```
+
+## 2. Merge to main and push
+
+```bash
+git checkout main
+git pull origin main
+git merge <feature-branch>   # prefer fast-forward when possible
+git push origin main
+git branch -D <feature-branch>   # delete local feature branch after merge
+```
+
+- Do not force-push `main`.
+- Do not leave the ticket’s changes uncommitted when switching tickets.
+
+## 3. Linear
+
+- Mark the **current** issue **Done** (e.g. `JIB-80`).
+- Find the **next numbered** issue in the same project (e.g. `JIB-81`).
+- Mark the next issue **In Progress**.
+
+## 4. Open the next ticket
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b <gitBranchName from Linear>   # e.g. jeremybelt/jib-81-write-installation-instructions-for-pixelcast
+```
+
+- Branch from **up-to-date `main`**, not from the old feature branch.
+- Summarize: closed ticket + URL, next ticket + URL, new branch name.
+
+## Short requests
+
+| User says | Do |
+|-----------|-----|
+| "close 80" / "close JIB-80" | Full workflow for that ticket, then open `JIB-81` |
+| "merge and delete" | Merge current branch → `main`, push, delete local branches, then open next ticket if implied |
+| "open 81" only | Start at step 3–4 (In Progress + new branch); still commit/merge first if there is uncommitted work for a closed ticket |

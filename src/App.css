@@ -567,6 +567,14 @@ body,
   background: linear-gradient(180deg, var(--ct-panel-mid), var(--ct-panel-deep));
 }
 
+.screenshot-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  background: rgba(4, 4, 16, 0.72);
+  pointer-events: none;
+}
+
 .container p {
   color: var(--ct-text-muted);
 }
