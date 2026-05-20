@@ -4,6 +4,7 @@ import ForecastPanel from "./components/ForecastPanel";
 import SettingsPanel from "./components/SettingsPanel";
 import { SplashScreen } from "./components/SplashScreen";
 import { RetroPanel } from "./components/RetroPanel";
+import { About } from "./components/About";
 import { useState, useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
@@ -26,6 +27,7 @@ function App() {
   const [data, setData] = useState<WeatherData>();
 
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [aboutOpen, setAboutOpen] = useState<boolean>(false);
 
   const [unit, setUnit] = useState<TemperatureUnit>("Fahrenheit");
   const [city, setCity] = useState<string>("Seattle");
@@ -144,6 +146,15 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const unlistenAbout = listen("about_clicked", () => {
+      setAboutOpen(true);
+    });
+    return () => {
+      unlistenAbout.then((unlisten) => unlisten());
+    };
+  }, []);
+
+  useEffect(() => {
     const unlistenPromise = listen<string>(
       "settings_clicked",
       () => {
@@ -186,17 +197,34 @@ function App() {
       return;
     }
 
-    // Close settings panel
-    if (event.key === "Escape" && settingsOpen) {
+    // Open about panel
+    if (isModPlusKey(event, ".")) {
       event.preventDefault();
-      void handleCloseSettings();
+      setAboutOpen(true);
       return;
     }
 
-  }, [settingsOpen]);
+    // Close open overlays
+    if (event.key === "Escape") {
+      if (aboutOpen) {
+        event.preventDefault();
+        setAboutOpen(false);
+        return;
+      }
+      if (settingsOpen) {
+        event.preventDefault();
+        void handleCloseSettings();
+        return;
+      }
+    }
+
+  }, [settingsOpen, aboutOpen]);
 
   return (
     <main className="container">
+      {aboutOpen ? (
+        <About onClose={() => setAboutOpen(false)} />
+      ) : null}
       {showSplashScreen ? (
         <SplashScreen isExiting={isSplashExiting} />
       ) : null}

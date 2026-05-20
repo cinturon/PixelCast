@@ -451,6 +451,75 @@ body,
   font-size: 1.15rem;
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(4, 4, 16, 0.72);
+  cursor: pointer;
+}
+
+.about-modal {
+  position: relative;
+  z-index: 1;
+  width: min(24rem, 100%);
+}
+
+.about-modal__content {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.about-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-modal__app-name {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--ct-gold-shine);
+  text-shadow: 0 0 12px var(--ct-cursor-glow);
+}
+
+.about-modal__version,
+.about-modal__copyright {
+  margin: 0;
+  color: var(--ct-text-muted);
+  font-size: 1.1rem;
+}
+
+.about-modal__tagline {
+  margin: 0.25rem 0 0;
+  color: var(--ct-gold);
+  font-size: 1.2rem;
+}
+
+.about-modal__description {
+  margin: 0.75rem 0 0;
+  color: var(--ct-text);
+  line-height: 1.35;
+}
+
+.about-modal__link {
+  margin: 0.5rem 0 0;
+}
+
 .settings-panel {
   position: fixed;
   top: 50%;

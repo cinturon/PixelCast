@@ -119,9 +119,12 @@ pub fn run() {
 
             let settings_menu_item =
                 MenuItemBuilder::with_id("settings", "Open Settings").build(app)?;
+            let about_menu_item =
+                MenuItemBuilder::with_id("about", "About PixelCast").build(app)?;
 
             let settings_menu = SubmenuBuilder::new(app, "Settings")
                 .item(&settings_menu_item)
+                .item(&about_menu_item)
                 .build()?;
 
             let menu = MenuBuilder::new(app).item(&settings_menu).build()?;
@@ -129,8 +132,14 @@ pub fn run() {
             app.set_menu(menu)?;
 
             app.on_menu_event(move |app, event| {
-                if event.id().0.as_str() == "settings" {
-                    let _ = app.emit("settings_clicked", "settings_clicked");
+                match event.id().0.as_str() {
+                    "settings" => {
+                        let _ = app.emit("settings_clicked", "settings_clicked");
+                    }
+                    "about" => {
+                        let _ = app.emit("about_clicked", ());
+                    }
+                    _ => {}
                 }
             });
 
