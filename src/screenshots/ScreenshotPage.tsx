@@ -55,7 +55,7 @@ export default function ScreenshotPage() {
             </RetroPanel>
           </div>
         </div>
-        <StatusBar loading={false} refreshTime={screenshotRefreshTime} />
+        <StatusBar loading={false} refreshTime={screenshotRefreshTime} refresh={() => {}} />
       </main>
       {settingsOpen
         ? createPortal(

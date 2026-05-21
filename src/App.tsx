@@ -316,7 +316,11 @@ function App() {
         </div>
 
       </div>
-      <StatusBar loading={loading} refreshTime={lastRefreshTime} />
+      <StatusBar
+        loading={loading}
+        refreshTime={lastRefreshTime}
+        refresh={() => void refreshData()}
+      />
     </main>
   );
 }

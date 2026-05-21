@@ -1,9 +1,10 @@
 type StatusBarProps = {
   loading: boolean;
   refreshTime?: Date;
+  refresh: () => void;
 };
 
-export const StatusBar = ({ loading, refreshTime }: StatusBarProps) => {
+export const StatusBar = ({ loading, refreshTime, refresh }: StatusBarProps) => {
   const message = loading
     ? "Loading..."
     : refreshTime
@@ -17,7 +18,18 @@ export const StatusBar = ({ loading, refreshTime }: StatusBarProps) => {
       aria-live="polite"
       aria-busy={loading}
     >
-      <p className="status-bar__message">{message}</p>
+      <div className="status-bar__row">
+        <p className="status-bar__message">{message}</p>
+        <button
+          type="button"
+          className="status-bar__refresh"
+          onClick={() => void refresh()}
+          aria-label="Refresh weather"
+          disabled={loading}
+        >
+          Refresh
+        </button>
+      </div>
     </div>
   );
 };
