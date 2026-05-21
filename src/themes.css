@@ -1,0 +1,122 @@
+/* Chrono Trigger–style default (existing PixelCast look) */
+:root,
+[data-theme="chrono"] {
+  --ct-void: #080818;
+  --ct-void-mid: #101028;
+  --ct-panel-top: #5068d8;
+  --ct-panel-mid: #3040a8;
+  --ct-panel-deep: #182878;
+  --ct-panel-shadow: #080838;
+  --ct-panel-end: #101858;
+  --ct-border-hi: #f8f8ff;
+  --ct-border-lo: #404880;
+  --ct-inner-glow: rgba(120, 160, 255, 0.22);
+  --ct-gold: #f8e888;
+  --ct-gold-shine: #fff8c8;
+  --ct-gold-dim: #c8a850;
+  --ct-text: #e8f0ff;
+  --ct-text-muted: #a8b8e8;
+  --ct-cursor: #ffd828;
+  --ct-cursor-glow: rgba(255, 216, 48, 0.45);
+  --ct-row-hover: rgba(255, 216, 48, 0.18);
+  --ct-row-line: rgba(255, 255, 255, 0.14);
+  --ct-bg-spot: #182058;
+  --ct-bg-floor: #080828;
+  --ct-bg-end: #040410;
+  --ct-title-shadow: #403008;
+  --ct-city-border: rgba(248, 232, 136, 0.65);
+  --ct-city-hover: #fff8c8;
+  --ct-rain-a: rgba(232, 240, 255, 0.42);
+  --ct-rain-b: rgba(168, 184, 232, 0.22);
+  --ct-scanline-opacity: 0.28;
+}
+
+/* Super Mario Bros. (NES) — sky, brick blocks, pipe green, coin gold, Mario red */
+[data-theme="8bit"] {
+  --ct-void: #5c94fc;
+  --ct-void-mid: #4a82e8;
+  --ct-panel-top: #fcbc98;
+  --ct-panel-mid: #d88000;
+  --ct-panel-deep: #b83800;
+  --ct-panel-shadow: #602800;
+  --ct-panel-end: #984018;
+  --ct-border-hi: #fcfcfc;
+  --ct-border-lo: #000000;
+  --ct-inner-glow: rgba(255, 220, 160, 0.35);
+  --ct-gold: #f8d878;
+  --ct-gold-shine: #fcfcfc;
+  --ct-gold-dim: #d87800;
+  --ct-text: #1a0800;
+  --ct-text-muted: #503018;
+  --ct-cursor: #e52521;
+  --ct-cursor-glow: rgba(229, 37, 33, 0.5);
+  --ct-row-hover: rgba(248, 216, 120, 0.45);
+  --ct-row-line: rgba(0, 0, 0, 0.2);
+  --ct-bg-spot: #78b4ff;
+  --ct-bg-floor: #3870d8;
+  --ct-bg-end: #2868c8;
+  --ct-title-shadow: #000000;
+  --ct-city-border: rgba(252, 252, 252, 0.85);
+  --ct-city-hover: #f8d878;
+  --ct-rain-a: rgba(252, 252, 252, 0.55);
+  --ct-rain-b: rgba(200, 224, 255, 0.35);
+  --ct-scanline-opacity: 0.18;
+}
+
+[data-theme="8bit"] .ct-app-title,
+[data-theme="8bit"] .ct-section-title,
+[data-theme="8bit"] .ct-city-title {
+  color: var(--ct-gold-shine);
+  text-shadow:
+    2px 2px 0 var(--ct-title-shadow),
+    -1px -1px 0 var(--ct-title-shadow),
+    1px -1px 0 var(--ct-title-shadow),
+    -1px 1px 0 var(--ct-title-shadow);
+}
+
+[data-theme="8bit"] .ct-section-title {
+  color: var(--ct-gold);
+}
+
+[data-theme="8bit"] .container::after {
+  image-rendering: pixelated;
+  mix-blend-mode: soft-light;
+}
+
+[data-theme="8bit"] .retro-panel {
+  border-radius: 0;
+  border: 3px solid var(--ct-border-lo);
+  box-shadow:
+    inset 0 0 0 2px var(--ct-border-hi),
+    0 4px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="8bit"] .status-bar {
+  border: 3px solid var(--ct-border-lo);
+  box-shadow:
+    inset 0 0 0 2px var(--ct-border-hi),
+    0 3px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="8bit"] .forecast-row:hover,
+[data-theme="8bit"] .forecast-row:focus-within {
+  box-shadow: inset 4px 0 0 var(--ct-cursor);
+}
+
+[data-theme="8bit"] .weather-stat__value--condition,
+[data-theme="8bit"] .forecast-row__condition,
+[data-theme="8bit"] .forecast-row__rain {
+  color: var(--ct-gold-shine);
+  text-shadow: 1px 1px 0 var(--ct-title-shadow);
+}
+
+[data-theme="8bit"] a {
+  color: var(--ct-gold-shine);
+  text-shadow: 1px 1px 0 var(--ct-title-shadow);
+}
+
+[data-theme="8bit"] button,
+[data-theme="8bit"] input,
+[data-theme="8bit"] select {
+  border-radius: 0;
+}

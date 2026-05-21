@@ -1,7 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { toWeatherError } from "./errors";
+import type { Theme } from "./themes";
 
 export type Settings = {
+  theme: Theme;
   city: string;
   temperatureUnit: "Fahrenheit" | "Celsius";
   latitude: number;

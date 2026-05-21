@@ -1,10 +1,28 @@
 use serde::{Deserialize, Serialize};
 use tauri::Manager;
 
+/// Visual theme applied to the desktop UI.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum Theme {
+    Chrono,
+    #[serde(rename = "8bit")]
+    EightBit,
+}
+
+impl Default for Theme {
+    fn default() -> Self {
+        Self::Chrono
+    }
+}
+
 /// User preferences persisted between app launches.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
+    /// Color palette and styling preset for the app chrome.
+    #[serde(default)]
+    pub theme: Theme,
     /// Preferred unit used when displaying temperatures.
     pub temperature_unit: TemperatureUnit,
     /// Display name for the configured forecast location.
@@ -31,6 +49,7 @@ impl Settings {
     /// Provide first-run defaults when no settings file exists yet.
     pub fn new() -> Self {
         Self {
+            theme: Theme::default(),
             temperature_unit: TemperatureUnit::Fahrenheit,
             city: String::from("Seattle"),
             latitude: 47.6062,

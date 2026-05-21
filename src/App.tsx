@@ -15,6 +15,8 @@ import { loadDataFromCache, saveWeatherCache, isCacheExpired, WEATHER_REFRESH_IN
 import { callAPI, getGeolocationResponseLatandLong } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 import { StatusBar } from "./components/StatusBar";
+import { applyTheme, DEFAULT_THEME, isTheme, type Theme } from "./utils/themes";
+
 function App() {
 
   const [showSplashScreen, setShowSplashScreen] = useState<boolean>(true);
@@ -28,6 +30,7 @@ function App() {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [aboutOpen, setAboutOpen] = useState<boolean>(false);
 
+  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
   const [unit, setUnit] = useState<TemperatureUnit>("Fahrenheit");
   const [city, setCity] = useState<string>("Seattle");
   const [latitude, setLatitude] = useState<number>(47.6062);
@@ -80,6 +83,8 @@ function App() {
 
   const getSettings = async () => {
     const settings = await loadSettings();
+    const nextTheme = isTheme(settings.theme) ? settings.theme : DEFAULT_THEME;
+    setTheme(nextTheme);
     setCity(settings.city);
     setUnit(settings.temperatureUnit);
     setLatitude(settings.latitude);
@@ -123,6 +128,7 @@ function App() {
       setLongitude(longitude);
 
       await saveSettings({
+        theme,
         city,
         temperatureUnit: unit,
         latitude,
@@ -161,6 +167,10 @@ function App() {
       }, 600);
     }, 3000);
   };
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -288,10 +298,12 @@ function App() {
       </header>
       {settingsOpen ? (
         <SettingsPanel
+          theme={theme}
           city={city}
           unit={unit}
           latitude={latitude}
           longitude={longitude}
+          onThemeChange={setTheme}
           onCityChange={setCity}
           onUnitChange={setUnit}
           enableRainEffect={enableRainEffect}

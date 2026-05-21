@@ -62,12 +62,14 @@ export default function ScreenshotPage() {
             <>
               <div className="screenshot-backdrop" aria-hidden="true" />
               <SettingsPanel
+                theme="chrono"
                 city="Seattle"
                 unit="Fahrenheit"
                 latitude={47.6062}
                 longitude={-122.3321}
                 enableRainEffect
                 launchAtStartup={false}
+                onThemeChange={noop}
                 onCityChange={noop}
                 onUnitChange={noop}
                 onEnableRainEffectChange={noop}

@@ -1,4 +1,5 @@
 /* Chrono Trigger–inspired menu panels (SNES RPG window style) */
+@import "./themes.css";
 
 html,
 body,
@@ -10,26 +11,6 @@ body,
 }
 
 :root {
-  /* CT-ish palette: deep indigo backdrop, royal blue panels, gold lettering */
-  --ct-void: #080818;
-  --ct-void-mid: #101028;
-  --ct-panel-top: #5068d8;
-  --ct-panel-mid: #3040a8;
-  --ct-panel-deep: #182878;
-  --ct-panel-shadow: #080838;
-  --ct-border-hi: #f8f8ff;
-  --ct-border-lo: #404880;
-  --ct-inner-glow: rgba(120, 160, 255, 0.22);
-  --ct-gold: #f8e888;
-  --ct-gold-shine: #fff8c8;
-  --ct-gold-dim: #c8a850;
-  --ct-text: #e8f0ff;
-  --ct-text-muted: #a8b8e8;
-  --ct-cursor: #ffd828;
-  --ct-cursor-glow: rgba(255, 216, 48, 0.45);
-  --ct-row-hover: rgba(255, 216, 48, 0.18);
-  --ct-row-line: rgba(255, 255, 255, 0.14);
-
   font-family: "VT323", ui-monospace, monospace;
   font-size: 22px;
   line-height: 1.25;
@@ -43,9 +24,9 @@ body,
   color: var(--ct-text);
   background-color: var(--ct-void);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% 20%, #182058 0%, transparent 55%),
-    radial-gradient(ellipse 90% 70% at 50% 100%, #080828 0%, var(--ct-void) 45%),
-    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, #040410 100%);
+    radial-gradient(ellipse 120% 80% at 50% 20%, var(--ct-bg-spot) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 70% at 50% 100%, var(--ct-bg-floor) 0%, var(--ct-void) 45%),
+    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, var(--ct-bg-end) 100%);
   min-height: 100%;
 }
 
@@ -76,7 +57,7 @@ body,
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: var(--ct-scanline-opacity);
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0)),
     repeating-linear-gradient(180deg,
@@ -98,10 +79,10 @@ body,
   opacity: 0.45;
   background-image:
     repeating-linear-gradient(105deg,
-      rgba(232, 240, 255, 0.42) 0 1px,
+      var(--ct-rain-a) 0 1px,
       transparent 1px 15px),
     repeating-linear-gradient(105deg,
-      rgba(168, 184, 232, 0.22) 0 1px,
+      var(--ct-rain-b) 0 1px,
       transparent 1px 24px);
   background-size: 4rem 8rem, 6rem 10rem;
   animation: rain-fall 0.8s linear infinite;
@@ -135,10 +116,10 @@ body,
   letter-spacing: 0.06em;
   color: var(--ct-gold-shine);
   text-shadow:
-    2px 2px 0 #403008,
-    -1px -1px 0 #403008,
-    1px -1px 0 #403008,
-    -1px 1px 0 #403008,
+    2px 2px 0 var(--ct-title-shadow),
+    -1px -1px 0 var(--ct-title-shadow),
+    1px -1px 0 var(--ct-title-shadow),
+    -1px 1px 0 var(--ct-title-shadow),
     0 0 18px var(--ct-cursor-glow);
 }
 
@@ -203,8 +184,8 @@ body,
   text-transform: uppercase;
   background: transparent;
   border: none;
-  border-top: 1px solid rgba(248, 232, 136, 0.65);
-  border-bottom: 1px solid rgba(248, 232, 136, 0.65);
+  border-top: 1px solid var(--ct-city-border);
+  border-bottom: 1px solid var(--ct-city-border);
   cursor: pointer;
   text-shadow:
     2px 2px 0 var(--ct-panel-shadow),
@@ -213,7 +194,7 @@ body,
 }
 
 .ct-city-title:hover {
-  color: #fff8c8;
+  color: var(--ct-city-hover);
 }
 
 .ct-city-title:focus-visible {
@@ -282,7 +263,7 @@ body,
       var(--ct-panel-top) 0%,
       var(--ct-panel-mid) 38%,
       var(--ct-panel-deep) 72%,
-      #101858 100%);
+      var(--ct-panel-end) 100%);
   box-shadow: inset 0 2px 12px var(--ct-inner-glow);
 }
 
@@ -306,7 +287,7 @@ body,
   color: var(--ct-gold);
   border-bottom: 2px solid var(--ct-gold-dim);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
-  text-shadow: 1px 1px 0 #302010;
+  text-shadow: 1px 1px 0 var(--ct-title-shadow);
 }
 
 .forecast-row {
@@ -344,7 +325,7 @@ body,
   font-weight: 700;
   color: var(--ct-gold-shine);
   white-space: nowrap;
-  text-shadow: 1px 1px 0 #302010;
+  text-shadow: 1px 1px 0 var(--ct-title-shadow);
 }
 
 .forecast-row__icon {
@@ -694,9 +675,9 @@ button {
   box-sizing: border-box;
   background-color: var(--ct-void);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% 20%, #182058 0%, transparent 55%),
-    radial-gradient(ellipse 90% 70% at 50% 100%, #080828 0%, var(--ct-void) 45%),
-    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, #040410 100%);
+    radial-gradient(ellipse 120% 80% at 50% 20%, var(--ct-bg-spot) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 70% at 50% 100%, var(--ct-bg-floor) 0%, var(--ct-void) 45%),
+    linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, var(--ct-bg-end) 100%);
 }
 
 .splash-screen__logo {

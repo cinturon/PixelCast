@@ -1,6 +1,8 @@
 import { TemperatureUnit } from "../utils/weatherStructs";
+import { THEMES, type Theme } from "../utils/themes";
 
 type SettingsPanelProps = {
+  theme: Theme;
   city: string;
   unit: TemperatureUnit;
   enableRainEffect: boolean;
@@ -9,6 +11,7 @@ type SettingsPanelProps = {
   longitude: number;
   onEnableRainEffectChange: (enableRainEffect: boolean) => void;
   onLaunchAtStartupChange: (launchAtStartup: boolean) => void;
+  onThemeChange: (theme: Theme) => void;
   onCityChange: (city: string) => void;
   onUnitChange: (unit: TemperatureUnit) => void;
   onSave: () => void | Promise<void>;
@@ -16,12 +19,14 @@ type SettingsPanelProps = {
 };
 
 export default function SettingsPanel({
+  theme,
   city,
   unit,
   latitude,
   longitude,
   enableRainEffect,
   launchAtStartup,
+  onThemeChange,
   onCityChange,
   onUnitChange,
   onEnableRainEffectChange,
@@ -50,6 +55,17 @@ export default function SettingsPanel({
           Longitude: {longitude.toFixed(4)}
         </label>
       </div>
+
+      <label className="settings-panel__field">
+        Theme
+        <select value={theme} onChange={(e) => onThemeChange(e.target.value as Theme)}>
+          {THEMES.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <label className="settings-panel__field">
         City
