@@ -11,7 +11,7 @@ import { RAINY_CONDITIONS } from "./conditions";
 import { loadSettings, saveSettings } from "./utils/settings";
 import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
 import { toWeatherError } from "./utils/errors";
-import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
+import { loadDataFromCache, saveWeatherCache, isCacheExpired, WEATHER_REFRESH_INTERVAL_MS } from "./utils/cache";
 import { callAPI, getGeolocationResponseLatandLong } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 import { StatusBar } from "./components/StatusBar";
@@ -62,6 +62,15 @@ function App() {
       setError(toWeatherError(error));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const silentRefreshData = async () => {
+    setError(undefined);
+    try {
+      await handleApiCall();
+    } catch (error) {
+      setError(toWeatherError(error));
     }
   };
 
@@ -196,10 +205,26 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      void silentRefreshData();
+    }, WEATHER_REFRESH_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, []);
+
 
   useKeyboardShortcuts((event: KeyboardEvent) => {
 
-    // Ignore typing targets
+    // Enter saves settings; inputs use form submit (do not preventDefault there)
+    if (event.key === "Enter" && settingsOpen) {
+      if (!isTypingTarget(event)) {
+        event.preventDefault();
+        void handleSaveSettings();
+      }
+      return;
+    }
+
+    // Ignore typing targets for global shortcuts
     if (isTypingTarget(event)) {
       return;
     }
@@ -252,7 +277,14 @@ function App() {
       {shouldShowRainEffect ? <div className="rain-effect" aria-hidden="true" /> : null}
       <header className="ct-header">
         <h1 className="ct-app-title">PixelCast</h1>
-        <h2 className="ct-city-title">{city}</h2>
+        <button
+          type="button"
+          className="ct-city-title"
+          onClick={() => setSettingsOpen(true)}
+          aria-label={`Change city: ${city}`}
+        >
+          {city}
+        </button>
       </header>
       {settingsOpen ? (
         <SettingsPanel

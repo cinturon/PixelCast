@@ -172,21 +172,35 @@ body,
 }
 
 .ct-city-title {
+  display: block;
   margin: 0.45rem auto 0;
   width: fit-content;
   padding: 0.25rem 1rem;
   text-align: center;
   color: var(--ct-gold-shine);
+  font-family: inherit;
   font-size: clamp(1.35rem, 4.2vw, 1.9rem);
   line-height: 1.1;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  background: transparent;
+  border: none;
   border-top: 1px solid rgba(248, 232, 136, 0.65);
   border-bottom: 1px solid rgba(248, 232, 136, 0.65);
+  cursor: pointer;
   text-shadow:
     2px 2px 0 var(--ct-panel-shadow),
     0 0 6px rgba(255, 248, 200, 0.32),
     0 0 14px rgba(255, 216, 48, 0.22);
+}
+
+.ct-city-title:hover {
+  color: #fff8c8;
+}
+
+.ct-city-title:focus-visible {
+  outline: 2px solid var(--ct-gold);
+  outline-offset: 3px;
 }
 
 .row {

@@ -29,6 +29,11 @@ export default function SettingsPanel({
   onSave,
   onClose
 }: SettingsPanelProps) {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    void onSave();
+  };
+
   return (
     <aside className="settings-panel" aria-labelledby="settings-panel-title">
       <div className="settings-panel__header">
@@ -36,6 +41,7 @@ export default function SettingsPanel({
         <button type="button" onClick={onClose}>Close</button>
       </div>
 
+      <form className="settings-panel__form" onSubmit={handleSubmit}>
       <div className="settings-panel__coordinate-row">
         <label className="settings-panel__field">
           Latitude: {latitude.toFixed(4)}
@@ -72,7 +78,8 @@ export default function SettingsPanel({
         />
       </label>
 
-      <button type="button" onClick={onSave}>Save</button>
+      <button type="submit">Save</button>
+      </form>
     </aside>
   );
 }

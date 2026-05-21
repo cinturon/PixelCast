@@ -2,6 +2,8 @@ import { WeatherData } from "./weatherStructs";
 import { toWeatherError } from "./errors";
 import { invoke } from "@tauri-apps/api/core";
 
+export const WEATHER_REFRESH_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
+
 export type WeatherCache = {
   data: WeatherData;
   cachedAt: Date;

@@ -22,7 +22,7 @@ function WeatherCard({ currentWeather, unit, loading, error, onRetry }: WeatherC
       </div>
     ) : currentWeather ? (
       <div className="weather-card">
-        <h2 className="ct-section-title">Today's Weather</h2>
+        <h2 className="ct-section-title">Current Weather</h2>
         <div className="weather-stats">
           <PixelIcon
             className="weather-stat__icon weather-stat__icon--large"
