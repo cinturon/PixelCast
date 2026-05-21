@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { toWeatherError } from "./errors";
 
 export type Settings = {
   city: string;
@@ -7,15 +8,20 @@ export type Settings = {
   longitude: number;
   enableRainEffect: boolean;
   launchAtStartup: boolean;
-}
+};
 
 export const saveSettings = async (settings: Settings) => {
-  await invoke("save_settings", {
-    settings
-  });
-}
+  try {
+    await invoke("save_settings", { settings });
+  } catch (error) {
+    throw toWeatherError(error);
+  }
+};
 
 export const loadSettings = async () => {
-  const settings = await invoke<Settings>("load_settings");
-  return settings;
-}
+  try {
+    return await invoke<Settings>("load_settings");
+  } catch (error) {
+    throw toWeatherError(error);
+  }
+};

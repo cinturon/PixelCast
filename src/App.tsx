@@ -10,6 +10,7 @@ import { listen } from "@tauri-apps/api/event";
 import { RAINY_CONDITIONS } from "./conditions";
 import { loadSettings, saveSettings } from "./utils/settings";
 import { WeatherData, WeatherError, TemperatureUnit } from "./utils/weatherStructs";
+import { toWeatherError } from "./utils/errors";
 import { loadDataFromCache, saveWeatherCache, isCacheExpired } from "./utils/cache";
 import { callAPI, getGeolocationResponseLatandLong } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
@@ -37,6 +38,7 @@ function App() {
 
   const loadData = async () => {
     setLoading(true);
+    setError(undefined);
 
     try {
       await handleLoadFromCache();
@@ -44,7 +46,7 @@ function App() {
       try {
         await handleApiCall();
       } catch (error) {
-        setError(error as WeatherError);
+        setError(toWeatherError(error));
       }
     } finally {
       setLoading(false);
@@ -53,10 +55,11 @@ function App() {
 
   const refreshData = async () => {
     setLoading(true);
+    setError(undefined);
     try {
       await handleApiCall();
     } catch (error) {
-      setError(error as WeatherError);
+      setError(toWeatherError(error));
     } finally {
       setLoading(false);
     }
@@ -78,14 +81,13 @@ function App() {
 
   const handleApiCall = async () => {
     const data = await callAPI();
-
-    console.log("API call data", data);
     setData(data);
+    setError(undefined);
     setLastRefreshTime(new Date());
     try {
       await saveWeatherCache(data);
     } catch (error) {
-      console.warn("Failed to save weather cache", error);
+      setError(toWeatherError(error));
     }
   };
 
@@ -97,7 +99,7 @@ function App() {
       try {
         await handleApiCall();
       } catch (error) {
-        setError(error as WeatherError);
+        setError(toWeatherError(error));
       }
     } else {
       setLastRefreshTime(new Date(cache.cachedAt));
@@ -107,33 +109,34 @@ function App() {
   const handleSaveSettings = async () => {
 
     try {
-    const { latitude, longitude } = await getGeolocationResponseLatandLong(city);
-    setLatitude(latitude);
-    setLongitude(longitude);
+      const { latitude, longitude } = await getGeolocationResponseLatandLong(city);
+      setLatitude(latitude);
+      setLongitude(longitude);
 
-    await saveSettings({
-      city,
-      temperatureUnit: unit,
-      latitude,
-      longitude,
-      enableRainEffect,
-      launchAtStartup,
-    });
-
-
-    setSettingsOpen(false);
-    await refreshData();
-    } catch (error) {
-      setError({
-        errorType: "API",
-        message: error instanceof Error ? error.message : String(error),
+      await saveSettings({
+        city,
+        temperatureUnit: unit,
+        latitude,
+        longitude,
+        enableRainEffect,
+        launchAtStartup,
       });
+
+      setSettingsOpen(false);
+      await refreshData();
+    } catch (error) {
+      setError(toWeatherError(error));
     }
   };
 
   const handleCloseSettings = async () => {
-    await getSettings();
-    setSettingsOpen(false);
+    try {
+      await getSettings();
+      setSettingsOpen(false);
+    } catch (error) {
+      setError(toWeatherError(error));
+      setSettingsOpen(false);
+    }
   };
 
   const handleRetry = async () => {

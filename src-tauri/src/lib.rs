@@ -35,7 +35,7 @@ use utils::settings::Settings;
 #[tauri::command]
 async fn get_data(app: tauri::AppHandle) -> Result<WeatherDataResponse, PixelCastError> {
     let settings = utils::settings::load_or_create_settings(&app)
-        .map_err(|error| PixelCastError::api(error.to_string()))?;
+        .map_err(|error| PixelCastError::filesystem(error.to_string()))?;
 
     let latitude = settings.latitude.to_string();
     let longitude = settings.longitude.to_string();
@@ -54,22 +54,33 @@ async fn get_data(app: tauri::AppHandle) -> Result<WeatherDataResponse, PixelCas
 
 #[tauri::command]
 async fn get_long_and_lat(city: &str) -> Result<GeoLocationResponse, PixelCastError> {
-    let response = get_geolocation(city).await?;
+    let trimmed = city.trim();
+    if trimmed.is_empty() {
+        return Err(PixelCastError::api("City name cannot be empty"));
+    }
+
+    let response = get_geolocation(trimmed).await?;
+    if response.results.is_empty() {
+        return Err(PixelCastError::api(format!(
+            "No location found for \"{trimmed}\""
+        )));
+    }
+
     Ok(response)
 }
 
 #[tauri::command]
 async fn save_settings(app: tauri::AppHandle, settings: Settings) -> Result<(), String> {
     utils::settings::apply_launch_at_startup(&app, settings.launch_at_startup)
-        .map_err(|error| error.to_string())?;
-    utils::settings::save_settings(&app, &settings).map_err(|error| error.to_string())?;
+        .map_err(|e| e.to_string())?;
+    utils::settings::save_settings(&app, &settings)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
 #[tauri::command]
 async fn load_settings(app: tauri::AppHandle) -> Result<Settings, String> {
-    let settings = utils::settings::load_settings(&app).map_err(|error| error.to_string())?;
-    Ok(settings)
+    utils::settings::load_or_create_settings(&app).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -78,14 +89,13 @@ async fn save_weather_cache(
     weather_data_response: WeatherDataResponse,
 ) -> Result<(), String> {
     utils::cache::save_weather_cache(&app, &weather_data_response)
-        .map_err(|error| error.to_string())?;
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
 #[tauri::command]
 async fn load_weather_cache(app: tauri::AppHandle) -> Result<WeatherCache, String> {
-    let cache = utils::cache::load_weather_cache(&app).map_err(|error| error.to_string())?;
-    Ok(cache)
+    utils::cache::load_weather_cache(&app).map_err(|e| e.to_string())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

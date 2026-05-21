@@ -9,3 +9,8 @@ export type GeoLocationResult = {
     timezone: string;
     country: string;
 }
+
+export type PixelCastError = {
+    errorType: "API" | "Geolocation";
+    message: string;
+}
