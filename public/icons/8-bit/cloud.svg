@@ -1,0 +1,175 @@
+<svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fluffy 8-bit cloud, 8x8 grid, more bumps, rounder, taller -->
+  <!-- W=#FFFFFF, L=#DDEEFF, M=#AACCEE, D=#6688BB, K=#111111 -->
+
+  <!-- === BUMP 1: far left small === -->
+  <rect x="24"  y="128" width="32"  height="8"  fill="#111"/>
+  <rect x="16"  y="136" width="8"   height="8"  fill="#111"/>
+  <rect x="24"  y="136" width="32"  height="8"  fill="#FFFFFF"/>
+  <rect x="56"  y="136" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="144" width="8"   height="16" fill="#111"/>
+  <rect x="24"  y="144" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="32"  y="144" width="16"  height="8"  fill="#DDEEFF"/>
+  <rect x="48"  y="144" width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="56"  y="144" width="8"   height="8"  fill="#111"/>
+  <rect x="24"  y="152" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="32"  y="152" width="16"  height="8"  fill="#DDEEFF"/>
+  <rect x="48"  y="152" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="56"  y="152" width="8"   height="8"  fill="#111"/>
+
+  <!-- === BUMP 2: center-left tall === -->
+  <rect x="56"  y="88"  width="56"  height="8"  fill="#111"/>
+  <rect x="48"  y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="56"  y="96"  width="56"  height="8"  fill="#FFFFFF"/>
+  <rect x="112" y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="48"  y="104" width="8"   height="8"  fill="#111"/>
+  <rect x="56"  y="104" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="64"  y="104" width="40"  height="8"  fill="#DDEEFF"/>
+  <rect x="104" y="104" width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="112" y="104" width="8"   height="8"  fill="#111"/>
+  <rect x="48"  y="112" width="8"   height="8"  fill="#111"/>
+  <rect x="56"  y="112" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="64"  y="112" width="40"  height="8"  fill="#DDEEFF"/>
+  <rect x="104" y="112" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="112" y="112" width="8"   height="8"  fill="#111"/>
+  <rect x="48"  y="120" width="8"   height="8"  fill="#111"/>
+  <rect x="56"  y="120" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="64"  y="120" width="40"  height="8"  fill="#DDEEFF"/>
+  <rect x="104" y="120" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="112" y="120" width="8"   height="8"  fill="#111"/>
+
+  <!-- === BUMP 3: center bump (tallest) === -->
+  <rect x="96"  y="64"  width="64"  height="8"  fill="#111"/>
+  <rect x="88"  y="72"  width="8"   height="8"  fill="#111"/>
+  <rect x="96"  y="72"  width="64"  height="8"  fill="#FFFFFF"/>
+  <rect x="160" y="72"  width="8"   height="8"  fill="#111"/>
+  <rect x="88"  y="80"  width="8"   height="8"  fill="#111"/>
+  <rect x="96"  y="80"  width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="104" y="80"  width="48"  height="8"  fill="#DDEEFF"/>
+  <rect x="152" y="80"  width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="160" y="80"  width="8"   height="8"  fill="#111"/>
+  <rect x="88"  y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="96"  y="88"  width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="104" y="88"  width="48"  height="8"  fill="#DDEEFF"/>
+  <rect x="152" y="88"  width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="160" y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="88"  y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="96"  y="96"  width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="104" y="96"  width="48"  height="8"  fill="#DDEEFF"/>
+  <rect x="152" y="96"  width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="160" y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="88"  y="104" width="8"   height="8"  fill="#111"/>
+  <rect x="96"  y="104" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="104" y="104" width="48"  height="8"  fill="#DDEEFF"/>
+  <rect x="152" y="104" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="160" y="104" width="8"   height="8"  fill="#111"/>
+
+  <!-- === BUMP 4: center-right tall === -->
+  <rect x="144" y="80"  width="56"  height="8"  fill="#111"/>
+  <rect x="144" y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="152" y="88"  width="48"  height="8"  fill="#FFFFFF"/>
+  <rect x="200" y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="144" y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="152" y="96"  width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="160" y="96"  width="32"  height="8"  fill="#DDEEFF"/>
+  <rect x="192" y="96"  width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="200" y="96"  width="8"   height="8"  fill="#111"/>
+  <rect x="144" y="104" width="8"   height="8"  fill="#111"/>
+  <rect x="152" y="104" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="160" y="104" width="32"  height="8"  fill="#DDEEFF"/>
+  <rect x="192" y="104" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="200" y="104" width="8"   height="8"  fill="#111"/>
+  <rect x="144" y="112" width="8"   height="8"  fill="#111"/>
+  <rect x="152" y="112" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="160" y="112" width="32"  height="8"  fill="#DDEEFF"/>
+  <rect x="192" y="112" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="200" y="112" width="8"   height="8"  fill="#111"/>
+
+  <!-- === BUMP 5: far right small === -->
+  <rect x="184" y="112" width="48"  height="8"  fill="#111"/>
+  <rect x="184" y="120" width="8"   height="8"  fill="#111"/>
+  <rect x="192" y="120" width="40"  height="8"  fill="#FFFFFF"/>
+  <rect x="232" y="120" width="8"   height="8"  fill="#111"/>
+  <rect x="184" y="128" width="8"   height="8"  fill="#111"/>
+  <rect x="192" y="128" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="200" y="128" width="24"  height="8"  fill="#DDEEFF"/>
+  <rect x="224" y="128" width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="232" y="128" width="8"   height="8"  fill="#111"/>
+  <rect x="184" y="136" width="8"   height="8"  fill="#111"/>
+  <rect x="192" y="136" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="200" y="136" width="24"  height="8"  fill="#DDEEFF"/>
+  <rect x="224" y="136" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="232" y="136" width="8"   height="8"  fill="#111"/>
+
+  <!-- === MAIN BODY === -->
+  <!-- Top connector row -->
+  <rect x="16"  y="160" width="216" height="8"  fill="#111"/>
+
+  <!-- Body row y=168 -->
+  <rect x="8"   y="168" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="168" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="168" width="192" height="8"  fill="#DDEEFF"/>
+  <rect x="216" y="168" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="224" y="168" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="232" y="168" width="8"   height="8"  fill="#111"/>
+
+  <!-- Body row y=176 -->
+  <rect x="8"   y="176" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="176" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="176" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="32"  y="176" width="176" height="8"  fill="#DDEEFF"/>
+  <rect x="208" y="176" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="216" y="176" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="224" y="176" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="232" y="176" width="8"   height="8"  fill="#111"/>
+
+  <!-- Body row y=184 -->
+  <rect x="8"   y="184" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="184" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="184" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="32"  y="184" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="40"  y="184" width="168" height="8"  fill="#DDEEFF"/>
+  <rect x="208" y="184" width="8"   height="8"  fill="#AACCEE"/>
+  <rect x="216" y="184" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="224" y="184" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="232" y="184" width="8"   height="8"  fill="#111"/>
+
+  <!-- Body row y=192 (shadow band) -->
+  <rect x="8"   y="192" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="192" width="8"   height="8"  fill="#DDEEFF"/>
+  <rect x="24"  y="192" width="192" height="8"  fill="#AACCEE"/>
+  <rect x="216" y="192" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="224" y="192" width="8"   height="8"  fill="#6688BB"/>
+  <rect x="232" y="192" width="8"   height="8"  fill="#111"/>
+
+  <!-- Body row y=200 (dark shadow) -->
+  <rect x="8"   y="200" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="200" width="216" height="8"  fill="#6688BB"/>
+  <rect x="232" y="200" width="8"   height="8"  fill="#111"/>
+
+  <!-- Bottom edge -->
+  <rect x="8"   y="208" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="208" width="216" height="8"  fill="#6688BB"/>
+  <rect x="232" y="208" width="8"   height="8"  fill="#111"/>
+
+  <rect x="16"  y="216" width="8"   height="8"  fill="#111"/>
+  <rect x="24"  y="216" width="200" height="8"  fill="#111"/>
+  <rect x="224" y="216" width="8"   height="8"  fill="#111"/>
+
+  <!-- === SHINE HIGHLIGHTS on body === -->
+  <rect x="24"  y="168" width="40"  height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="176" width="32"  height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="184" width="24"  height="8"  fill="#FFFFFF"/>
+
+  <!-- Extra fluffy mini-bump left side -->
+  <rect x="8"   y="144" width="16"  height="8"  fill="#111"/>
+  <rect x="8"   y="152" width="8"   height="8"  fill="#111"/>
+  <rect x="16"  y="152" width="8"   height="8"  fill="#FFFFFF"/>
+  <rect x="24"  y="152" width="0"   height="8"  fill="#111"/>
+
+  <!-- Extra fluffy mini-bump right side -->
+  <rect x="232" y="144" width="16"  height="8"  fill="#111"/>
+  <rect x="240" y="152" width="8"   height="8"  fill="#111"/>
+  <rect x="232" y="152" width="8"   height="8"  fill="#FFFFFF"/>
+
+</svg>

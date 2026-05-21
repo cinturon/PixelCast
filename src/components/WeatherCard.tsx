@@ -1,5 +1,5 @@
 import { TemperatureUnit, CurrentWeatherData, WeatherError } from "../utils/weatherStructs";
-import { getWeatherIcon } from "../api/data";
+import { getImage } from "../utils/images";
 import { formatTemperature } from "../utils/utils";
 import { PixelIcon } from "./PixelIcon";
 
@@ -13,22 +13,24 @@ export type WeatherCardProps = {
 
 function WeatherCard({ currentWeather, unit, loading, error, onRetry }: WeatherCardProps) {
   return (
-    loading ? (
-      <p className="weather-placeholder">Loading Current Weather</p>
-    ) : error ? (
-      <div className="weather-placeholder">
-        <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
-        <button type="button" onClick={onRetry}>Retry</button>
-      </div>
-    ) : currentWeather ? (
-      <div className="weather-card">
-        <h2 className="ct-section-title">Current Weather</h2>
+    <div className="weather-card">
+      <h2 className="ct-section-title">Current Weather</h2>
+      {loading ? (
+        <p className="weather-placeholder">Loading Current Weather</p>
+      ) : error ? (
+        <div className="weather-placeholder">
+          <p>Error Loading Current Weather: {error.errorType} - {error.message}</p>
+          <button type="button" onClick={onRetry}>Retry</button>
+        </div>
+      ) : currentWeather ? (
         <div className="weather-stats">
-          <PixelIcon
-            className="weather-stat__icon weather-stat__icon--large"
-            icon={getWeatherIcon(currentWeather.weatherCondition)}
-            condition={currentWeather.weatherCondition}
-          />
+          <div className="weather-card__hero">
+            <PixelIcon
+              className="weather-stat__icon weather-stat__icon--large"
+              icon={getImage(currentWeather.weatherCondition)}
+              condition={currentWeather.weatherCondition}
+            />
+          </div>
           <p className="weather-flavor">{currentWeather.weatherFlavor}</p>
           <div className="weather-stat">
             <span className="weather-stat__label">Temperature</span>
@@ -45,10 +47,10 @@ function WeatherCard({ currentWeather, unit, loading, error, onRetry }: WeatherC
             <span className="weather-stat__value">{currentWeather.precipitation}%</span>
           </div>
         </div>
-      </div>
-    ) : (
-      <p className="weather-placeholder">Loading Current Weather</p>
-    )
+      ) : (
+        <p className="weather-placeholder">Loading Current Weather</p>
+      )}
+    </div>
   );
 }
 

@@ -8,6 +8,8 @@ pub enum Theme {
     Chrono,
     #[serde(rename = "8bit")]
     EightBit,
+    Fall,
+    Winter,
 }
 
 impl Default for Theme {

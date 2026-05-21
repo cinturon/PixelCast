@@ -120,3 +120,211 @@
 [data-theme="8bit"] select {
   border-radius: 0;
 }
+
+/* Fall — harvest dusk: maple panels, pumpkin chrome, wheat text, amber accents */
+[data-theme="fall"] {
+  --ct-void: #140c08;
+  --ct-void-mid: #221410;
+  --ct-panel-top: #e88838;
+  --ct-panel-mid: #c06020;
+  --ct-panel-deep: #884018;
+  --ct-panel-shadow: #381408;
+  --ct-panel-end: #5c2810;
+  --ct-border-hi: #fff4d0;
+  --ct-border-lo: #502818;
+  --ct-inner-glow: rgba(255, 200, 120, 0.28);
+  --ct-gold: #f8c868;
+  --ct-gold-shine: #fff8d8;
+  --ct-gold-dim: #b88830;
+  --ct-text: #fff0d8;
+  --ct-text-muted: #d8b890;
+  --ct-cursor: #e85820;
+  --ct-cursor-glow: rgba(232, 88, 32, 0.45);
+  --ct-row-hover: rgba(248, 168, 72, 0.22);
+  --ct-row-line: rgba(255, 240, 200, 0.12);
+  --ct-bg-spot: #703820;
+  --ct-bg-floor: #281008;
+  --ct-bg-end: #0c0604;
+  --ct-title-shadow: #381008;
+  --ct-city-border: rgba(255, 228, 160, 0.7);
+  --ct-city-hover: #fff8d8;
+  --ct-rain-a: rgba(255, 220, 160, 0.38);
+  --ct-rain-b: rgba(216, 160, 96, 0.24);
+  --ct-scanline-opacity: 0.22;
+}
+
+[data-theme="fall"] .ct-app-title,
+[data-theme="fall"] .ct-section-title,
+[data-theme="fall"] .ct-city-title {
+  color: var(--ct-gold-shine);
+  text-shadow:
+    2px 2px 0 var(--ct-title-shadow),
+    0 0 12px rgba(248, 168, 72, 0.35);
+}
+
+[data-theme="fall"] .ct-section-title {
+  color: var(--ct-gold);
+}
+
+[data-theme="fall"] .container::after {
+  mix-blend-mode: overlay;
+  background-image:
+    linear-gradient(rgba(255, 200, 120, 0.05), rgba(80, 40, 16, 0.08)),
+    repeating-linear-gradient(
+      180deg,
+      rgba(40, 20, 8, 0.2) 0 1px,
+      rgba(255, 220, 160, 0.04) 1px 2px,
+      transparent 2px 4px
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 55%,
+      rgba(20, 8, 4, 0.28) 100%
+    );
+}
+
+[data-theme="fall"] .retro-panel {
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px var(--ct-border-hi),
+    inset 0 -8px 16px rgba(56, 24, 8, 0.35),
+    0 4px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="fall"] .status-bar {
+  box-shadow:
+    inset 0 0 0 1px var(--ct-border-hi),
+    0 3px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="fall"] .forecast-row:hover,
+[data-theme="fall"] .forecast-row:focus-within {
+  box-shadow: inset 4px 0 0 var(--ct-cursor);
+  background: linear-gradient(
+    90deg,
+    var(--ct-row-hover) 0%,
+    transparent 55%
+  );
+}
+
+[data-theme="fall"] .weather-stat__value--condition,
+[data-theme="fall"] .forecast-row__condition {
+  color: var(--ct-gold-shine);
+}
+
+[data-theme="fall"] .forecast-row__rain {
+  color: var(--ct-gold);
+}
+
+[data-theme="fall"] a {
+  color: var(--ct-gold-shine);
+}
+
+[data-theme="fall"] a:hover {
+  color: var(--ct-city-hover);
+}
+
+/* Winter — frost twilight: ice panels, slate chrome, snow text, cyan accents */
+[data-theme="winter"] {
+  --ct-void: #080c18;
+  --ct-void-mid: #101828;
+  --ct-panel-top: #88b8e8;
+  --ct-panel-mid: #5078b8;
+  --ct-panel-deep: #284878;
+  --ct-panel-shadow: #081838;
+  --ct-panel-end: #183058;
+  --ct-border-hi: #f0fcff;
+  --ct-border-lo: #304060;
+  --ct-inner-glow: rgba(168, 220, 255, 0.26);
+  --ct-gold: #c8e8ff;
+  --ct-gold-shine: #f8fcff;
+  --ct-gold-dim: #88b0d8;
+  --ct-text: #e8f4ff;
+  --ct-text-muted: #a8c0e0;
+  --ct-cursor: #68e8ff;
+  --ct-cursor-glow: rgba(104, 232, 255, 0.42);
+  --ct-row-hover: rgba(168, 220, 255, 0.2);
+  --ct-row-line: rgba(240, 252, 255, 0.14);
+  --ct-bg-spot: #284878;
+  --ct-bg-floor: #101830;
+  --ct-bg-end: #040810;
+  --ct-title-shadow: #102040;
+  --ct-city-border: rgba(200, 232, 255, 0.72);
+  --ct-city-hover: #f8fcff;
+  --ct-rain-a: rgba(232, 248, 255, 0.5);
+  --ct-rain-b: rgba(168, 208, 240, 0.3);
+  --ct-scanline-opacity: 0.24;
+}
+
+[data-theme="winter"] .ct-app-title,
+[data-theme="winter"] .ct-section-title,
+[data-theme="winter"] .ct-city-title {
+  color: var(--ct-gold-shine);
+  text-shadow:
+    2px 2px 0 var(--ct-title-shadow),
+    0 0 14px rgba(136, 200, 255, 0.4);
+}
+
+[data-theme="winter"] .ct-section-title {
+  color: var(--ct-gold);
+}
+
+[data-theme="winter"] .container::after {
+  mix-blend-mode: soft-light;
+  background-image:
+    linear-gradient(rgba(200, 232, 255, 0.06), rgba(16, 32, 64, 0.1)),
+    repeating-linear-gradient(
+      180deg,
+      rgba(8, 24, 48, 0.22) 0 1px,
+      rgba(240, 252, 255, 0.05) 1px 2px,
+      transparent 2px 4px
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 58%,
+      rgba(4, 12, 28, 0.3) 100%
+    );
+}
+
+[data-theme="winter"] .retro-panel {
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px var(--ct-border-hi),
+    inset 0 -6px 14px rgba(16, 40, 80, 0.4),
+    0 4px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="winter"] .status-bar {
+  box-shadow:
+    inset 0 0 0 1px var(--ct-border-hi),
+    0 3px 0 var(--ct-panel-shadow);
+}
+
+[data-theme="winter"] .forecast-row:hover,
+[data-theme="winter"] .forecast-row:focus-within {
+  box-shadow: inset 4px 0 0 var(--ct-cursor);
+  background: linear-gradient(
+    90deg,
+    var(--ct-row-hover) 0%,
+    transparent 55%
+  );
+}
+
+[data-theme="winter"] .weather-stat__value--condition,
+[data-theme="winter"] .forecast-row__condition {
+  color: var(--ct-gold-shine);
+}
+
+[data-theme="winter"] .forecast-row__rain {
+  color: var(--ct-gold);
+}
+
+[data-theme="winter"] a {
+  color: var(--ct-gold-shine);
+}
+
+[data-theme="winter"] a:hover {
+  color: var(--ct-city-hover);
+}

@@ -6,7 +6,8 @@ body,
 #root {
   margin: 0;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   background: transparent;
 }
 
@@ -27,7 +28,6 @@ body,
     radial-gradient(ellipse 120% 80% at 50% 20%, var(--ct-bg-spot) 0%, transparent 55%),
     radial-gradient(ellipse 90% 70% at 50% 100%, var(--ct-bg-floor) 0%, var(--ct-void) 45%),
     linear-gradient(180deg, var(--ct-void-mid) 0%, var(--ct-void) 40%, var(--ct-bg-end) 100%);
-  min-height: 100%;
 }
 
 .ct-app-title,
@@ -41,13 +41,16 @@ body,
   position: relative;
   margin: 0;
   width: 100%;
-  min-height: 100vh;
-  padding: 2rem 1rem 2.5rem;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 1rem 1rem 0.75rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  overflow: hidden;
   text-align: center;
 }
 
@@ -105,8 +108,9 @@ body,
 }
 
 .ct-header {
-  margin-bottom: 1.5rem;
-  padding: 0.75rem 1.5rem 1rem;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 1rem 0.35rem;
 }
 
 .ct-app-title {
@@ -124,9 +128,10 @@ body,
 }
 
 .status-bar {
+  flex-shrink: 0;
   width: 100%;
   max-width: 52rem;
-  margin-top: 1rem;
+  margin-top: 0.65rem;
   padding: 0.4rem 0.85rem;
   box-sizing: border-box;
   border-radius: 2px;
@@ -204,19 +209,22 @@ body,
 
 .row {
   display: flex;
+  flex: 1;
   width: 100%;
   max-width: 52rem;
+  min-height: 0;
   align-items: stretch;
-  gap: 1.25rem;
+  gap: 1rem;
   justify-content: center;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 
 .column {
   display: flex;
   flex-direction: column;
-  flex: 1 1 16rem;
+  flex: 1 1 0;
   min-width: 0;
+  min-height: 0;
 }
 
 .retro-panel {
@@ -225,7 +233,7 @@ body,
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  min-height: 11rem;
+  min-height: 0;
   overflow: hidden;
   box-sizing: border-box;
   z-index: 0;
@@ -253,6 +261,8 @@ body,
 .retro-panel__body {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
   text-align: left;
@@ -271,7 +281,21 @@ body,
 .weather-card {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+}
+
+.forecast-panel__list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.15rem;
+  min-height: 0;
+  padding-bottom: 0.25rem;
+  box-sizing: border-box;
+  container-type: size;
 }
 
 .weather-card .ct-section-title {
@@ -280,8 +304,9 @@ body,
 }
 
 .ct-section-title {
-  margin: 0 0 0.65rem;
-  padding-bottom: 0.5rem;
+  flex-shrink: 0;
+  margin: 0 0 0.45rem;
+  padding-bottom: 0.4rem;
   font-size: 0.65rem;
   line-height: 1.45;
   color: var(--ct-gold);
@@ -291,16 +316,19 @@ body,
 }
 
 .forecast-row {
+  flex: 1 1 0;
   display: grid;
-  grid-template-columns: minmax(4.4rem, 1fr) 1.7rem minmax(3.6rem, 0.8fr) minmax(2.1rem, 0.4fr);
+  grid-template-columns: minmax(4.5rem, 1.1fr) 4.25rem minmax(3.25rem, 1fr) minmax(2.5rem, 0.75fr);
+  grid-template-rows: auto auto;
   grid-template-areas:
     "day icon temps rain"
     "condition condition condition condition";
   align-items: center;
-  column-gap: 0.3rem;
+  column-gap: 0.45rem;
   row-gap: 0.15rem;
-  padding: 0.45rem 0.35rem 0.45rem 0.55rem;
-  margin: 0 -0.2rem;
+  padding: 0.3rem 0.35rem;
+  margin: 0;
+  min-height: 0;
   border-bottom: 1px solid var(--ct-row-line);
   font-size: 0.98rem;
   color: var(--ct-text);
@@ -330,11 +358,16 @@ body,
 
 .forecast-row__icon {
   grid-area: icon;
-  width: 1.55rem;
-  height: 1.55rem;
+  display: block;
+  width: min(4.25rem, 100%);
+  height: auto;
+  max-height: min(2.35rem, 18cqh);
+  aspect-ratio: 16 / 9;
   justify-self: center;
-  image-rendering: pixelated;
+  align-self: center;
   object-fit: contain;
+  object-position: center;
+  image-rendering: pixelated;
 }
 
 .forecast-row__temps {
@@ -392,16 +425,33 @@ body,
 .weather-stats {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  flex: 1;
+  min-height: 0;
+  gap: 0.35rem;
   margin-top: 0;
+  overflow: hidden;
+}
+
+.weather-card__hero {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .weather-stat {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  padding: 0.45rem 0.6rem;
+  justify-content: center;
+  gap: 0.1rem;
+  min-height: 0;
+  padding: 0.35rem 0.5rem;
   text-align: center;
   border-radius: 1px;
   background: rgba(0, 8, 40, 0.28);
@@ -431,10 +481,11 @@ body,
 }
 
 .weather-flavor {
+  flex-shrink: 0;
   margin: 0;
-  padding: 0.6rem 0.75rem;
+  padding: 0.45rem 0.6rem;
   color: var(--ct-gold);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   line-height: 1.2;
   text-align: center;
   background: rgba(0, 8, 40, 0.18);
@@ -443,22 +494,37 @@ body,
 }
 
 .weather-stat__icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  align-self: center;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  align-self: stretch;
+  object-fit: cover;
+  object-position: center;
   image-rendering: pixelated;
-  object-fit: contain;
 }
 
-.weather-stat__icon--large {
-  width: 5rem;
-  height: 5rem;
-  margin: -0.1rem auto 0.25rem;
+.weather-card__hero .weather-stat__icon--large {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  aspect-ratio: unset;
+  object-fit: cover;
+  object-position: center;
 }
 
 .weather-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   margin: 0;
-  padding: 1.5rem 0.5rem;
+  padding: 1rem 0.5rem;
+  min-height: 0;
   text-align: center;
   color: var(--ct-text-muted);
   font-size: 1.15rem;
@@ -650,12 +716,21 @@ button {
 }
 
 @media (max-width: 36rem) {
+  .container {
+    padding: 0.75rem 0.65rem 0.5rem;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
   .forecast-row {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(3.75rem, 4.5rem) minmax(0, 1fr);
     grid-template-areas:
       "day icon rain"
       "temps temps temps"
       "condition condition condition";
+    min-height: 0;
   }
 
   .forecast-row__temps,

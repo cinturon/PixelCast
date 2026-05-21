@@ -1,0 +1,141 @@
+<svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 8-bit snowflake, 16x16 pixel grid, transparent background -->
+  <!-- Center at 128,128. 6-fold symmetry built from pixel blocks -->
+  <!-- Color palette: white core, light blue mid, blue outline -->
+
+  <!-- === VERTICAL SPINE === -->
+  <rect x="112" y="0"   width="32" height="16" fill="#111"/>
+  <rect x="112" y="16"  width="32" height="16" fill="#AADDFF"/>
+  <rect x="112" y="32"  width="32" height="16" fill="#AADDFF"/>
+  <rect x="112" y="48"  width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="64"  width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="80"  width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="96"  width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="112" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="128" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="144" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="160" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="176" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="192" width="32" height="16" fill="#FFFFFF"/>
+  <rect x="112" y="208" width="32" height="16" fill="#AADDFF"/>
+  <rect x="112" y="224" width="32" height="16" fill="#AADDFF"/>
+  <rect x="112" y="240" width="32" height="16" fill="#111"/>
+
+  <!-- === HORIZONTAL SPINE === -->
+  <rect x="0"   y="112" width="16" height="32" fill="#111"/>
+  <rect x="16"  y="112" width="16" height="32" fill="#AADDFF"/>
+  <rect x="32"  y="112" width="16" height="32" fill="#AADDFF"/>
+  <rect x="48"  y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="64"  y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="80"  y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="96"  y="112" width="16" height="32" fill="#FFFFFF"/>
+  <!-- center handled by spine overlap -->
+  <rect x="144" y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="160" y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="176" y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="192" y="112" width="16" height="32" fill="#FFFFFF"/>
+  <rect x="208" y="112" width="16" height="32" fill="#AADDFF"/>
+  <rect x="224" y="112" width="16" height="32" fill="#AADDFF"/>
+  <rect x="240" y="112" width="16" height="32" fill="#111"/>
+
+  <!-- === DIAGONAL: top-left to bottom-right === -->
+  <rect x="16"  y="16"  width="32" height="32" fill="#111"/>
+  <rect x="32"  y="32"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="48"  y="48"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="64"  y="64"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="80"  y="80"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="96"  y="96"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="144" y="144" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="160" y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="176" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="192" y="192" width="16" height="16" fill="#AADDFF"/>
+  <rect x="208" y="208" width="16" height="16" fill="#AADDFF"/>
+  <rect x="208" y="208" width="32" height="32" fill="#111"/>
+
+  <!-- === DIAGONAL: top-right to bottom-left === -->
+  <rect x="208" y="16"  width="32" height="32" fill="#111"/>
+  <rect x="208" y="32"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="192" y="48"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="176" y="64"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="160" y="80"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="144" y="96"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="96"  y="144" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="80"  y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="176" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="48"  y="192" width="16" height="16" fill="#AADDFF"/>
+  <rect x="32"  y="208" width="16" height="16" fill="#AADDFF"/>
+  <rect x="16"  y="208" width="32" height="32" fill="#111"/>
+
+  <!-- === BRANCH TICKS on vertical spine === -->
+  <!-- top arm ticks (y=48 level) -->
+  <rect x="80"  y="48"  width="16" height="16" fill="#111"/>
+  <rect x="80"  y="64"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="64"  width="16" height="16" fill="#111"/>
+  <rect x="160" y="48"  width="16" height="16" fill="#111"/>
+  <rect x="160" y="64"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="64"  width="16" height="16" fill="#111"/>
+
+  <!-- top arm ticks (y=80 level) -->
+  <rect x="80"  y="80"  width="16" height="16" fill="#111"/>
+  <rect x="80"  y="96"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="96"  width="16" height="16" fill="#111"/>
+  <rect x="160" y="80"  width="16" height="16" fill="#111"/>
+  <rect x="160" y="96"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="96"  width="16" height="16" fill="#111"/>
+
+  <!-- bottom arm ticks -->
+  <rect x="80"  y="192" width="16" height="16" fill="#111"/>
+  <rect x="80"  y="176" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="176" width="16" height="16" fill="#111"/>
+  <rect x="160" y="192" width="16" height="16" fill="#111"/>
+  <rect x="160" y="176" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="176" width="16" height="16" fill="#111"/>
+
+  <rect x="80"  y="160" width="16" height="16" fill="#111"/>
+  <rect x="80"  y="144" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="144" width="16" height="16" fill="#111"/>
+  <rect x="160" y="160" width="16" height="16" fill="#111"/>
+  <rect x="160" y="144" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="144" width="16" height="16" fill="#111"/>
+
+  <!-- === BRANCH TICKS on horizontal spine === -->
+  <!-- left arm ticks -->
+  <rect x="48"  y="80"  width="16" height="16" fill="#111"/>
+  <rect x="64"  y="80"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="64"  width="16" height="16" fill="#111"/>
+  <rect x="48"  y="160" width="16" height="16" fill="#111"/>
+  <rect x="64"  y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="64"  y="176" width="16" height="16" fill="#111"/>
+
+  <rect x="80"  y="80"  width="16" height="16" fill="#111"/>
+  <rect x="96"  y="80"  width="16" height="16" fill="#FFFFFF"/>  
+  <rect x="96"  y="64"  width="16" height="16" fill="#111"/>
+  <rect x="80"  y="160" width="16" height="16" fill="#111"/>
+  <rect x="96"  y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="96"  y="176" width="16" height="16" fill="#111"/>
+
+  <!-- right arm ticks -->
+  <rect x="192" y="80"  width="16" height="16" fill="#111"/>
+  <rect x="176" y="80"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="64"  width="16" height="16" fill="#111"/>
+  <rect x="192" y="160" width="16" height="16" fill="#111"/>
+  <rect x="176" y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="176" y="176" width="16" height="16" fill="#111"/>
+
+  <rect x="160" y="80"  width="16" height="16" fill="#111"/>
+  <rect x="144" y="80"  width="16" height="16" fill="#FFFFFF"/>
+  <rect x="144" y="64"  width="16" height="16" fill="#111"/>
+  <rect x="160" y="160" width="16" height="16" fill="#111"/>
+  <rect x="144" y="160" width="16" height="16" fill="#FFFFFF"/>
+  <rect x="144" y="176" width="16" height="16" fill="#111"/>
+
+  <!-- === CENTER CLUSTER === -->
+  <rect x="96"  y="96"  width="64" height="64" fill="#FFFFFF"/>
+  <rect x="96"  y="96"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="144" y="96"  width="16" height="16" fill="#AADDFF"/>
+  <rect x="96"  y="144" width="16" height="16" fill="#AADDFF"/>
+  <rect x="144" y="144" width="16" height="16" fill="#AADDFF"/>
+  <!-- center bright -->
+  <rect x="112" y="112" width="32" height="32" fill="#FFFFFF"/>
+
+</svg>

@@ -1,4 +1,4 @@
-import { getWeatherIcon } from "../api/data";
+import { getWeatherIcon } from "../utils/images";
 import { Forecast, TemperatureUnit } from "../utils/weatherStructs";
 import { formatTemperature } from "../utils/utils";
 import { PixelIcon } from "./PixelIcon";

@@ -24,9 +24,11 @@ function ForecastPanel({ forecasts, unit, loading, error, onRetry }: ForecastPan
           ) : (
         <div className="forecast-panel">
             <h2 className="ct-section-title">Forecast</h2>
-            {forecasts.map((forecast) => (
+            <div className="forecast-panel__list">
+              {forecasts.map((forecast) => (
                 <ForecastRow key={forecast.date} forecast={forecast} unit={unit} />
-            ))}
+              ))}
+            </div>
         </div>
     ))
 }

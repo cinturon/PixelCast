@@ -1,0 +1,169 @@
+<svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 8-bit sun, 8x8 pixel grid, transparent background -->
+  <!-- Colors: #111 outline, #FFFFFF bright center, #FFE800 yellow, #FFA500 orange, #FF6600 dark orange -->
+
+  <!-- === RAYS === -->
+  <!-- TOP RAY -->
+  <rect x="120" y="0"   width="16" height="8"  fill="#111"/>
+  <rect x="120" y="8"   width="16" height="8"  fill="#FFE800"/>
+  <rect x="120" y="16"  width="16" height="8"  fill="#FFE800"/>
+  <rect x="120" y="24"  width="16" height="8"  fill="#FFA500"/>
+  <rect x="112" y="0"   width="8"  height="8"  fill="#111"/>
+  <rect x="136" y="0"   width="8"  height="8"  fill="#111"/>
+
+  <!-- BOTTOM RAY -->
+  <rect x="120" y="248" width="16" height="8"  fill="#111"/>
+  <rect x="120" y="240" width="16" height="8"  fill="#FFE800"/>
+  <rect x="120" y="232" width="16" height="8"  fill="#FFE800"/>
+  <rect x="120" y="224" width="16" height="8"  fill="#FFA500"/>
+  <rect x="112" y="248" width="8"  height="8"  fill="#111"/>
+  <rect x="136" y="248" width="8"  height="8"  fill="#111"/>
+
+  <!-- LEFT RAY -->
+  <rect x="0"   y="120" width="8"  height="16" fill="#111"/>
+  <rect x="8"   y="120" width="8"  height="16" fill="#FFE800"/>
+  <rect x="16"  y="120" width="8"  height="16" fill="#FFE800"/>
+  <rect x="24"  y="120" width="8"  height="16" fill="#FFA500"/>
+  <rect x="0"   y="112" width="8"  height="8"  fill="#111"/>
+  <rect x="0"   y="136" width="8"  height="8"  fill="#111"/>
+
+  <!-- RIGHT RAY -->
+  <rect x="248" y="120" width="8"  height="16" fill="#111"/>
+  <rect x="240" y="120" width="8"  height="16" fill="#FFE800"/>
+  <rect x="232" y="120" width="8"  height="16" fill="#FFE800"/>
+  <rect x="224" y="120" width="8"  height="16" fill="#FFA500"/>
+  <rect x="248" y="112" width="8"  height="8"  fill="#111"/>
+  <rect x="248" y="136" width="8"  height="8"  fill="#111"/>
+
+  <!-- TOP-LEFT RAY (diagonal) -->
+  <rect x="32"  y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="40"  y="40"  width="8"  height="8"  fill="#FFE800"/>
+  <rect x="48"  y="48"  width="8"  height="8"  fill="#FFE800"/>
+  <rect x="56"  y="56"  width="8"  height="8"  fill="#FFA500"/>
+  <rect x="24"  y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="32"  y="24"  width="8"  height="8"  fill="#111"/>
+  <rect x="40"  y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="32"  y="40"  width="8"  height="8"  fill="#111"/>
+
+  <!-- TOP-RIGHT RAY (diagonal) -->
+  <rect x="216" y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="208" y="40"  width="8"  height="8"  fill="#FFE800"/>
+  <rect x="200" y="48"  width="8"  height="8"  fill="#FFE800"/>
+  <rect x="192" y="56"  width="8"  height="8"  fill="#FFA500"/>
+  <rect x="224" y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="216" y="24"  width="8"  height="8"  fill="#111"/>
+  <rect x="208" y="32"  width="8"  height="8"  fill="#111"/>
+  <rect x="216" y="40"  width="8"  height="8"  fill="#111"/>
+
+  <!-- BOTTOM-LEFT RAY (diagonal) -->
+  <rect x="32"  y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="40"  y="208" width="8"  height="8"  fill="#FFE800"/>
+  <rect x="48"  y="200" width="8"  height="8"  fill="#FFE800"/>
+  <rect x="56"  y="192" width="8"  height="8"  fill="#FFA500"/>
+  <rect x="24"  y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="32"  y="224" width="8"  height="8"  fill="#111"/>
+  <rect x="40"  y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="32"  y="208" width="8"  height="8"  fill="#111"/>
+
+  <!-- BOTTOM-RIGHT RAY (diagonal) -->
+  <rect x="216" y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="208" y="208" width="8"  height="8"  fill="#FFE800"/>
+  <rect x="200" y="200" width="8"  height="8"  fill="#FFE800"/>
+  <rect x="192" y="192" width="8"  height="8"  fill="#FFA500"/>
+  <rect x="224" y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="216" y="224" width="8"  height="8"  fill="#111"/>
+  <rect x="208" y="216" width="8"  height="8"  fill="#111"/>
+  <rect x="216" y="208" width="8"  height="8"  fill="#111"/>
+
+  <!-- === SUN BODY === -->
+  <!-- Outer outline ring -->
+  <!-- Top -->
+  <rect x="88"  y="40"  width="80" height="8"  fill="#111"/>
+  <!-- Bottom -->
+  <rect x="88"  y="208" width="80" height="8"  fill="#111"/>
+  <!-- Left -->
+  <rect x="40"  y="88"  width="8"  height="80" fill="#111"/>
+  <!-- Right -->
+  <rect x="208" y="88"  width="8"  height="80" fill="#111"/>
+  <!-- Top-left curve -->
+  <rect x="56"  y="56"  width="8"  height="8"  fill="#111"/>
+  <rect x="64"  y="48"  width="24" height="8"  fill="#111"/>
+  <rect x="48"  y="64"  width="8"  height="24" fill="#111"/>
+  <!-- Top-right curve -->
+  <rect x="192" y="56"  width="8"  height="8"  fill="#111"/>
+  <rect x="168" y="48"  width="24" height="8"  fill="#111"/>
+  <rect x="200" y="64"  width="8"  height="24" fill="#111"/>
+  <!-- Bottom-left curve -->
+  <rect x="56"  y="192" width="8"  height="8"  fill="#111"/>
+  <rect x="64"  y="200" width="24" height="8"  fill="#111"/>
+  <rect x="48"  y="160" width="8"  height="24" fill="#111"/>
+  <!-- Bottom-right curve -->
+  <rect x="192" y="192" width="8"  height="8"  fill="#111"/>
+  <rect x="168" y="200" width="24" height="8"  fill="#111"/>
+  <rect x="200" y="160" width="8"  height="24" fill="#111"/>
+
+  <!-- Outer orange ring fill -->
+  <rect x="88"  y="48"  width="80" height="8"  fill="#FFA500"/>
+  <rect x="88"  y="200" width="80" height="8"  fill="#FF6600"/>
+  <rect x="48"  y="88"  width="8"  height="80" fill="#FFA500"/>
+  <rect x="200" y="88"  width="8"  height="80" fill="#FF6600"/>
+  <rect x="64"  y="56"  width="24" height="8"  fill="#FFA500"/>
+  <rect x="56"  y="64"  width="8"  height="24" fill="#FFA500"/>
+  <rect x="168" y="56"  width="24" height="8"  fill="#FFA500"/>
+  <rect x="192" y="64"  width="8"  height="24" fill="#FF6600"/>
+  <rect x="64"  y="192" width="24" height="8"  fill="#FFA500"/>
+  <rect x="56"  y="168" width="8"  height="24" fill="#FFA500"/>
+  <rect x="168" y="192" width="24" height="8"  fill="#FF6600"/>
+  <rect x="192" y="168" width="8"  height="24" fill="#FF6600"/>
+
+  <!-- Mid yellow ring -->
+  <rect x="56"  y="88"  width="144" height="80" fill="#FFE800"/>
+  <rect x="88"  y="56"  width="80"  height="144" fill="#FFE800"/>
+  <rect x="64"  y="64"  width="16"  height="16" fill="#FFE800"/>
+  <rect x="176" y="64"  width="16"  height="16" fill="#FFE800"/>
+  <rect x="64"  y="176" width="16"  height="16" fill="#FFE800"/>
+  <rect x="176" y="176" width="16"  height="16" fill="#FFE800"/>
+
+  <!-- Inner bright yellow ring -->
+  <rect x="72"  y="72"  width="112" height="112" fill="#FFE800"/>
+
+  <!-- Inner white/bright core -->
+  <rect x="88"  y="80"  width="80"  height="8"  fill="#FFFFFF"/>
+  <rect x="88"  y="168" width="80"  height="8"  fill="#FFA500"/>
+  <rect x="80"  y="88"  width="8"   height="80" fill="#FFFFFF"/>
+  <rect x="168" y="88"  width="8"   height="80" fill="#FF6600"/>
+  <rect x="88"  y="88"  width="80"  height="80" fill="#FFFFFF"/>
+
+  <!-- Face highlight -->
+  <rect x="96"  y="96"  width="48"  height="40" fill="#FFFFFF"/>
+  <rect x="96"  y="136" width="48"  height="8"  fill="#FFE800"/>
+  <!-- Shine spots -->
+  <rect x="96"  y="96"  width="16"  height="16" fill="#FFFFFF"/>
+  <rect x="104" y="88"  width="8"   height="8"  fill="#FFFFFF"/>
+
+  <!-- Inner outline ring -->
+  <rect x="88"  y="88"  width="80"  height="8"  fill="#111"/>
+  <rect x="88"  y="160" width="80"  height="8"  fill="#111"/>
+  <rect x="88"  y="88"  width="8"   height="80" fill="#111"/>
+  <rect x="160" y="88"  width="8"   height="80" fill="#111"/>
+  <!-- inner corners -->
+  <rect x="88"  y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="160" y="88"  width="8"   height="8"  fill="#111"/>
+  <rect x="88"  y="160" width="8"   height="8"  fill="#111"/>
+  <rect x="160" y="160" width="8"   height="8"  fill="#111"/>
+
+  <!-- FACE -->
+  <!-- Left eye -->
+  <rect x="104" y="112" width="16"  height="16" fill="#111"/>
+  <rect x="104" y="112" width="8"   height="8"  fill="#FF6600"/>
+  <!-- Right eye -->
+  <rect x="136" y="112" width="16"  height="16" fill="#111"/>
+  <rect x="136" y="112" width="8"   height="8"  fill="#FF6600"/>
+  <!-- Smile -->
+  <rect x="104" y="136" width="8"   height="8"  fill="#111"/>
+  <rect x="112" y="144" width="8"   height="8"  fill="#111"/>
+  <rect x="120" y="144" width="16"  height="8"  fill="#111"/>
+  <rect x="136" y="144" width="8"   height="8"  fill="#111"/>
+  <rect x="144" y="136" width="8"   height="8"  fill="#111"/>
+
+</svg>

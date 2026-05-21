@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="rsSun" cx="35%" cy="28%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#fff8c8"/>
+      <stop offset="80%" stop-color="#ffd030"/>
+      <stop offset="100%" stop-color="#e07818"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" fill="none"/>
+  <path fill="#88c8f8" opacity="0.2" d="M0 36h64v28H0z"/>
+  <circle cx="16" cy="14" r="11" fill="#ffe878" opacity="0.2"/>
+  <circle cx="16" cy="14" r="9" fill="url(#rsSun)"/>
+  <ellipse cx="13" cy="12" rx="4" ry="3" fill="#fffef8" opacity="0.8"/>
+  <g shape-rendering="crispEdges">
+    <path fill="#f8e060" d="M6 8h2v2H6zM22 4h2v2h-2z"/>
+    <path fill="#101830" d="M10 26h44v4H10z"/>
+    <path fill="#182040" d="M8 14h14v14H8zM22 12h18v12H22zM38 14h14v14H38z"/>
+    <path fill="#283858" d="M10 12h12v8H10zM24 10h14v8H24z"/>
+    <path fill="#485888" d="M12 10h10v6H12zM28 8h12v6H28z"/>
+    <path fill="#98b0d8" d="M14 8h8v4H14z"/>
+    <path fill="#042858" d="M8 34h4v16H8zM18 32h4v18h-4zM28 34h4v16h-4zM38 32h4v18h-4zM48 34h4v16h-4zM14 38h4v14h-4zM24 36h4v16h-4zM34 38h4v14h-4zM44 36h4v16h-4z"/>
+    <path fill="#1878c8" d="M9 35h3v15h-3zM19 33h3v17h-3z"/>
+    <path fill="#68e8ff" d="M9 34h1v2H9zM19 32h1v2h-1z"/>
+    <path fill="#a8f8ff" d="M10 52h5v1H10zM22 54h6v1H22zM36 52h5v1H36z"/>
+    <path fill="#6878a8" d="M52 20h3v2h-3zM54 22h2v4h-2z" opacity="0.6"/>
+  </g>
+</svg>

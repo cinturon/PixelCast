@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="ssSun" cx="35%" cy="28%" r="50%">
+      <stop offset="0%" stop-color="#fffef8"/>
+      <stop offset="50%" stop-color="#ffe858"/>
+      <stop offset="100%" stop-color="#e89020"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" fill="none"/>
+  <circle cx="16" cy="14" r="9" fill="url(#ssSun)"/>
+  <ellipse cx="13" cy="12" rx="3" ry="2" fill="#fffef8" opacity="0.75"/>
+  <g shape-rendering="crispEdges">
+    <path fill="#283858" d="M10 26h44v4H10z"/>
+    <path fill="#384878" d="M8 14h14v14H8zM22 12h18v12H22zM40 14h14v14H40z"/>
+    <path fill="#6878a8" d="M12 10h10v6H12zM28 8h12v6H28z"/>
+    <path fill="#c8d8f8" d="M14 8h8v4H14z"/>
+    <g fill="#b8e0ff">
+      <path d="M8 34h1v5H8zM7 36h3v1H7zM6 38h5v1H6z"/>
+      <path d="M22 32h1v6h-1zM21 34h3v1h-3zM20 36h5v1H20z"/>
+      <path d="M38 34h1v5h-1zM37 36h3v1h-3z"/>
+      <path d="M52 36h1v5h-1zM51 38h3v1h-3z"/>
+    </g>
+    <path fill="#ffffff" d="M10 44h3v3h-3zM24 46h3v3h-3zM40 44h3v3h-3zM52 48h3v3h-3z"/>
+    <path fill="#f0fcff" d="M16 40h2v2h-2zM44 42h2v2h-2z"/>
+    <path fill="#d8ecff" d="M6 52h52v2H6z" opacity="0.5"/>
+  </g>
+</svg>
