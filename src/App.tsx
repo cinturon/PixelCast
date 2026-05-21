@@ -16,6 +16,10 @@ import { callAPI, getGeolocationResponseLatandLong } from "./api/http";
 import { useKeyboardShortcuts, isModPlusKey, isTypingTarget } from "./hooks/useKeyboardShortcuts";
 import { StatusBar } from "./components/StatusBar";
 import { applyTheme, DEFAULT_THEME, isTheme, type Theme } from "./utils/themes";
+import { getAmbientAudioFileForCondition } from "./utils/audio";
+import { useAmbientAudio } from "./hooks/useAmbientAudio";
+
+const DEFAULT_AMBIENT_VOLUME = 0.10;
 
 function App() {
 
@@ -36,6 +40,8 @@ function App() {
   const [latitude, setLatitude] = useState<number>(47.6062);
   const [longitude, setLongitude] = useState<number>(-122.3321);
   const [enableRainEffect, setEnableRainEffect] = useState<boolean>(true);
+  const [enableAmbientAudio, setEnableAmbientAudio] = useState<boolean>(false);
+  const [ambientAudioVolume, setAmbientAudioVolume] = useState<number>(DEFAULT_AMBIENT_VOLUME);
   const [launchAtStartup, setLaunchAtStartup] = useState<boolean>(false);
   const [lastRefreshTime, setLastRefreshTime] = useState<Date>();
 
@@ -77,9 +83,19 @@ function App() {
     }
   };
 
+  const weatherCondition = data?.current?.weatherCondition;
+
   const shouldShowRainEffect = enableRainEffect
-    && data?.current?.weatherCondition
-    && RAINY_CONDITIONS.has(data?.current.weatherCondition);
+    && weatherCondition
+    && RAINY_CONDITIONS.has(weatherCondition);
+
+  const ambientAudioFile = getAmbientAudioFileForCondition(weatherCondition);
+
+  useAmbientAudio({
+    enabled: enableAmbientAudio,
+    volume: ambientAudioVolume,
+    audioFile: ambientAudioFile,
+  });
 
   const getSettings = async () => {
     const settings = await loadSettings();
@@ -134,6 +150,8 @@ function App() {
         latitude,
         longitude,
         enableRainEffect,
+        enableAmbientAudio,
+        ambientAudioVolume,
         launchAtStartup,
       });
 
@@ -307,8 +325,12 @@ function App() {
           onCityChange={setCity}
           onUnitChange={setUnit}
           enableRainEffect={enableRainEffect}
+          enableAmbientAudio={enableAmbientAudio}
+          ambientAudioVolume={ambientAudioVolume}
           launchAtStartup={launchAtStartup}
           onEnableRainEffectChange={setEnableRainEffect}
+          onEnableAmbientAudioChange={setEnableAmbientAudio}
+          onAmbientAudioVolumeChange={setAmbientAudioVolume}
           onLaunchAtStartupChange={setLaunchAtStartup}
           onSave={handleSaveSettings}
           onClose={handleCloseSettings}

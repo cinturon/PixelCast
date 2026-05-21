@@ -68,11 +68,15 @@ export default function ScreenshotPage() {
                 latitude={47.6062}
                 longitude={-122.3321}
                 enableRainEffect
+                enableAmbientAudio
+                ambientAudioVolume={0.22}
                 launchAtStartup={false}
                 onThemeChange={noop}
                 onCityChange={noop}
                 onUnitChange={noop}
                 onEnableRainEffectChange={noop}
+                onEnableAmbientAudioChange={noop}
+                onAmbientAudioVolumeChange={noop}
                 onLaunchAtStartupChange={noop}
                 onSave={noop}
                 onClose={noop}

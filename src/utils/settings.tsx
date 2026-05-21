@@ -9,6 +9,8 @@ export type Settings = {
   latitude: number;
   longitude: number;
   enableRainEffect: boolean;
+  enableAmbientAudio: boolean;
+  ambientAudioVolume: number;
   launchAtStartup: boolean;
 };
 

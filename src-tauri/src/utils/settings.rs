@@ -33,9 +33,23 @@ pub struct Settings {
     pub longitude: f64,
     /// Controls whether rainy conditions render the animated rain effect.
     pub enable_rain_effect: bool,
+    /// When true, play low-volume ambient loops from `public/audio/`.
+    #[serde(default = "default_enable_ambient_audio")]
+    pub enable_ambient_audio: bool,
+    /// Ambient loop volume from 0.0 (mute) to 1.0 (full).
+    #[serde(default = "default_ambient_audio_volume")]
+    pub ambient_audio_volume: f64,
     /// When true, register PixelCast to launch when the user logs in.
     #[serde(default)]
     pub launch_at_startup: bool,
+}
+
+fn default_enable_ambient_audio() -> bool {
+    true
+}
+
+fn default_ambient_audio_volume() -> f64 {
+    0.22
 }
 
 /// Supported temperature units for weather display.
@@ -55,6 +69,8 @@ impl Settings {
             latitude: 47.6062,
             longitude: -122.3321,
             enable_rain_effect: true,
+            enable_ambient_audio: default_enable_ambient_audio(),
+            ambient_audio_volume: default_ambient_audio_volume(),
             launch_at_startup: false,
         }
     }

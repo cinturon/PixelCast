@@ -6,10 +6,14 @@ type SettingsPanelProps = {
   city: string;
   unit: TemperatureUnit;
   enableRainEffect: boolean;
+  enableAmbientAudio: boolean;
+  ambientAudioVolume: number;
   launchAtStartup: boolean;
   latitude: number;
   longitude: number;
   onEnableRainEffectChange: (enableRainEffect: boolean) => void;
+  onEnableAmbientAudioChange: (enableAmbientAudio: boolean) => void;
+  onAmbientAudioVolumeChange: (volume: number) => void;
   onLaunchAtStartupChange: (launchAtStartup: boolean) => void;
   onThemeChange: (theme: Theme) => void;
   onCityChange: (city: string) => void;
@@ -25,11 +29,15 @@ export default function SettingsPanel({
   latitude,
   longitude,
   enableRainEffect,
+  enableAmbientAudio,
+  ambientAudioVolume,
   launchAtStartup,
   onThemeChange,
   onCityChange,
   onUnitChange,
   onEnableRainEffectChange,
+  onEnableAmbientAudioChange,
+  onAmbientAudioVolumeChange,
   onLaunchAtStartupChange,
   onSave,
   onClose
@@ -83,6 +91,27 @@ export default function SettingsPanel({
       <label className="settings-panel__field">
         Enable Rain Effect
         <input type="checkbox" checked={enableRainEffect} onChange={(e) => onEnableRainEffectChange(e.target.checked)} />
+      </label>
+
+      <label className="settings-panel__field">
+        Enable Ambient Audio
+        <input
+          type="checkbox"
+          checked={enableAmbientAudio}
+          onChange={(e) => onEnableAmbientAudioChange(e.target.checked)}
+        />
+      </label>
+
+      <label className="settings-panel__field">
+        Ambient Volume
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={Math.round(ambientAudioVolume * 100)}
+          disabled={!enableAmbientAudio}
+          onChange={(e) => onAmbientAudioVolumeChange(Number(e.target.value) / 100)}
+        />
       </label>
 
       <label className="settings-panel__field">
